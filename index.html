@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">Nehtové Studio & Česká Slovní Zásoba</title>
+    <title id="pageTitle">Nehtové Studio & Ceník</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #fff5f7; color: #333; line-height: 1.6; }
@@ -22,12 +22,20 @@
         .container { max-width: 600px; margin: 20px auto; background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
         /* Tabs navigation */
-        .tabs { display: flex; justify-content: center; margin-bottom: 20px; border-bottom: 2px solid #ffedf0; }
+        .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #ffedf0; }
         .tab-btn { background: none; border: none; padding: 10px 20px; font-size: 1rem; font-weight: bold; cursor: pointer; color: #888; border-bottom: 3px solid transparent; margin-bottom: -2px; }
         .tab-btn.active { color: #d81b60; border-bottom-color: #d81b60; }
 
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+
+        /* Price List & Gallery Style */
+        .price-list { display: flex; flex-direction: column; gap: 15px; }
+        .price-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; background: #fff8f9; border: 1px solid #ffe6eb; border-radius: 8px; gap: 15px; }
+        .price-info { flex-grow: 1; }
+        .price-name { font-weight: 600; color: #444; display: block; margin-bottom: 4px; }
+        .price-cost { font-weight: bold; color: #d81b60; }
+        .sample-img { width: 70px; height: 70px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; }
 
         /* Form Groups */
         .form-group { margin-bottom: 15px; }
@@ -39,14 +47,6 @@
         /* Submit Button */
         .btn-submit { background: #d81b60; color: white; border: none; width: 100%; padding: 14px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background 0.2s; margin-top: 10px; }
         .btn-submit:hover { background: #ad1457; }
-
-        /* Vocabulary Section */
-        .vocab-search { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; }
-        .vocab-list { max-height: 350px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
-        .vocab-item { padding: 10px 15px; border-bottom: 1px solid #f5f5f5; display: flex; justify-content: space-between; }
-        .vocab-item:last-child { border-bottom: none; }
-        .vocab-cs { font-weight: bold; color: #d81b60; }
-        .vocab-vi { color: #666; }
 
         /* Footer */
         .footer { text-align: center; margin-top: 20px; font-size: 0.85rem; color: #888; }
@@ -62,36 +62,70 @@
 
     <!-- Tiêu đề trang -->
     <div class="hero">
-        <h1 id="t_mainTitle">Nehtové Studio & Česká Slovní Zásoba</h1>
-        <p id="t_subTitle">Online rezervace a výuka češtiny</p>
+        <h1 id="t_mainTitle">Nehtové Studio</h1>
+        <p id="t_subTitle">Profesionální péče o nehty & Online rezervace</p>
     </div>
 
     <div class="container">
-        <!-- Chuyển đổi giữa 2 tính năng: Đặt lịch & Từ vựng tiếng Séc -->
+        <!-- Chuyển đổi giữa 2 tab: Bảng giá & Mẫu móng và Đặt lịch -->
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('booking')" id="t_tabBooking">📅 Đặt lịch hẹn</button>
-            <button class="tab-btn" onclick="switchTab('vocab')" id="t_tabVocab">📚 Từ vựng Séc (1000 từ)</button>
+            <button class="tab-btn active" onclick="switchTab('price')" id="t_tabPrice">💰 Ceník & Mẫu / Bảng giá</button>
+            <button class="tab-btn" onclick="switchTab('booking')" id="t_tabBooking">📅 Rezervace / Đặt lịch</button>
         </div>
 
-        <!-- Tab 1: Đặt lịch hẹn -->
-        <div id="tab-booking" class="tab-content active">
+        <!-- Tab 1: Bảng giá dịch vụ kèm hình mẫu -->
+        <div id="tab-price" class="tab-content active">
+            <div class="price-list">
+                <div class="price-item">
+                    <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=150" alt="Gelové nehty" class="sample-img">
+                    <div class="price-info">
+                        <span class="price-name">Modeláž nehtů (Gelové nehty) / Đắp móng gel</span>
+                        <span class="price-cost">800 Kč+</span>
+                    </div>
+                </div>
+                <div class="price-item">
+                    <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=150" alt="Shellac" class="sample-img">
+                    <div class="price-info">
+                        <span class="price-name">Manikúra + Gel lak (Shellac) / Manicure + Sơn gel</span>
+                        <span class="price-cost">500 Kč</span>
+                    </div>
+                </div>
+                <div class="price-item">
+                    <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=150" alt="Pedikúra" class="sample-img">
+                    <div class="price-info">
+                        <span class="price-name">Pedikúra / Làm móng chân</span>
+                        <span class="price-cost">600 Kč</span>
+                    </div>
+                </div>
+                <div class="price-item">
+                    <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=150" alt="Doplnění nehtů" class="sample-img">
+                    <div class="price-info">
+                        <span class="price-name">Doplnění nehtů / Làm lại móng / Fill-in</span>
+                        <span class="price-cost">650 Kč</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Đặt lịch hẹn -->
+        <div id="tab-booking" class="tab-content">
             <div class="form-group">
-                <label id="t_labelName">Họ và tên / Jméno:</label>
+                <label id="t_labelName">Jméno a příjmení / Họ tên:</label>
                 <input type="text" id="txtName" placeholder="Zadejte své jméno...">
             </div>
 
             <div class="form-group">
-                <label id="t_labelPhone">Số điện thoại / Telefon:</label>
+                <label id="t_labelPhone">Telefonní číslo / Số điện thoại:</label>
                 <input type="tel" id="txtPhone" placeholder="Zadejte telefon...">
             </div>
 
             <div class="form-group">
-                <label id="t_labelDate">Ngày hẹn / Datum:</label>
+                <label id="t_labelDate">Datum / Ngày hẹn:</label>
                 <input type="date" id="txtDate">
             </div>
 
             <div class="form-group">
-                <label id="t_labelTime">Giờ hẹn / Čas:</label>
+                <label id="t_labelTime">Čas / Giờ hẹn:</label>
                 <select id="txtTime">
                     <option value="09:00">09:00</option>
                     <option value="10:00">10:00</option>
@@ -107,7 +141,7 @@
             </div>
 
             <div class="form-group">
-                <label id="t_labelService">Dịch vụ / Služba:</label>
+                <label id="t_labelService">Služba / Dịch vụ:</label>
                 <select id="selService">
                     <option value="Modeláž nehtů (Gelové nehty)">Modeláž nehtů (Gelové nehty)</option>
                     <option value="Manikúra + Gel lak (Shellac)">Manikúra + Gel lak (Shellac)</option>
@@ -117,42 +151,26 @@
             </div>
 
             <div class="form-group">
-                <label id="t_labelNote">Ghi chú thêm / Poznámka:</label>
+                <label id="t_labelNote">Poznámka / Ghi chú thêm:</label>
                 <textarea id="txtNote" placeholder="Např. barva, design..."></textarea>
             </div>
 
-            <button class="btn-submit" id="t_btnSubmit" onclick="bookAppointment()">Gửi lịch hẹn qua Facebook</button>
-        </div>
-
-        <!-- Tab 2: Học từ vựng tiếng Séc -->
-        <div id="tab-vocab" class="tab-content">
-            <input type="text" id="searchVocab" class="vocab-search" placeholder="Hledat slovo / Tìm kiếm từ vựng..." onkeyup="filterVocab()">
-            <div class="vocab-list" id="vocabListContainer">
-                <!-- Danh sách từ vựng mẫu, bạn có thể bổ sung thêm -->
-                <div class="vocab-item"><span class="vocab-cs">Ahoj</span><span class="vocab-vi">Xin chào / Tạm biệt</span></div>
-                <div class="vocab-item"><span class="vocab-cs">Děkuji</span><span class="vocab-vi">Cảm ơn</span></div>
-                <div class="vocab-item"><span class="vocab-cs">Prosím</span><span class="vocab-vi">Làm ơn / Xin mời</span></div>
-                <div class="vocab-item"><span class="vocab-cs">Nehty</span><span class="vocab-vi">Móng tay</span></div>
-                <div class="vocab-item"><span class="vocab-cs">Salon</span><span class="vocab-vi">Tiệm / Salon</span></div>
-                <div class="vocab-item"><span class="vocab-cs">Barva</span><span class="vocab-vi">Màu sắc</span></div>
-                <div class="vocab-item"><span class="vocab-cs">Krásný</span><span class="vocab-vi">Đẹp</span></div>
-            </div>
+            <button class="btn-submit" id="t_btnSubmit" onclick="bookAppointment()">Odeslat rezervaci na Facebook</button>
         </div>
     </div>
 
     <div class="footer">
-        <p>&copy; 2026 Nehtové Studio & Czech Learning. All rights reserved.</p>
+        <p>&copy; 2026 Nehtové Studio. All rights reserved.</p>
     </div>
 
     <script>
-        // Dữ liệu song ngữ
         const langData = {
             cs: {
-                pageTitle: "Nehtové Studio & Česká Slovní Zásoba",
-                mainTitle: "Nehtové Studio & Česká Slovní Zásoba",
-                subTitle: "Online rezervace a výuka češtiny",
+                pageTitle: "Nehtové Studio & Ceník",
+                mainTitle: "Nehtové Studio",
+                subTitle: "Profesionální péče o nehty & Online rezervace",
+                tabPrice: "💰 Ceník & Mẫu",
                 tabBooking: "📅 Rezervace",
-                tabVocab: "📚 Slovní zásoba",
                 labelName: "Jméno a příjmení:",
                 labelPhone: "Telefonní číslo:",
                 labelDate: "Datum:",
@@ -163,11 +181,11 @@
                 alertError: "Vyplňte prosím jméno, telefon a datum!"
             },
             vi: {
-                pageTitle: "Tiệm Nail & Học Tiếng Séc",
-                mainTitle: "Tiệm Nail & Từ Vựng Tiếng Séc",
-                subTitle: "Đặt lịch trực tuyến kết hợp học từ vựng phổ biến",
+                pageTitle: "Tiệm Nail & Bảng Giá",
+                mainTitle: "Tiệm Nail Studio",
+                subTitle: "Dịch vụ chăm sóc móng chuyên nghiệp & Mẫu thiết kế",
+                tabPrice: "💰 Bảng giá & Mẫu",
                 tabBooking: "📅 Đặt lịch hẹn",
-                tabVocab: "📚 Từ vựng Séc",
                 labelName: "Họ và tên:",
                 labelPhone: "Số điện thoại:",
                 labelDate: "Ngày hẹn:",
@@ -179,18 +197,15 @@
             }
         };
 
-        let currentLang = 'cs';
-
         function setLanguage(lang) {
-            currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
 
             document.getElementById('pageTitle').innerText = langData[lang].pageTitle;
             document.getElementById('t_mainTitle').innerText = langData[lang].mainTitle;
             document.getElementById('t_subTitle').innerText = langData[lang].subTitle;
+            document.getElementById('t_tabPrice').innerText = langData[lang].tabPrice;
             document.getElementById('t_tabBooking').innerText = langData[lang].tabBooking;
-            document.getElementById('t_tabVocab').innerText = langData[lang].tabVocab;
             document.getElementById('t_labelName').innerText = langData[lang].labelName;
             document.getElementById('t_labelPhone').innerText = langData[lang].labelPhone;
             document.getElementById('t_labelDate').innerText = langData[lang].labelDate;
@@ -204,21 +219,12 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
 
-            if (tabName === 'booking') {
+            if (tabName === 'price') {
+                document.getElementById('t_tabPrice').classList.add('active');
+                document.getElementById('tab-price').classList.add('active');
+            } else {
                 document.getElementById('t_tabBooking').classList.add('active');
                 document.getElementById('tab-booking').classList.add('active');
-            } else {
-                document.getElementById('t_tabVocab').classList.add('active');
-                document.getElementById('tab-vocab').classList.add('active');
-            }
-        }
-
-        function filterVocab() {
-            let input = document.getElementById('searchVocab').value.toLowerCase();
-            let items = document.getElementsByClassName('vocab-item');
-            for (let i = 0; i < items.length; i++) {
-                let text = items[i].innerText.toLowerCase();
-                items[i].style.display = text.includes(input) ? "" : "none";
             }
         }
 
@@ -229,10 +235,9 @@
             const time = document.getElementById('txtTime').value;
             const service = document.getElementById('selService').value;
             const note = document.getElementById('txtNote').value.trim();
-            const t = langData[currentLang];
-
+            
             if (!name || !phone || !date) {
-                alert(t.alertError);
+                alert("Vui lòng nhập đầy đủ Tên, Số điện thoại và Ngày hẹn!");
                 return;
             }
 
