@@ -2,268 +2,191 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title id="pageTitle">Nehtové Studio - Krásné Nehty</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Nehtové Studio – Online Rezervace</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: #fff5f7; color: #333; line-height: 1.5; padding-bottom: 40px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #fff5f7; color: #333; line-height: 1.6; }
         
         /* Language Bar */
-        .lang-bar { display: flex; justify-content: flex-end; padding: 10px 15px; background: #ffe4e6; gap: 8px; }
-        .lang-btn { background: #fff; border: 1px solid #fbcfe8; padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; color: #db2777; cursor: pointer; }
-        .lang-btn.active { background: #db2777; color: #fff; border-color: #db2777; }
+        .lang-bar { display: flex; justify-content: flex-end; padding: 10px 20px; background: #fff; border-bottom: 1px solid #eee; }
+        .lang-btn { background: #fff; border: 1px solid #ffb6c1; padding: 5px 12px; margin-left: 5px; cursor: pointer; border-radius: 4px; font-weight: bold; color: #d81b60; transition: 0.2s; }
+        .lang-btn.active, .lang-btn:hover { background: #ffb6c1; color: #fff; }
 
         /* Header & Hero */
-        .hero { background: linear-gradient(135deg, #ffb6c1, #ffc0cb); padding: 25px 20px; text-align: center; color: #fff; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 4px 15px rgba(255, 182, 193, 0.4); }
-        .hero h1 { font-size: 1.7rem; font-weight: 800; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .hero p { font-size: 0.9rem; font-weight: 600; opacity: 0.95; margin-bottom: 15px; }
-        .hotline-btn { display: inline-block; background: #fff; color: #ff69b4; padding: 8px 18px; border-radius: 25px; font-weight: 800; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 0.85rem; }
+        .hero { background: linear-gradient(135deg, #ff758c, #ff7eb3); color: white; text-align: center; padding: 40px 20px; }
+        .hero h1 { font-size: 1.8rem; margin-bottom: 10px; }
+        .hero p { font-size: 0.95rem; opacity: 0.9; }
 
-        .container { width: 100%; max-width: 480px; margin: 0 auto; padding: 15px; }
+        /* Container */
+        .container { max-width: 500px; margin: 20px auto; background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        /* Card sections */
-        .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(255, 182, 193, 0.15); border: 1px solid #ffe4e6; }
-        .section-title { font-size: 1.15rem; font-weight: 800; color: #db2777; margin-bottom: 15px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        /* Form Groups */
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; color: #555; font-size: 0.9rem; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; outline: none; transition: border-color 0.2s; }
+        input:focus, select:focus, textarea:focus { border-color: #ff758c; }
+        textarea { resize: vertical; height: 80px; }
 
-        /* Services List */
-        .service-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #fce7f3; }
-        .service-item:last-child { border-bottom: none; }
-        .service-name { font-weight: 700; font-size: 0.85rem; color: #475569; }
-        .service-price { font-weight: 800; color: #db2777; font-size: 0.85rem; }
+        /* Submit Button */
+        .btn-submit { background: #d81b60; color: white; border: none; width: 100%; padding: 14px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background 0.2s; margin-top: 10px; }
+        .btn-submit:hover { background: #ad1457; }
 
-        /* Gallery Grid */
-        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .gallery-img { width: 100%; height: 140px; object-fit: cover; border-radius: 12px; background: #fce7f3; border: 1px solid #fbcfe8; }
-
-        /* Form Booking */
-        .label-text { font-size: 0.8rem; font-weight: 700; color: #64748b; margin-bottom: 6px; display: block; text-align: left; }
-        select, input, textarea { 
-            width: 100%; padding: 12px 10px; border-radius: 12px; border: 1px solid #fbcfe8; 
-            background-color: #fff; font-size: 0.9rem; font-weight: 700; color: #334155; 
-            margin-bottom: 14px; outline: none; font-family: inherit; 
-        }
-        
-        .btn-submit { background: linear-gradient(135deg, #ec4899, #db2777); width: 100%; padding: 16px; border: none; border-radius: 12px; color: white; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3); }
-        .btn-submit:active { transform: scale(0.98); }
-
-        /* Info Footer */
-        .info-box { font-size: 0.85rem; color: #475569; text-align: center; font-weight: 600; line-height: 1.6; }
-        .info-box span { color: #db2777; font-weight: 800; }
-        
-        .sync-status { font-size: 0.75rem; color: #94a3b8; text-align: center; margin-top: 10px; font-style: italic; }
+        /* Footer */
+        .footer { text-align: center; margin-top: 20px; font-size: 0.85rem; color: #888; }
     </style>
 </head>
 <body>
 
-    <!-- THANH CHỌN NGÔN NGỮ -->
+    <!-- Thanh chọn ngôn ngữ -->
     <div class="lang-bar">
-        <button id="btnCs" class="lang-btn active" onclick="switchLanguage('cs')">🇨🇿 Čeština</button>
-        <button id="btnVi" class="lang-btn" onclick="switchLanguage('vi')">🇻🇳 Tiếng Việt</button>
+        <button class="lang-btn active" onclick="setLanguage('cs')">CS</button>
+        <button class="lang-btn" onclick="setLanguage('vi')">VN</button>
     </div>
 
-    <!-- PHẦN ĐẦU TRANG -->
+    <!-- Tiêu đề trang -->
     <div class="hero">
-        <h1 id="t_heroTitle">🌸 Nehtové Studio 🌸</h1>
-        <p id="t_heroSub">Místo, kde vaše ruce ožijí krásou</p>
-        <a href="tel:0912345678" class="hotline-btn" id="t_hotlineBtn">📞 Volat: 091.234.5678</a>
+        <h1 id="t_mainTitle">Nehtové Studio</h1>
+        <p id="t_subTitle">Rezervujte si svůj termín jednoduše online</p>
     </div>
 
+    <!-- Form đặt lịch -->
     <div class="container">
-
-        <!-- BẢNG GIÁ DỊCH VỤ -->
-        <div class="card">
-            <div class="section-title" id="t_priceTitle">✨ Ceník Služeb ✨</div>
-            <div class="service-item">
-                <span class="service-name" id="t_s1">Základní Manikúra / Pedikúra</span>
-                <span class="service-price">150K CZK / Kč</span>
-            </div>
-            <div class="service-item">
-                <span class="service-name" id="t_s2">Luxusní Gel lak (Dlouhá výdrž)</span>
-                <span class="service-price">120K CZK / Kč</span>
-            </div>
-            <div class="service-item">
-                <span class="service-name" id="t_s3">Akrylové / Modeláž nehtů</span>
-                <span class="service-price">250K CZK / Kč</span>
-            </div>
-            <div class="service-item">
-                <span class="service-name" id="t_s4">Nail art / Zdobení kamínky</span>
-                <span class="service-price">Od 50K</span>
-            </div>
-            <div class="service-item">
-                <span class="service-name" id="t_s5">Combo Manikúra + Gel lak</span>
-                <span class="service-price">250K CZK / Kč</span>
-            </div>
+        <div class="form-group">
+            <label id="t_labelName">Jméno a příjmení / Họ tên:</label>
+            <input type="text" id="txtName" placeholder="Zadejte své jméno...">
         </div>
 
-        <!-- BỘ SƯU TẬP MẪU MÓNG -->
-        <div class="card">
-            <div class="section-title" id="t_galleryTitle">💖 Populární Vzory 💖</div>
-            <div class="gallery-grid">
-                <img src="https://images.unsplash.com/photo-1632345031435-877ff6c9d7d9?w=300" class="gallery-img" alt="Nail 1">
-                <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=300" class="gallery-img" alt="Nail 2">
-                <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=300" class="gallery-img" alt="Nail 3">
-                <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=300" class="gallery-img" alt="Nail 4">
-            </div>
+        <div class="form-group">
+            <label id="t_labelPhone">Telefonní číslo / Số điện thoại:</label>
+            <input type="tel" id="txtPhone" placeholder="Zadejte telefon...">
         </div>
 
-        <!-- FORM ĐẶT LỊCH HẸN TRỰC TUYẾN -->
-        <div class="card">
-            <div class="section-title" id="t_bookingTitle">📅 Online Rezervace</div>
-            
-            <label class="label-text" id="t_lblName">Vaše jméno a příjmení:</label>
-            <input type="text" id="txtName" placeholder="Např. Anna Nováková">
+        <div class="form-group">
+            <label id="t_labelDate">Datum / Ngày hẹn:</label>
+            <input type="date" id="txtDate">
+        </div>
 
-            <label class="label-text" id="t_lblPhone">Telefonní číslo:</label>
-            <input type="tel" id="txtPhone" placeholder="Např. 777 123 456">
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div>
-                    <label class="label-text" id="t_lblDate">Vyberte datum:</label>
-                    <input type="date" id="txtDate">
-                </div>
-                <div>
-                    <label class="label-text" id="t_lblTime">Vyberte čas:</label>
-                    <input type="time" id="txtTime" value="09:00">
-                </div>
-            </div>
-
-            <label class="label-text" id="t_lblService">Vybraná služba:</label>
-            <select id="selService">
-                <option value="Gel lak">Gel lak</option>
-                <option value="Manikúra + Gel lak">Manikúra + Gel lak (Combo)</option>
-                <option value="Modeláž nehtů">Modeláž nehtů / Akryl</option>
-                <option value="Nail art">Nail art / Zdobení</option>
-                <option value="Jiné">Jiné (Poznámka)</option>
+        <div class="form-group">
+            <label id="t_labelTime">Čas / Giờ hẹn:</label>
+            <select id="txtTime">
+                <option value="09:00">09:00</option>
+                <option value="10:00">10:00</option>
+                <option value="11:00">11:00</option>
+                <option value="12:00">12:00</option>
+                <option value="13:00">13:00</option>
+                <option value="14:00">14:00</option>
+                <option value="15:00">15:00</option>
+                <option value="16:00">16:00</option>
+                <option value="17:00">17:00</option>
+                <option value="18:00">18:00</option>
             </select>
-
-            <label class="label-text" id="t_lblNote">Poznámka (volitelné):</label>
-            <input type="text" id="txtNote" placeholder="Např. Krátké nehty...">
-
-            <button class="btn-submit" id="t_btnSubmit" onclick="bookAppointment()">Odeslat Rezervaci</button>
-            <div class="sync-status" id="t_statusText">Rezervační systém je připraven</div>
         </div>
 
-        <!-- THÔNG TIN LIÊN HỆ & ĐỊA CHỈ -->
-        <div class="card">
-            <div class="section-title" id="t_contactTitle">📍 Kde nás najdete</div>
-            <div class="info-box" id="t_infoContent">
-                Adresa: <span>123 Ulička, Praha</span><br>
-                Otevírací doba: <span>09:00 - 20:00 (Pondělí - Neděle)</span><br>
-                Instagram: <span>@TiemNailsXinh</span>
-            </div>
+        <div class="form-group">
+            <label id="t_labelService">Služba / Dịch vụ:</label>
+            <select id="selService">
+                <option value="Modeláž nehtů (Gelové nehty)">Modeláž nehtů (Gelové nehty)</option>
+                <option value="Manikúra + Gel lak (Shellac)">Manikúra + Gel lak (Shellac)</option>
+                <option value="Pedikúra">Pedikúra</option>
+                <option value="Doplnění nehtů">Doplnění nehtů</option>
+            </select>
         </div>
 
+        <div class="form-group">
+            <label id="t_labelNote">Poznámka / Ghi chú thêm:</label>
+            <textarea id="txtNote" placeholder="Např. barva, design..."></textarea>
+        </div>
+
+        <button class="btn-submit" id="t_btnSubmit" onclick="bookAppointment()">Rezervovat termín</button>
     </div>
 
-<script>
-    const langData = {
-        cs: {
-            pageTitle: "Nehtové Studio - Krásné Nehty",
-            heroTitle: "🌸 Nehtové Studio 🌸",
-            heroSub: "Místo, kde vaše ruce ožijí krásou",
-            hotlineBtn: "📞 Volat: 091.234.5678",
-            priceTitle: "✨ Ceník Služeb ✨",
-            s1: "Základní Manikúra / Pedikúra",
-            s2: "Luxusní Gel lak (Dlouhá výdrž)",
-            s3: "Akrylové / Modeláž nehtů",
-            s4: "Nail art / Zdobení kamínky",
-            s5: "Combo Manikúra + Gel lak",
-            galleryTitle: "💖 Populární Vzory 💖",
-            bookingTitle: "📅 Online Rezervace",
-            lblName: "Vaše jméno a příjmení:",
-            lblPhone: "Telefonní číslo:",
-            lblDate: "Vyberte datum:",
-            lblTime: "Vyberte čas:",
-            lblService: "Vybraná služba:",
-            lblNote: "Poznámka (volitelné):",
-            btnSubmit: "Odeslat Rezervaci",
-            statusText: "Rezervační systém je připraven",
-            contactTitle: "📍 Kde nás najdete",
-            infoContent: "Adresa: <span>123 Ulička, Praha</span><br>Otevírací doba: <span>09:00 - 20:00 (Pondělí - Neděle)</span><br>Instagram: <span>@TiemNailsXinh</span>",
-            alertSuccess: "Děkujeme! Vaše rezervace byla úspěšně odeslána do salonu.",
-            alertError: "Vyplňte prosím Jméno, Telefonní číslo a Datum!"
-        },
-        vi: {
-            pageTitle: "Tiệm Nails - Tiệm Làm Móng Xinh",
-            heroTitle: "🌸 Tiệm Nails Xinh 🌸",
-            heroSub: "Nơi tôn vinh vẻ đẹp đôi bàn tay của bạn",
-            hotlineBtn: "📞 Gọi Hotline: 091.234.5678",
-            priceTitle: "✨ Bảng Giá Dịch Vụ ✨",
-            s1: "Manicure / Pedicure cơ bản",
-            s2: "Sơn Gel cao cấp (Bền màu)",
-            s3: "Đắp bột / Úp móng giả",
-            s4: "Vẽ nghệ thuật / Đính đá",
-            s5: "Combo Chăm sóc móng + Sơn Gel",
-            galleryTitle: "💖 Mẫu Móng Hot Trend 💖",
-            bookingTitle: "📅 Đặt Lịch Hẹn Ngay",
-            lblName: "Họ và tên của bạn:",
-            lblPhone: "Số điện thoại liên hệ:",
-            lblDate: "Chọn Ngày:",
-            lblTime: "Chọn Giờ:",
-            lblService: "Dịch vụ muốn làm:",
-            lblNote: "Ghi chú thêm (nếu có):",
-            btnSubmit: "Gửi Lịch Hẹn Cho Tiệm",
-            statusText: "Hệ thống đặt lịch sẵn sàng",
-            contactTitle: "📍 Ghé Thăm Tiệm Nhé",
-            infoContent: "Địa chỉ: <span>123 Ulička, Praha</span><br>Giờ mở cửa: <span>09:00 - 20:00 (Pondělí - Neděle)</span><br>Instagram: <span>@TiemNailsXinh</span>",
-            alertSuccess: "Cảm ơn bạn! Lịch hẹn của bạn đã được gửi thành công đến tiệm.",
-            alertError: "Vui lòng điền đầy đủ Tên, Số điện thoại và Ngày hẹn!"
-        }
-    };
+    <div class="footer">
+        <p>&copy; 2026 Nehtové Studio. All rights reserved.</p>
+    </div>
 
-    let currentLang = 'cs'; // Mặc định tiếng Séc
+    <script>
+        // Dữ liệu song ngữ Séc - Việt
+        const langData = {
+            cs: {
+                pageTitle: "Nehtové Studio – Online Rezervace",
+                mainTitle: "Nehtové Studio",
+                subTitle: "Rezervujte si svůj termín jednoduše online",
+                labelName: "Jméno a příjmení:",
+                labelPhone: "Telefonní číslo:",
+                labelDate: "Datum:",
+                labelTime: "Čas:",
+                labelService: "Služba:",
+                labelNote: "Poznámka:",
+                btnSubmit: "Rezervovat termín",
+                alertError: "Vyplňte prosím jméno, telefon a datum!",
+                redirectMsg: "Budete přesměrováni na Facebook pro odeslání rezervace."
+            },
+            vi: {
+                pageTitle: "Tiệm Nail – Đặt lịch trực tuyến",
+                mainTitle: "Tiệm Nail Studio",
+                subTitle: "Đặt lịch hẹn làm đẹp nhanh chóng và dễ dàng",
+                labelName: "Họ và tên:",
+                labelPhone: "Số điện thoại:",
+                labelDate: "Ngày hẹn:",
+                labelTime: "Giờ hẹn:",
+                labelService: "Dịch vụ lựa chọn:",
+                labelNote: "Ghi chú thêm:",
+                btnSubmit: "Gửi lịch hẹn qua Facebook",
+                alertError: "Vui lòng nhập đầy đủ Tên, Số điện thoại và Ngày hẹn!",
+                redirectMsg: "Bạn sẽ được chuyển hướng sang Facebook để gửi tin nhắn đặt lịch."
+            }
+        };
 
-    function switchLanguage(lang) {
-        currentLang = lang;
-        document.getElementById('btnCs').className = lang === 'cs' ? 'lang-btn active' : 'lang-btn';
-        document.getElementById('btnVi').className = lang === 'vi' ? 'lang-btn active' : 'lang-btn';
+        let currentLang = 'cs';
 
-        const t = langData[lang];
-        document.getElementById('pageTitle').innerText = t.pageTitle;
-        document.getElementById('t_heroTitle').innerText = t.heroTitle;
-        document.getElementById('t_heroSub').innerText = t.heroSub;
-        document.getElementById('t_hotlineBtn').innerText = t.hotlineBtn;
-        document.getElementById('t_priceTitle').innerText = t.priceTitle;
-        document.getElementById('t_s1').innerText = t.s1;
-        document.getElementById('t_s2').innerText = t.s2;
-        document.getElementById('t_s3').innerText = t.s3;
-        document.getElementById('t_s4').innerText = t.s4;
-        document.getElementById('t_s5').innerText = t.s5;
-        document.getElementById('t_galleryTitle').innerText = t.galleryTitle;
-        document.getElementById('t_bookingTitle').innerText = t.bookingTitle;
-        document.getElementById('t_lblName').innerText = t.lblName;
-        document.getElementById('t_lblPhone').innerText = t.lblPhone;
-        document.getElementById('t_lblDate').innerText = t.lblDate;
-        document.getElementById('t_lblTime').innerText = t.lblTime;
-        document.getElementById('t_lblService').innerText = t.lblService;
-        document.getElementById('t_lblNote').innerText = t.lblNote;
-        document.getElementById('t_btnSubmit').innerText = t.btnSubmit;
-        document.getElementById('t_statusText').innerText = t.statusText;
-        document.getElementById('t_contactTitle').innerText = t.contactTitle;
-        document.getElementById('t_infoContent').innerHTML = t.infoContent;
-    }
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('txtDate').value = today;
-    });
-
-    async function bookAppointment() {
-        const name = document.getElementById('txtName').value.trim();
-        const phone = document.getElementById('txtPhone').value.trim();
-        const date = document.getElementById('txtDate').value;
-        const t = langData[currentLang];
-
-        if (!name || !phone || !date) {
-            alert(t.alertError);
-            return;
+            document.getElementById('pageTitle').innerText = langData[lang].pageTitle;
+            document.getElementById('t_mainTitle').innerText = langData[lang].mainTitle;
+            document.getElementById('t_subTitle').innerText = langData[lang].subTitle;
+            document.getElementById('t_labelName').innerText = langData[lang].labelName;
+            document.getElementById('t_labelPhone').innerText = langData[lang].labelPhone;
+            document.getElementById('t_labelDate').innerText = langData[lang].labelDate;
+            document.getElementById('t_labelTime').innerText = langData[lang].labelTime;
+            document.getElementById('t_labelService').innerText = langData[lang].labelService;
+            document.getElementById('t_labelNote').innerText = langData[lang].labelNote;
+            document.getElementById('t_btnSubmit').innerText = langData[lang].btnSubmit;
         }
 
-        alert(t.alertSuccess);
-        document.getElementById('txtName').value = '';
-        document.getElementById('txtPhone').value = '';
-        document.getElementById('txtNote').value = '';
-    }
-</script>
+        function bookAppointment() {
+            const name = document.getElementById('txtName').value.trim();
+            const phone = document.getElementById('txtPhone').value.trim();
+            const date = document.getElementById('txtDate').value;
+            const time = document.getElementById('txtTime').value;
+            const service = document.getElementById('selService').value;
+            const note = document.getElementById('txtNote').value.trim();
+            const t = langData[currentLang];
+
+            if (!name || !phone || !date) {
+                alert(t.alertError);
+                return;
+            }
+
+            // Facebook cá nhân của bạn
+            const fbUsername = "Tiepdang.2k"; 
+            
+            // Nội dung tin nhắn tự động soạn sẵn
+            const message = `🌸 LỊCH HẸN MỚI TỪ WEBSITE 🌸\n\n` +
+                            `- Khách hàng: ${name}\n` +
+                            `- Số điện thoại: ${phone}\n` +
+                            `- Ngày hẹn: ${date} lúc ${time}\n` +
+                            `- Dịch vụ: ${service}\n` +
+                            `- Ghi chú: ${note || "Không có"}`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Mở Messenger với nội dung đã soạn sẵn gửi về Tiepdang.2k
+            window.open(`https://m.me/${fbUsername}?text=${encodedMessage}`, '_blank');
+        }
+    </script>
 </body>
 </html>
