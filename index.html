@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="cs" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,11 +57,29 @@
         </div>
     </section>
 
+    <!-- Thanh Menu Cuộn Ngang Nhanh (Quick Navigation Bar) -->
+    <nav class="sticky top-[61px] z-40 bg-white/80 backdrop-blur-md border-y border-pink-100 shadow-sm py-2.5">
+        <div class="container mx-auto px-4 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar gap-2 sm:gap-4">
+            <a href="#about-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 text-xs font-bold px-4 py-2 rounded-full border border-pink-200 transition shadow-sm">
+                <span>👋</span> <span id="menu-about">Về chúng tôi</span>
+            </a>
+            <a href="#gallery-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold px-4 py-2 rounded-full border border-rose-200 transition shadow-sm">
+                <span>📸</span> <span id="menu-gallery">Bộ sưu tập</span>
+            </a>
+            <a href="#products-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold px-4 py-2 rounded-full border border-purple-200 transition shadow-sm">
+                <span>💎</span> <span id="menu-products">Mẫu móng & Giá</span>
+            </a>
+            <a href="#map-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold px-4 py-2 rounded-full border border-blue-200 transition shadow-sm">
+                <span>📍</span> <span id="menu-map">Bản đồ đường đi</span>
+            </a>
+        </div>
+    </nav>
+
     <!-- Main Content: Các mục nằm cùng 1 cấp (Giới thiệu, Bộ sưu tập, Sản phẩm) -->
-    <main class="container mx-auto px-4 py-4 flex-grow space-y-12">
+    <main class="container mx-auto px-4 py-6 flex-grow space-y-12">
         
         <!-- 1. PHẦN GIỚI THIỆU (ABOUT SECTION) -->
-        <section id="about-section" class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-pink-100">
+        <section id="about-section" class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-pink-100 scroll-mt-28">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div>
                     <span class="inline-block bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-3" id="badge-about">👋 O našem studiu / Về chúng tôi</span>
@@ -91,7 +109,7 @@
         </section>
 
         <!-- 2. PHẦN BỘ SƯU TẬP RIÊNG (GALLERY SECTION) -->
-        <section id="gallery-section" class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-pink-100 hidden">
+        <section id="gallery-section" class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-pink-100 scroll-mt-28">
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <span class="inline-block bg-rose-100 text-rose-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2" id="badge-gallery">📸 Galerie</span>
@@ -102,7 +120,7 @@
 
             <div class="relative group">
                 <div id="gallery-slider" class="flex overflow-x-auto gap-5 pb-4 pt-1 no-scrollbar scroll-smooth">
-                    <!-- Gallery items injected here -->
+                    <!-- Gallery items injected here by script -->
                 </div>
                 <button onclick="scrollGallery(-1)" class="absolute left-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full text-sm hover:bg-black/70 transition opacity-0 group-hover:opacity-100 z-10">&#10094;</button>
                 <button onclick="scrollGallery(1)" class="absolute right-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full text-sm hover:bg-black/70 transition opacity-0 group-hover:opacity-100 z-10">&#10095;</button>
@@ -110,7 +128,7 @@
         </section>
 
         <!-- 3. PHẦN SẢN PHẨM / DANH MỤC MẪU MÓNG (PRODUCTS SECTION) -->
-        <section id="products-section" class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-pink-100">
+        <section id="products-section" class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-pink-100 scroll-mt-28">
             <div class="mb-6">
                 <span class="inline-block bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2" id="badge-products">💎 Nabídka</span>
                 <h3 id="products-section-title" class="text-2xl font-bold text-gray-900">Danh Mục Mẫu Móng & Dịch Vụ / Ceník & Vzory</h3>
@@ -124,7 +142,7 @@
     </main>
 
     <!-- Google Maps Section -->
-    <section class="py-10 bg-white/80 border-t border-pink-100 my-6">
+    <section id="map-section" class="py-10 bg-white/80 border-t border-pink-100 my-6 scroll-mt-28">
         <div class="container mx-auto px-4 max-w-4xl">
             <h3 id="map-title" class="text-xl font-bold text-center mb-2 text-pink-600">📍 Kde nás najdete / Địa chỉ của chúng tôi</h3>
             <div class="text-center mb-4">
@@ -212,7 +230,11 @@
                 badgeProducts: "💎 Nabídka",
                 productsTitle: "Ceník & Vzory",
                 itemsCount: "položek",
-                photosCount: "fotografií"
+                photosCount: "fotografií",
+                menuAbout: "O nás",
+                menuGallery: "Galerie",
+                menuProducts: "Ceník & Vzory",
+                menuMap: "Mapa"
             },
             vi: {
                 title: "Koprivnice CityNail - Mẫu Móng Đẹp & Sang Trọng",
@@ -247,7 +269,11 @@
                 badgeProducts: "💎 Sản phẩm",
                 productsTitle: "Danh Mục Mẫu Móng & Dịch Vụ",
                 itemsCount: "mẫu",
-                photosCount: "ảnh"
+                photosCount: "ảnh",
+                menuAbout: "Về chúng tôi",
+                menuGallery: "Bộ sưu tập",
+                menuProducts: "Mẫu móng & Giá",
+                menuMap: "Bản đồ"
             }
         };
 
@@ -294,6 +320,11 @@
 
             document.getElementById('badge-products').innerText = t.badgeProducts;
             document.getElementById('products-section-title').innerText = t.productsTitle;
+
+            document.getElementById('menu-about').innerText = t.menuAbout;
+            document.getElementById('menu-gallery').innerText = t.menuGallery;
+            document.getElementById('menu-products').innerText = t.menuProducts;
+            document.getElementById('menu-map').innerText = t.menuMap;
 
             if (galleryItems.length > 0) {
                 document.getElementById('gallery-count').innerText = `${galleryItems.length} ${t.photosCount}`;
@@ -437,11 +468,10 @@
             const t = translations[currentLang];
 
             if (!galleryItems || galleryItems.length === 0) {
-                section.classList.add('hidden');
+                container.innerHTML = `<p class="text-gray-400 text-center py-10 font-medium">${t.empty}</p>`;
                 return;
             }
 
-            section.classList.remove('hidden');
             document.getElementById('gallery-count').innerText = `${galleryItems.length} ${t.photosCount}`;
             let html = '';
 
