@@ -64,16 +64,24 @@
             <p id="loading-text" class="text-gray-400 text-center py-20 font-medium">Načítání galerie...</p>
         </div>
 
-        <!-- Bộ sưu tập riêng section -->
+        <!-- Bộ sưu tập riêng dạng menu cuộn ngang (Slider) giống phần sản phẩm -->
         <div id="gallery-section" class="mt-12 pt-8 border-t border-pink-100 hidden">
             <div class="flex items-center justify-between mb-4 px-2">
                 <h3 id="gallery-section-title" class="text-2xl font-bold text-gray-800 flex items-center gap-2">
                     <span class="w-3 h-3 bg-rose-500 rounded-full inline-block"></span>
                     Bộ Sưu Tập Riêng
                 </h3>
+                <span id="gallery-count" class="text-xs font-semibold px-3 py-1 bg-rose-100 text-rose-700 rounded-full">0 ảnh</span>
             </div>
-            <div id="gallery-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                <!-- Gallery items injected here -->
+
+            <!-- Khung cuộn ngang -->
+            <div class="relative group">
+                <div id="gallery-slider" class="flex overflow-x-auto gap-5 pb-4 pt-1 no-scrollbar scroll-smooth">
+                    <!-- Gallery items injected here -->
+                </div>
+                <!-- Nút điều hướng trái/phải cho menu cuộn -->
+                <button onclick="scrollGallery(-1)" class="absolute left-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full text-sm hover:bg-black/70 transition opacity-0 group-hover:opacity-100 z-10">&#10094;</button>
+                <button onclick="scrollGallery(1)" class="absolute right-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full text-sm hover:bg-black/70 transition opacity-0 group-hover:opacity-100 z-10">&#10095;</button>
             </div>
         </div>
     </main>
@@ -156,7 +164,9 @@
                 footerPhoneText: "📞 Telefon: +420 123 456 789",
                 mapTitle: "📍 Kde nás najdete",
                 mapSubtitle: "🛍️ Uvnitř supermarketu Tesco, Nádražní 228/2, Kopřivnice",
-                galleryTitle: "Osobní galerie"
+                galleryTitle: "Osobní galerie",
+                itemsCount: "položek",
+                photosCount: "fotografií"
             },
             vi: {
                 title: "Koprivnice CityNail - Mẫu Móng Đẹp & Sang Trọng",
@@ -180,7 +190,9 @@
                 footerPhoneText: "📞 Điện thoại: +420 123 456 789",
                 mapTitle: "📍 Địa chỉ bản đồ của chúng tôi",
                 mapSubtitle: "🛍️ Bên trong siêu thị Tesco, Nádražní 228/2, Kopřivnice",
-                galleryTitle: "Bộ Sưu Tập Riêng"
+                galleryTitle: "Bộ Sưu Tập Riêng",
+                itemsCount: "mẫu",
+                photosCount: "ảnh"
             }
         };
 
@@ -220,6 +232,10 @@
                 galleryTitleEl.innerHTML = `<span class="w-3 h-3 bg-rose-500 rounded-full inline-block"></span> ${t.galleryTitle}`;
             }
 
+            if (galleryItems.length > 0) {
+                document.getElementById('gallery-count').innerText = `${galleryItems.length} ${t.photosCount}`;
+            }
+
             if (currentLang === 'cs') {
                 document.getElementById('btn-cs').className = "px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow";
                 document.getElementById('btn-vi').className = "px-3 py-1 text-xs font-bold text-gray-600 rounded-full transition hover:text-pink-600";
@@ -231,7 +247,6 @@
 
         async function loadPublicData() {
             try {
-                // Tải sản phẩm (Sheet1)
                 const resProd = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -244,7 +259,6 @@
             }
 
             try {
-                // Tải bộ sưu tập riêng (Gallery)
                 const resGal = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -280,7 +294,7 @@
                                 ${cat}
                             </h3>
                             <span class="text-xs font-semibold px-3 py-1 bg-pink-100 text-pink-700 rounded-full">
-                                ${itemsInCat.length} ${currentLang === 'cs' ? 'položek' : 'mẫu'}
+                                ${itemsInCat.length} ${t.itemsCount}
                             </span>
                         </div>
 
@@ -356,7 +370,8 @@
 
         function renderGallery() {
             const section = document.getElementById('gallery-section');
-            const container = document.getElementById('gallery-container');
+            const container = document.getElementById('gallery-slider');
+            const t = translations[currentLang];
 
             if (!galleryItems || galleryItems.length === 0) {
                 section.classList.add('hidden');
@@ -364,13 +379,14 @@
             }
 
             section.classList.remove('hidden');
+            document.getElementById('gallery-count').innerText = `${galleryItems.length} ${t.photosCount}`;
             let html = '';
 
             galleryItems.forEach(item => {
                 html += `
-                    <div class="bg-white rounded-xl shadow-sm border border-pink-100 overflow-hidden group hover:shadow-md transition">
-                        <div class="w-full h-48 bg-gray-100 overflow-hidden cursor-pointer flex items-center justify-center" onclick="openModal('${item.url}')">
-                            <img src="${item.url}" alt="Gallery Item" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                    <div class="min-w-[240px] max-w-[240px] bg-white rounded-2xl shadow-sm border border-pink-100 overflow-hidden group/item hover:shadow-xl transition-all duration-300 flex-shrink-0 flex flex-col">
+                        <div class="w-full h-64 bg-gray-900 overflow-hidden cursor-pointer flex items-center justify-center relative" onclick="openModal('${item.url}')">
+                            <img src="${item.url}" alt="Gallery Item" class="w-full h-full object-cover group-hover/item:scale-105 transition duration-300">
                         </div>
                     </div>
                 `;
@@ -381,6 +397,13 @@
 
         function scrollSlider(sliderId, direction) {
             const slider = document.getElementById(sliderId);
+            if (slider) {
+                slider.scrollBy({ left: direction * 260, behavior: 'smooth' });
+            }
+        }
+
+        function scrollGallery(direction) {
+            const slider = document.getElementById('gallery-slider');
             if (slider) {
                 slider.scrollBy({ left: direction * 260, behavior: 'smooth' });
             }
