@@ -51,6 +51,24 @@
         </div>
     </main>
 
+    <!-- Google Maps Section -->
+    <section class="py-8 bg-white/50 border-t border-pink-100">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h3 id="map-title" class="text-xl font-bold text-center mb-4 text-pink-600">📍 Kde nás najdete / Địa chỉ của chúng tôi</h3>
+            <div class="rounded-2xl overflow-hidden shadow-md border border-pink-200/60 bg-white p-2">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2585.6200678626687!2d18.14606427622466!3d49.60491377144311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4713ed0055760b5b%3A0x7c62d5f3d48d7e8!2sKoprivnice%20CityNai!5e0!3m2!1svi!2scz!4v1784904727458!5m2!1svi!2scz" 
+                    width="100%" 
+                    height="350" 
+                    style="border:0; border-radius: 0.75rem;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="strict-origin-when-cross-origin">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
     <!-- Modal Phóng To Ảnh (Lightbox) -->
     <div id="image-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4" onclick="closeModal()">
         <div class="relative max-w-3xl w-full max-h-[90vh] flex items-center justify-center">
@@ -60,7 +78,7 @@
     </div>
 
     <!-- Footer Thông tin liên hệ chi tiết -->
-    <footer class="bg-white border-t border-pink-100 py-8 text-sm text-gray-600 mt-12">
+    <footer class="bg-white border-t border-pink-100 py-8 text-sm text-gray-600">
         <div class="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
             <div>
                 <h4 id="footer-about-title" class="font-bold text-gray-800 mb-2">Nehtové Studio</h4>
@@ -68,12 +86,12 @@
             </div>
             <div>
                 <h4 id="footer-contact-title" class="font-bold text-gray-800 mb-2">Kontakty & Adresa</h4>
-                <p class="text-xs text-gray-500 mb-1" id="footer-address">📍 Adresa: Hlavní 123, Praha</p>
+                <p class="text-xs text-gray-500 mb-1" id="footer-address">📍 Adresa: Kopřivnice</p>
                 <p class="text-xs text-gray-500" id="footer-phone">📞 Telefon: +420 123 456 789</p>
             </div>
             <div class="flex flex-col items-center sm:items-end justify-center">
                 <a href="admin.html" id="admin-link-footer" class="text-pink-600 font-semibold hover:underline text-xs mb-2">Administrace systému</a>
-                <p class="text-xs text-gray-400">&copy; 2026 Nehtové Studio. All rights reserved.</p>
+                <p class="text-xs text-gray-400">&copy; 2026 Koprivnice CityNail. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -84,8 +102,8 @@
 
         const translations = {
             cs: {
-                title: "Nehtové Studio - Luxusní Nehty",
-                shopTitle: "Nehtové Studio",
+                title: "Koprivnice CityNail - Luxusní Nehty",
+                shopTitle: "Koprivnice CityNail",
                 badgeTop: "✨ Premium Nail Art & Care",
                 heroHeading: "Objevte svou krásu s námi",
                 shopSubtitle: "Profesionální design nehtů, luxusní gel a špičková péče.",
@@ -98,12 +116,13 @@
                 footerAboutTitle: "O nás",
                 footerAboutDesc: "Kvalitní péče o nehty s dlouhou životností a moderním designem.",
                 footerContactTitle: "Kontakty & Adresa",
-                footerAddress: "📍 Adresa: Hlavní 123, Praha",
-                footerPhoneText: "📞 Telefon: +420 123 456 789"
+                footerAddress: "📍 Adresa: Kopřivnice",
+                footerPhoneText: "📞 Telefon: +420 123 456 789",
+                mapTitle: "📍 Kde nás najdete"
             },
             vi: {
-                title: "Tiệm Nails - Mẫu Móng Đẹp & Sang Trọng",
-                shopTitle: "Tiệm Nails Xinh",
+                title: "Koprivnice CityNail - Mẫu Móng Đẹp & Sang Trọng",
+                shopTitle: "Koprivnice CityNail",
                 badgeTop: "✨ Thiết Kế Móng Nghệ Thuật Cao Cấp",
                 heroHeading: "Tôn vinh vẻ đẹp đôi bàn tay của bạn",
                 shopSubtitle: "Chuyên thiết kế móng nghệ thuật, đính đá, gel cao cấp và chăm sóc tận tâm.",
@@ -116,8 +135,9 @@
                 footerAboutTitle: "Về chúng tôi",
                 footerAboutDesc: "Chăm sóc móng chuyên nghiệp với độ bền cao và thiết kế thời thượng.",
                 footerContactTitle: "Liên hệ & Địa chỉ",
-                footerAddress: "📍 Địa chỉ: Hlavní 123, Praha",
-                footerPhoneText: "📞 Điện thoại: +420 123 456 789"
+                footerAddress: "📍 Địa chỉ: Kopřivnice",
+                footerPhoneText: "📞 Điện thoại: +420 123 456 789",
+                mapTitle: "📍 Địa chỉ bản đồ của chúng tôi"
             }
         };
 
@@ -146,6 +166,7 @@
             document.getElementById('footer-contact-title').innerText = t.footerContactTitle;
             document.getElementById('footer-address').innerText = t.footerAddress;
             document.getElementById('footer-phone').innerText = t.footerPhoneText;
+            document.getElementById('map-title').innerText = t.mapTitle;
 
             if (currentLang === 'cs') {
                 document.getElementById('btn-cs').className = "px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow";
