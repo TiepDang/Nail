@@ -158,11 +158,22 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ action: 'get' })
                 });
-                cachedNails = await response.json();
+                
+                const data = await response.json();
+                
+                // KIỂM TRA QUAN TRỌNG: Đảm bảo dữ liệu trả về là một Mảng (Array)
+                if (Array.isArray(data)) {
+                    cachedNails = data;
+                } else {
+                    console.error("API không trả về mảng dữ liệu:", data);
+                    cachedNails = []; 
+                }
+
                 renderCategorySuggestions();
                 renderAdminNailListByCategory();
             } catch (error) {
-                console.error(error);
+                console.error("Lỗi kết nối:", error);
+                cachedNails = [];
             }
         }
 
