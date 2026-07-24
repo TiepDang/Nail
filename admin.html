@@ -50,8 +50,10 @@
         </header>
 
         <!-- Main Content -->
-        <main class="container mx-auto px-4 py-6 flex-grow max-w-4xl">
-            <div class="bg-white rounded-2xl shadow-md border border-pink-100 p-6 mb-8">
+        <main class="container mx-auto px-4 py-6 flex-grow max-w-4xl space-y-8">
+            
+            <!-- 1. QUẢN LÝ MẪU MÓNG (SẢN PHẨM) -->
+            <div class="bg-white rounded-2xl shadow-md border border-pink-100 p-6">
                 <h2 id="form-title" class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                     <span>➕</span> Thêm Mẫu Móng Mới (ImgBB)
                 </h2>
@@ -86,14 +88,14 @@
                         </div>
                     </div>
 
-                    <!-- Chọn ảnh -->
+                    <!-- Chọn ảnh sản phẩm -->
                     <div class="p-4 bg-pink-50/50 rounded-2xl border border-pink-100 space-y-3">
-                        <label class="block text-xs font-bold text-gray-700 uppercase">Chọn ảnh (Upload trực tiếp lên ImgBB)</label>
+                        <label class="block text-xs font-bold text-gray-700 uppercase">Chọn ảnh sản phẩm (Upload trực tiếp lên ImgBB)</label>
                         <input type="file" id="imageInput" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 cursor-pointer border border-gray-200 rounded-xl p-1 bg-white">
                         <p class="text-[11px] text-gray-500">💡 Chọn nhiều ảnh thoải mái, hệ thống sẽ đẩy lần lượt lên ImgBB lấy link lưu vào bảng.</p>
                     </div>
 
-                    <!-- Preview ảnh -->
+                    <!-- Preview ảnh sản phẩm -->
                     <div>
                         <label class="block text-xs font-bold text-gray-600 uppercase mb-2">Danh sách ảnh đã chọn (<span id="img-count-label">0</span> ảnh):</label>
                         <div id="preview-container" class="flex flex-wrap gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 min-h-[90px] items-center">
@@ -108,7 +110,7 @@
                 </form>
             </div>
 
-            <!-- Danh sách sản phẩm -->
+            <!-- Danh sách sản phẩm mẫu móng -->
             <div class="bg-white rounded-2xl shadow-md border border-pink-100 p-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center justify-between">
                     <span>📋 Danh Sách Mẫu Móng Đã Đăng</span>
@@ -119,6 +121,42 @@
                     <p class="text-gray-400 text-center py-10 text-sm">Đang tải danh sách...</p>
                 </div>
             </div>
+
+            <!-- 2. QUẢN LÝ BỘ SƯU TẬP ẢNH (GALLERY) -->
+            <div class="bg-white rounded-2xl shadow-md border border-pink-100 p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <span>🖼️</span> Quản Lý Bộ Sưu Tập Studio (Gallery)
+                </h2>
+
+                <!-- Form upload hàng loạt cho bộ sưu tập -->
+                <div class="p-4 bg-pink-50/50 rounded-2xl border border-pink-100 space-y-3 mb-6">
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Tải ảnh lên hàng loạt cho Bộ Sưu Tập</label>
+                    <input type="file" id="galleryImageInput" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 cursor-pointer border border-gray-200 rounded-xl p-1 bg-white">
+                    <p class="text-[11px] text-gray-500">💡 Chọn nhiều ảnh để đẩy trực tiếp lên ImgBB và thêm vào kho bộ sưu tập chung của studio.</p>
+                    
+                    <!-- Danh sách preview trước khi bấm nút lưu lên server -->
+                    <div id="gallery-preview-container" class="hidden flex flex-wrap gap-3 pt-3">
+                        <!-- Chứa các ảnh chuẩn bị upload -->
+                    </div>
+                    
+                    <button type="button" id="btn-upload-gallery" onclick="uploadGalleryImages()" class="hidden w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-xl shadow transition text-sm">
+                        Xác Nhận Tải Lên Bộ Sưu Tập
+                    </button>
+                </div>
+
+                <!-- Danh sách hiển thị các ảnh trong bộ sưu tập để tiện xóa -->
+                <div>
+                    <h3 class="text-sm font-bold text-gray-700 mb-3 flex items-center justify-between">
+                        <span>📋 Danh Sách Ảnh Trong Bộ Sưu Tập</span>
+                        <span id="gallery-total-count" class="text-xs font-semibold px-3 py-1 bg-pink-100 text-pink-700 rounded-full">0 ảnh</span>
+                    </h3>
+
+                    <div id="admin-gallery-list" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <p class="text-gray-400 text-center col-span-full py-6 text-sm">Đang tải bộ sưu tập...</p>
+                    </div>
+                </div>
+            </div>
+
         </main>
 
         <footer class="bg-white border-t border-pink-100 py-4 text-center text-xs text-gray-400">
@@ -134,14 +172,17 @@
         let selectedFiles = []; 
         let existingImageUrls = []; 
 
-        // Kiểm tra xem đã đăng nhập từ trước trong phiên làm việc chưa
+        let galleryFiles = []; 
+        let allGalleryImages = []; 
+
+        // Kiểm tra đăng nhập khi mở trang
         window.onload = function() {
             if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
                 unlockAdminPanel();
             }
         }
 
-        // Xử lý đăng nhập gửi mã PIN ngầm lên Apps Script để kiểm tra bảo mật
+        // Đăng nhập bảo mật PIN
         async function handleLogin(event) {
             event.preventDefault();
             const pinInput = document.getElementById('pin-input').value;
@@ -171,6 +212,7 @@
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('admin-panel').classList.remove('hidden');
             loadAdminNails();
+            loadAdminGallery();
         }
 
         function handleLogout() {
@@ -178,6 +220,24 @@
             location.reload();
         }
 
+        // ================= HÀM UPLOAD IMGBB DÙNG CHUNG =================
+        async function uploadSingleToImgBB(file) {
+            const formData = new FormData();
+            formData.append('image', file);
+
+            const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+            if (data && data.success) {
+                return data.data.url;
+            } else {
+                throw new Error(data.error?.message || 'Không thể upload lên ImgBB');
+            }
+        }
+
+        // ================= PHẦN 1: QUẢN LÝ MẪU MÓNG =================
         document.getElementById('imageInput').addEventListener('change', function(e) {
             const files = e.target.files;
             if (!files || files.length === 0) return;
@@ -238,22 +298,6 @@
             container.innerHTML = html;
         }
 
-        async function uploadSingleToImgBB(file) {
-            const formData = new FormData();
-            formData.append('image', file);
-
-            const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-                method: 'POST',
-                body: formData
-            });
-            const data = await res.json();
-            if (data && data.success) {
-                return data.data.url;
-            } else {
-                throw new Error(data.error?.message || 'Không thể upload lên ImgBB');
-            }
-        }
-
         async function loadAdminNails() {
             try {
                 const response = await fetch(API_URL, {
@@ -292,7 +336,7 @@
                             <img src="${imgList[0] || ''}" class="w-12 h-12 object-cover rounded-lg border border-gray-200 shadow-sm flex-shrink-0">
                             <div>
                                 <h4 class="font-bold text-sm text-gray-800">${n.name}</h4>
-                                <p class="text-xs text-gray-500">Danh mục: <span class="font-medium text-pink-600">${n.category}</span> | Giá: <span class="font-bold text-gray-700">${n.price} Kč</span> (<span class="text-pink-600 font-bold">${imgList.length}</span> ảnh ImgBB)</p>
+                                <p class="text-xs text-gray-500">Danh mục: <span class="font-medium text-pink-600">${n.category}</span> | Giá: <span class="font-bold text-gray-700">${n.price} Kč</span> (<span class="text-pink-600 font-bold">${imgList.length}</span> ảnh)</p>
                             </div>
                         </div>
                         <div class="flex items-center space-x-2">
@@ -348,7 +392,7 @@
                 const result = await response.json();
                 
                 if(result.status === 'success' || result.status === 'edited') {
-                    alert('Lưu thành công lên ImgBB và Google Sheets!');
+                    alert('Lưu thành công!');
                     resetForm();
                     loadAdminNails();
                 } else {
@@ -411,6 +455,144 @@
             selectedFiles = [];
             existingImageUrls = [];
             renderPreviewImages();
+        }
+
+        // ================= PHẦN 2: QUẢN LÝ BỘ SƯU TẬP (GALLERY) =================
+        document.getElementById('galleryImageInput').addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (!files || files.length === 0) return;
+
+            galleryFiles = Array.from(files);
+            renderGalleryPreview();
+        });
+
+        function renderGalleryPreview() {
+            const container = document.getElementById('gallery-preview-container');
+            const btnUpload = document.getElementById('btn-upload-gallery');
+
+            if (galleryFiles.length === 0) {
+                container.classList.add('hidden');
+                btnUpload.classList.add('hidden');
+                container.innerHTML = '';
+                return;
+            }
+
+            container.classList.remove('hidden');
+            btnUpload.classList.remove('hidden');
+
+            let html = '';
+            galleryFiles.forEach((file, idx) => {
+                const tempUrl = URL.createObjectURL(file);
+                html += `
+                    <div class="relative group w-20 h-20 rounded-xl overflow-hidden border-2 border-pink-200 shadow-sm bg-white flex-shrink-0">
+                        <img src="${tempUrl}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <button type="button" onclick="removeGalleryFile(${idx})" class="bg-rose-600 text-white rounded-full w-6 h-6 text-xs font-bold flex items-center justify-center shadow">&times;</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function removeGalleryFile(index) {
+            galleryFiles.splice(index, 1);
+            renderGalleryPreview();
+        }
+
+        async function uploadGalleryImages() {
+            if (galleryFiles.length === 0) return;
+
+            const btnUpload = document.getElementById('btn-upload-gallery');
+            btnUpload.disabled = true;
+
+            try {
+                let uploadedUrls = [];
+                for (let i = 0; i < galleryFiles.length; i++) {
+                    btnUpload.innerText = `Đang tải ảnh ${i + 1}/${galleryFiles.length} lên ImgBB...`;
+                    const url = await uploadSingleToImgBB(galleryFiles[i]);
+                    uploadedUrls.push(url);
+                }
+
+                btnUpload.innerText = "Đang lưu vào bộ sưu tập...";
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'addGallery', images: uploadedUrls })
+                });
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    alert('Đã thêm ảnh vào bộ sưu tập thành công!');
+                    galleryFiles = [];
+                    document.getElementById('galleryImageInput').value = '';
+                    renderGalleryPreview();
+                    loadAdminGallery();
+                } else {
+                    alert('Lỗi lưu bộ sưu tập: ' + (result.error || 'Không rõ'));
+                }
+            } catch (error) {
+                alert('Lỗi: ' + error.message);
+            } finally {
+                btnUpload.innerText = "Xác Nhận Tải Lên Bộ Sưu Tập";
+                btnUpload.disabled = false;
+            }
+        }
+
+        async function loadAdminGallery() {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'getGallery' })
+                });
+                allGalleryImages = await response.json();
+                renderAdminGalleryList();
+            } catch (error) {
+                document.getElementById('admin-gallery-list').innerHTML = `<p class="text-rose-500 text-center col-span-full text-sm">Không thể tải bộ sưu tập.</p>`;
+            }
+        }
+
+        function renderAdminGalleryList() {
+            const container = document.getElementById('admin-gallery-list');
+            document.getElementById('gallery-total-count').innerText = `${allGalleryImages.length} ảnh`;
+
+            if (!allGalleryImages || allGalleryImages.length === 0) {
+                container.innerHTML = `<p class="text-gray-400 text-center col-span-full py-6 text-sm">Chưa có ảnh nào trong bộ sưu tập.</p>`;
+                return;
+            }
+
+            let html = '';
+            allGalleryImages.forEach((item, index) => {
+                const imgId = item.id || index;
+                const imgUrl = item.url || item;
+
+                html += `
+                    <div class="relative group h-28 rounded-xl overflow-hidden border border-gray-200 shadow-sm bg-white">
+                        <img src="${imgUrl}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <button onclick="deleteGalleryImage('${imgId}')" class="px-3 py-1.5 bg-rose-600 text-white font-semibold rounded-lg text-xs shadow hover:bg-rose-700 transition">Xóa Ảnh</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        async function deleteGalleryImage(id) {
+            if (!confirm('Bạn có chắc muốn xóa ảnh này khỏi bộ sưu tập không?')) return;
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'deleteGallery', id: id })
+                });
+                alert('Đã xóa ảnh thành công!');
+                loadAdminGallery();
+            } catch (error) {
+                alert('Không thể xóa ảnh.');
+            }
         }
     </script>
 </body>
