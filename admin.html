@@ -159,21 +159,25 @@
                     body: JSON.stringify({ action: 'get' })
                 });
                 
-                const data = await response.json();
+                const textData = await response.text();
+                let data;
                 
-                // KIỂM TRA QUAN TRỌNG: Đảm bảo dữ liệu trả về là một Mảng (Array)
-                if (Array.isArray(data)) {
-                    cachedNails = data;
-                } else {
-                    console.error("API không trả về mảng dữ liệu:", data);
-                    cachedNails = []; 
+                try {
+                    data = JSON.parse(textData);
+                } catch (e) {
+                    data = [];
                 }
+                
+                // KIỂM TRA CHẶT CHẼ: Bắt buộc data phải là Mảng (Array), tránh lỗi khi sheet trống
+                cachedNails = Array.isArray(data) ? data : [];
 
                 renderCategorySuggestions();
                 renderAdminNailListByCategory();
             } catch (error) {
                 console.error("Lỗi kết nối:", error);
                 cachedNails = [];
+                renderCategorySuggestions();
+                renderAdminNailListByCategory();
             }
         }
 
