@@ -64,11 +64,11 @@
                     </div>
                 </div>
 
-                <!-- Khu vực chọn ảnh tự động thêm -->
+                <!-- Khu vực chọn ảnh -->
                 <div class="p-4 bg-pink-50/50 rounded-2xl border border-pink-100 space-y-3">
-                    <label class="block text-xs font-bold text-gray-700 uppercase">Chọn ảnh sản phẩm (Tự động thêm vào danh sách)</label>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Chọn ảnh sản phẩm (Tự động tải lên ImgBB)</label>
                     <input type="file" id="imageInput" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 cursor-pointer border border-gray-200 rounded-xl p-1 bg-white">
-                    <p class="text-[11px] text-gray-500">💡 Mẹo: Bạn có thể chọn nhiều ảnh cùng lúc, hoặc chọn từng ảnh (hoặc chọn lại chính ảnh đó nhiều lần) — hệ thống sẽ tự động đưa vào danh sách bên dưới.</p>
+                    <p class="text-[11px] text-gray-500">💡 Bạn có thể chọn nhiều ảnh cùng lúc hoặc chọn lặp lại 1 ảnh. Hệ thống sẽ tự động upload lên ImgBB để lấy link.</p>
                 </div>
 
                 <!-- Khu vực hiển thị danh sách ảnh đã chọn -->
@@ -108,57 +108,58 @@
     <!-- Script Xử lý Admin -->
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbzxcC8x3PAhtu-C_vR5Qxiv3LSRBZHLKAUvQSELPmhJOxqluAZ572ZcaNcuCO9m9dIP/exec';
-        let allNails = [];
-        let base64Images = [];
+        
+        // 🔑 Dán API Key ImgBB của bạn vào đây
+        const IMGBB_API_KEY = 'ff6003803e7977c8212819c35faeb1d4'; 
 
-        // Lắng nghe sự kiện thay đổi file để tự động thêm vào danh sách
+        let allNails = [];
+        let selectedFiles = []; // Mảng chứa các File object người dùng chọn để upload lên ImgBB
+        let existingImageUrls = []; // Dành cho trường hợp Sửa sản phẩm (giữ lại các link ảnh cũ)
+
+        // Lắng nghe sự kiện chọn file từ máy
         document.getElementById('imageInput').addEventListener('change', function(e) {
             const files = e.target.files;
             if (!files || files.length === 0) return;
 
-            let loadedCount = 0;
             for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const reader = new FileReader();
-                
-                reader.onload = function(uploadEvent) {
-                    const base64String = uploadEvent.target.result;
-                    base64Images.push(base64String); // Tự động đẩy vào mảng (cho phép trùng lặp hoặc chọn nhiều)
-                    loadedCount++;
-
-                    // Khi đọc xong tất cả các file vừa chọn thì render lại giao diện và reset input
-                    if (loadedCount === files.length) {
-                        renderPreviewImages();
-                        e.target.value = ''; 
-                    }
-                };
-                
-                reader.readAsDataURL(file);
+                selectedFiles.push(files[i]); // Thêm file vào danh sách chờ upload
             }
+            e.target.value = ''; // Reset input để có thể chọn tiếp
+            renderPreviewImages();
         });
 
-        // Xóa 1 ảnh cụ thể ra khỏi danh sách đang chọn
+        // Xóa 1 ảnh khỏi danh sách chờ hoặc danh sách sửa
         function removeImage(index) {
-            base64Images.splice(index, 1);
+            // Phân biệt xóa ảnh cũ hay ảnh mới đang chọn
+            const totalExisting = existingImageUrls.length;
+            if (index < totalExisting) {
+                existingImageUrls.splice(index, 1);
+            } else {
+                selectedFiles.splice(index - totalExisting, 1);
+            }
             renderPreviewImages();
         }
 
-        // Vẽ lại danh sách ảnh thu nhỏ
+        // Vẽ lại giao diện preview ảnh
         function renderPreviewImages() {
             const previewContainer = document.getElementById('preview-container');
             const countLabel = document.getElementById('img-count-label');
-            countLabel.innerText = base64Images.length;
+            
+            const totalCount = existingImageUrls.length + selectedFiles.length;
+            countLabel.innerText = totalCount;
 
-            if (base64Images.length === 0) {
+            if (totalCount === 0) {
                 previewContainer.innerHTML = `<span id="no-img-text" class="text-xs text-gray-400 italic">Chưa có ảnh nào được chọn.</span>`;
                 return;
             }
 
             let html = '';
-            base64Images.forEach((imgUrl, idx) => {
+            
+            // Render ảnh cũ (nếu đang ở chế độ sửa)
+            existingImageUrls.forEach((url, idx) => {
                 html += `
                     <div class="relative group w-20 h-20 rounded-xl overflow-hidden border-2 border-pink-200 shadow-sm bg-white flex-shrink-0">
-                        <img src="${imgUrl}" class="w-full h-full object-cover">
+                        <img src="${url}" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
                             <button type="button" onclick="removeImage(${idx})" class="bg-rose-600 text-white rounded-full w-6 h-6 text-xs font-bold flex items-center justify-center shadow hover:bg-rose-700 transition" title="Xóa ảnh này">&times;</button>
                         </div>
@@ -166,9 +167,43 @@
                     </div>
                 `;
             });
+
+            // Render ảnh mới chọn từ máy (tạo URL tạm để preview)
+            selectedFiles.forEach((file, i) => {
+                const realIdx = existingImageUrls.length + i;
+                const tempUrl = URL.createObjectURL(file);
+                html += `
+                    <div class="relative group w-20 h-20 rounded-xl overflow-hidden border-2 border-pink-200 shadow-sm bg-white flex-shrink-0">
+                        <img src="${tempUrl}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <button type="button" onclick="removeImage(${realIdx})" class="bg-rose-600 text-white rounded-full w-6 h-6 text-xs font-bold flex items-center justify-center shadow hover:bg-rose-700 transition" title="Xóa ảnh này">&times;</button>
+                        </div>
+                        <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center font-bold py-0.5">Ảnh ${realIdx + 1}</span>
+                    </div>
+                `;
+            });
+
             previewContainer.innerHTML = html;
         }
 
+        // Hàm upload 1 file lên ImgBB và trả về link URL
+        async function uploadToImgBB(file) {
+            const formData = new FormData();
+            formData.append('image', file);
+
+            const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            if (data && data.success) {
+                return data.data.url; // Trả về link ảnh trực tiếp
+            } else {
+                throw new Error('Không thể upload ảnh lên ImgBB');
+            }
+        }
+
+        // Tải danh sách sản phẩm từ Google Sheets
         async function loadAdminNails() {
             try {
                 const response = await fetch(API_URL, {
@@ -223,6 +258,7 @@
             listContainer.innerHTML = html;
         }
 
+        // Xử lý khi bấm nút Lưu sản phẩm
         async function handleFormSubmit(e) {
             e.preventDefault();
             const id = document.getElementById('edit-id').value;
@@ -231,48 +267,63 @@
             const price = document.getElementById('nail-price').value;
             const oldPrice = document.getElementById('nail-old-price').value;
 
-            if (base64Images.length === 0) {
+            if (existingImageUrls.length === 0 && selectedFiles.length === 0) {
                 alert('Vui lòng chọn ít nhất một ảnh cho sản phẩm!');
                 return;
             }
 
             const btnSave = document.getElementById('btn-save');
-            btnSave.innerText = "Đang lưu...";
             btnSave.disabled = true;
 
-            let payload = {
-                action: id ? 'update' : 'add',
-                id: id || Date.now().toString(),
-                name: name,
-                category: category,
-                price: price,
-                oldPrice: oldPrice,
-                images: JSON.stringify(base64Images),
-                img: base64Images[0]
-            };
-
             try {
+                // 1. Upload các file ảnh mới chọn lên ImgBB đồng loạt
+                btnSave.innerText = "Đang tải ảnh lên ImgBB...";
+                let newlyUploadedUrls = [];
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    const url = await uploadToImgBB(selectedFiles[i]);
+                    newlyUploadedUrls.push(url);
+                }
+
+                // 2. Gộp ảnh cũ và ảnh mới thành một danh sách hoàn chỉnh
+                const finalImages = [...existingImageUrls, ...newlyUploadedUrls];
+
+                btnSave.innerText = "Đang lưu sản phẩm...";
+
+                let payload = {
+                    action: id ? 'edit' : 'add',
+                    id: id || Date.now().toString(),
+                    name: name,
+                    category: category,
+                    price: price,
+                    oldPrice: oldPrice,
+                    images: JSON.stringify(finalImages),
+                    img: finalImages[0] // Ảnh đại diện chính là ảnh đầu tiên
+                };
+
+                // 3. Gửi dữ liệu về Google Apps Script
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
                 const result = await response.json();
-                if(result.status === 'success' || result) {
-                    alert('Lưu thành công!');
+                
+                if(result.status === 'success' || result.status === 'edited') {
+                    alert('Lưu sản phẩm thành công!');
                     resetForm();
                     loadAdminNails();
                 } else {
-                    alert('Có lỗi xảy ra, vui lòng thử lại.');
+                    alert('Lỗi lưu dữ liệu: ' + (result.error || 'Vui lòng thử lại'));
                 }
             } catch (error) {
-                alert('Lỗi kết nối máy chủ.');
+                alert('Có lỗi xảy ra: ' + error.message);
             } finally {
                 btnSave.innerText = "Lưu Sản Phẩm";
                 btnSave.disabled = false;
             }
         }
 
+        // Sửa sản phẩm
         function editNail(id) {
             const nail = allNails.find(n => n.id.toString() === id.toString());
             if (!nail) return;
@@ -294,12 +345,14 @@
                 imgList = [nail.img];
             }
 
-            base64Images = [...imgList];
+            existingImageUrls = [...imgList];
+            selectedFiles = [];
             renderPreviewImages();
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Xóa sản phẩm
         async function deleteNail(id) {
             if (!confirm('Bạn có chắc chắn muốn xóa mẫu móng này không?')) return;
 
@@ -316,16 +369,19 @@
             }
         }
 
+        // Reset form
         function resetForm() {
             document.getElementById('nail-form').reset();
             document.getElementById('edit-id').value = '';
             document.getElementById('form-title').innerHTML = `<span>➕</span> Thêm Mẫu Móng Mới`;
             document.getElementById('btn-save').innerText = "Lưu Sản Phẩm";
             document.getElementById('btn-cancel').classList.add('hidden');
-            base64Images = [];
+            selectedFiles = [];
+            existingImageUrls = [];
             renderPreviewImages();
         }
 
+        // Tải danh sách khi mở trang
         loadAdminNails();
     </script>
 </body>
