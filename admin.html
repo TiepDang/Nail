@@ -8,7 +8,6 @@
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen py-10 relative">
 
-    <!-- Nút chuyển ngôn ngữ ở góc -->
     <div class="absolute right-4 top-4 flex space-x-2">
         <button onclick="changeAdminLang('cs')" id="admin-btn-cs" class="px-3 py-1 text-sm font-bold bg-pink-600 text-white rounded">CZ</button>
         <button onclick="changeAdminLang('vi')" id="admin-btn-vi" class="px-3 py-1 text-sm font-bold bg-gray-200 text-gray-700 rounded">VN</button>
@@ -32,7 +31,6 @@
             <a href="index.html" id="home-link" class="text-gray-500 text-sm hover:underline">Zpět na hlavní stránku</a>
         </div>
 
-        <!-- Form thêm mẫu -->
         <div class="bg-pink-50 p-4 rounded-lg mb-6">
             <h3 id="form-title" class="font-bold text-gray-700 mb-3">Přidat nový vzor</h3>
             <input type="text" id="nail-name" placeholder="Název vzoru (např. Červené s kamínky)" class="w-full p-2 mb-3 border rounded">
@@ -50,7 +48,7 @@
     </div>
 
     <script>
-        const API_URL = 'YOUR_SHEETDB_API_URL';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxkzU3F2k3wO2A8XOJhifZW3c-vkc9UrKQFVe8KkbPkVkdnuOXcdLJeKeQDQDbZMgbc/exec';
 
         const adminTexts = {
             cs: {
@@ -142,7 +140,7 @@
                 const list = document.getElementById('admin-nail-list');
                 const t = adminTexts[currentAdminLang];
 
-                if (nails.length === 0) {
+                if (!nails || nails.length === 0) {
                     list.innerHTML = '<p class="text-gray-500">Žádné vzory.</p>';
                     return;
                 }
@@ -184,11 +182,8 @@
 
             await fetch(API_URL, {
                 method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ data: [newNail] })
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(newNail)
             });
 
             document.getElementById('nail-name').value = '';
@@ -203,7 +198,7 @@
             const t = adminTexts[currentAdminLang];
             if (!confirm(t.confirmDelete)) return;
 
-            await fetch(`${API_URL}/id/${id}`, {
+            await fetch(`${API_URL}?id=${id}`, {
                 method: 'DELETE'
             });
 
