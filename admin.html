@@ -33,15 +33,14 @@
 
         <div class="bg-pink-50 p-4 rounded-lg mb-6">
             <h3 id="form-title" class="font-bold text-gray-700 mb-3">Přidat nový vzor / službu</h3>
-            <input type="text" id="nail-name" placeholder="Název (např. Červené s kamínky)" class="w-full p-2 mb-3 border rounded">
+            <input type="hidden" id="edit-id" value="">
+            <input type="text" id="nail-name" placeholder="Název (např. Červené s kamínky)" class="w-full p-2 mb-3 border rounded bg-white">
             
-            <!-- Ô nhập giá tiền dạng số -->
             <div class="grid grid-cols-2 gap-2 mb-3">
-                <input type="number" id="nail-price" min="0" placeholder="Cena (např. 500)" class="w-full p-2 border rounded">
-                <input type="number" id="nail-old-price" min="0" placeholder="Původní cena (např. 600)" class="w-full p-2 border rounded">
+                <input type="number" id="nail-price" min="0" placeholder="Cena (např. 500)" class="w-full p-2 border rounded bg-white">
+                <input type="number" id="nail-old-price" min="0" placeholder="Původní cena (např. 600)" class="w-full p-2 border rounded bg-white">
             </div>
             
-            <!-- Phần danh mục -->
             <div class="mb-3">
                 <label id="cat-label" class="block text-gray-600 text-sm font-semibold mb-1">Kategorie / Loại dịch vụ:</label>
                 <div class="flex gap-2 mb-2">
@@ -52,18 +51,20 @@
                 </div>
             </div>
 
-            <!-- Chọn file ảnh -->
             <div class="mb-3">
-                <label id="file-label" class="block text-gray-600 text-sm font-semibold mb-1">Vybrat fotku:</label>
-                <input type="file" id="nail-file" accept="image/*" class="w-full p-2 border rounded bg-white text-sm">
+                <label id="file-label" class="block text-gray-600 text-sm font-semibold mb-1">Vybrat fotky (lze vybrat více):</label>
+                <input type="file" id="nail-files" accept="image/*" multiple class="w-full p-2 border rounded bg-white text-sm">
+                <p id="current-imgs-info" class="text-xs text-gray-500 mt-1 hidden">Đang có ảnh cũ, nếu chọn ảnh mới sẽ thay thế hoàn toàn.</p>
             </div>
 
-            <button onclick="addNail()" id="save-btn" class="w-full bg-pink-600 text-white px-4 py-2 rounded font-bold hover:bg-pink-700 transition">Uložit do Google Sheets</button>
+            <div class="flex gap-2">
+                <button onclick="saveNail()" id="save-btn" class="flex-1 bg-pink-600 text-white px-4 py-2 rounded font-bold hover:bg-pink-700 transition">Uložit do Google Sheets</button>
+                <button onclick="resetForm()" id="cancel-edit-btn" class="hidden bg-gray-400 text-white px-4 py-2 rounded font-bold hover:bg-gray-500 transition">Hủy</button>
+            </div>
         </div>
 
         <div>
             <h3 id="list-title" class="font-bold text-gray-700 mb-3">Aktuální seznam:</h3>
-            <!-- Khu vực hiển thị sản phẩm phân theo từng danh mục -->
             <div id="admin-nail-list" class="space-y-4">
                 <p id="admin-loading" class="text-gray-500">Načítání...</p>
             </div>
@@ -76,51 +77,32 @@
 
         const adminTexts = {
             cs: {
-                loginTitle: "🔐 Přihlášení Admin",
-                passLabel: "Heslo:",
-                loginBtn: "Přihlásit se",
-                errorMsg: "Nesprávné heslo! (Tip: 12345)",
-                dashTitle: "✨ Správa Položek",
-                homeLink: "Zpět na hlavní stránku",
-                formTitle: "Přidat nový vzor / službu",
-                placeholderName: "Název (např. Červené s kamínky)",
-                placeholderPrice: "Cena (pouze číslo, např. 500)",
-                placeholderOldPrice: "Původní cena (volitelně)",
-                catLabel: "Kategorie (vyberte nebo napište vlastní):",
-                fileLabel: "Vybrat fotku:",
-                saveBtn: "Uložit do Google Sheets",
-                listTitle: "Aktuální seznam:",
-                loading: "Načítání...",
-                deleteBtn: "Smazat",
-                confirmDelete: "Opravdu chcete tuto položku smazat?",
-                successAdd: "Položka byla úspěšně přidána!",
-                uploading: "Nahrávání fotky..."
+                loginTitle: "🔐 Přihlášení Admin", passLabel: "Heslo:", loginBtn: "Přihlásit se",
+                errorMsg: "Nesprávné heslo! (Tip: 12345)", dashTitle: "✨ Správa Položek",
+                homeLink: "Zpět na hlavní stránku", formTitleAdd: "Přidat nový vzor / službu", formTitleEdit: "Upravit položku",
+                placeholderName: "Název (např. Červené s kamínky)", placeholderPrice: "Cena (např. 500)",
+                placeholderOldPrice: "Původní cena (volitelně)", catLabel: "Kategorie (vyberte nebo napište vlastní):",
+                fileLabel: "Vybrat fotky (lze vybrat více):", saveBtn: "Uložit do Google Sheets", updateBtn: "Aktualizovat položku",
+                listTitle: "Aktuální seznam:", loading: "Načítání...", deleteBtn: "Smazat", editBtn: "Upravit",
+                confirmDelete: "Opravdu chcete tuto položku smazat?", successAdd: "Položka byla úspěšně přidána!",
+                successUpdate: "Položka byla úspěšně aktualizována!", uploading: "Nahrávání fotek..."
             },
             vi: {
-                loginTitle: "🔐 Đăng Nhập Admin",
-                passLabel: "Mật khẩu:",
-                loginBtn: "Đăng Nhập",
-                errorMsg: "Mật khẩu không đúng! (Gợi ý: 12345)",
-                dashTitle: "✨ Quản Lý Dịch Vụ & Mẫu",
-                homeLink: "Xem trang chủ",
-                formTitle: "Thêm mẫu / dịch vụ mới",
-                placeholderName: "Tên (VD: Đỏ đính đá)",
-                placeholderPrice: "Giá tiền (Chỉ nhập số, VD: 500)",
-                placeholderOldPrice: "Giá cũ (Không bắt buộc, VD: 600)",
-                catLabel: "Loại dịch vụ (chọn nhanh hoặc tự gõ):",
-                fileLabel: "Chọn ảnh từ thiết bị:",
-                saveBtn: "Lưu Lên Google Sheets",
-                listTitle: "Danh sách hiện tại:",
-                loading: "Đang tải...",
-                deleteBtn: "Xóa",
-                confirmDelete: "Bạn có chắc muốn xóa mẫu này không?",
-                successAdd: "Đã thêm thành công!",
-                uploading: "Đang tải ảnh lên..."
+                loginTitle: "🔐 Đăng Nhập Admin", passLabel: "Mật khẩu:", loginBtn: "Đăng Nhập",
+                errorMsg: "Mật khẩu không đúng! (Gợi ý: 12345)", dashTitle: "✨ Quản Lý Dịch Vụ & Mẫu",
+                homeLink: "Xem trang chủ", formTitleAdd: "Thêm mẫu / dịch vụ mới", formTitleEdit: "Chỉnh sửa mẫu / dịch vụ",
+                placeholderName: "Tên (VD: Đỏ đính đá)", placeholderPrice: "Giá tiền (VD: 500)",
+                placeholderOldPrice: "Giá cũ (Không bắt buộc)", catLabel: "Loại dịch vụ (chọn nhanh hoặc tự gõ):",
+                fileLabel: "Chọn ảnh (có thể chọn nhiều ảnh):", saveBtn: "Lưu Lên Google Sheets", updateBtn: "Cập Nhật Thay Đổi",
+                listTitle: "Danh sách hiện tại:", loading: "Đang tải...", deleteBtn: "Xóa", editBtn: "Sửa",
+                confirmDelete: "Bạn có chắc muốn xóa mẫu này không?", successAdd: "Đã thêm thành công!",
+                successUpdate: "Đã cập nhật thành công!", uploading: "Đang tải ảnh lên..."
             }
         };
 
         let currentAdminLang = localStorage.getItem('admin_lang') || 'cs';
         let cachedNails = [];
+        let editingImages = []; // Lưu danh sách ảnh cũ khi đang ở chế độ sửa
 
         function changeAdminLang(lang) {
             currentAdminLang = lang;
@@ -136,13 +118,16 @@
             document.getElementById('error-msg').innerText = t.errorMsg;
             document.getElementById('dash-title').innerText = t.dashTitle;
             document.getElementById('home-link').innerText = t.homeLink;
-            document.getElementById('form-title').innerText = t.formTitle;
+            
+            const isEditing = document.getElementById('edit-id').value !== '';
+            document.getElementById('form-title').innerText = isEditing ? t.formTitleEdit : t.formTitleAdd;
+            document.getElementById('save-btn').innerText = isEditing ? t.updateBtn : t.saveBtn;
+
             document.getElementById('nail-name').placeholder = t.placeholderName;
             document.getElementById('nail-price').placeholder = t.placeholderPrice;
             document.getElementById('nail-old-price').placeholder = t.placeholderOldPrice;
             document.getElementById('cat-label').innerText = t.catLabel;
             document.getElementById('file-label').innerText = t.fileLabel;
-            document.getElementById('save-btn').innerText = t.saveBtn;
             document.getElementById('list-title').innerText = t.listTitle;
             document.getElementById('admin-loading').innerText = t.loading;
 
@@ -180,10 +165,7 @@
         function renderCategorySuggestions() {
             const container = document.getElementById('category-suggestions');
             const categories = [...new Set(cachedNails.map(n => n.category || 'Manikúra'))];
-            
-            if (categories.length === 0) {
-                categories.push('Manikúra', 'Pedikúra');
-            }
+            if (categories.length === 0) categories.push('Manikúra', 'Pedikúra');
 
             container.innerHTML = categories.map(cat => `
                 <button type="button" onclick="selectCategory('${cat}')" class="px-3 py-1 text-xs font-semibold bg-white border border-pink-300 text-pink-600 rounded-full hover:bg-pink-100 transition shadow-sm">
@@ -196,7 +178,6 @@
             document.getElementById('nail-category').value = cat;
         }
 
-        // Hiển thị danh sách sản phẩm ở admin chia theo từng danh mục
         function renderAdminNailListByCategory() {
             const list = document.getElementById('admin-nail-list');
             const t = adminTexts[currentAdminLang];
@@ -226,42 +207,90 @@
 
                 itemsInCat.forEach(n => {
                     const hasDiscount = n.oldPrice && n.oldPrice.toString().trim() !== '';
+                    // Xử lý lấy mảng ảnh (Hỗ trợ cả dữ liệu cũ dạng chuỗi n.img hoặc mảng n.images)
+                    let imgList = [];
+                    if (n.images) {
+                        try { imgList = typeof n.images === 'string' ? JSON.parse(n.images) : n.images; } catch(e){ imgList = [n.img]; }
+                    } else {
+                        imgList = [n.img];
+                    }
+
                     html += `
                         <div class="flex items-center justify-between bg-white p-2.5 rounded border shadow-sm">
                             <div class="flex items-center space-x-3">
-                                <img src="${n.img}" class="w-12 h-12 object-cover rounded">
+                                <img src="${imgList[0]}" class="w-12 h-12 object-cover rounded">
                                 <div>
-                                    <p class="font-bold text-sm">${n.name}</p>
+                                    <p class="font-bold text-sm">${n.name} <span class="text-xs text-gray-400 font-normal">(${imgList.length} ảnh)</span></p>
                                     <p class="text-xs text-pink-600 font-semibold">
                                         ${hasDiscount ? `<span class="line-through text-gray-400 mr-1">${n.oldPrice} Kč</span>` : ''}
                                         <span>${n.price} Kč</span>
                                     </p>
                                 </div>
                             </div>
-                            <button onclick="deleteNail('${n.id}')" class="text-red-600 hover:underline text-xs font-semibold px-2 py-1">${t.deleteBtn}</button>
+                            <div class="flex space-x-1">
+                                <button onclick="startEdit('${n.id}')" class="text-blue-600 hover:underline text-xs font-semibold px-2 py-1">${t.editBtn}</button>
+                                <button onclick="deleteNail('${n.id}')" class="text-red-600 hover:underline text-xs font-semibold px-2 py-1">${t.deleteBtn}</button>
+                            </div>
                         </div>
                     `;
                 });
 
-                html += `
-                        </div>
-                    </div>
-                `;
+                html += `</div></div>`;
             });
 
             list.innerHTML = html;
         }
 
-        async function addNail() {
+        function startEdit(id) {
+            const item = cachedNails.find(n => n.id === id);
+            if (!item) return;
+
+            document.getElementById('edit-id').value = item.id;
+            document.getElementById('nail-name').value = item.name;
+            document.getElementById('nail-price').value = item.price;
+            document.getElementById('nail-old-price').value = item.oldPrice || '';
+            document.getElementById('nail-category').value = item.category || 'Manikúra';
+            
+            if (item.images) {
+                try { editingImages = typeof item.images === 'string' ? JSON.parse(item.images) : item.images; } catch(e){ editingImages = [item.img]; }
+            } else {
+                editingImages = [item.img];
+            }
+
+            document.getElementById('current-imgs-info').classList.remove('hidden');
+            document.getElementById('cancel-edit-btn').classList.remove('hidden');
+            updateAdminTexts();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('edit-id').value = '';
+            document.getElementById('nail-name').value = '';
+            document.getElementById('nail-price').value = '';
+            document.getElementById('nail-old-price').value = '';
+            document.getElementById('nail-files').value = '';
+            document.getElementById('current-imgs-info').classList.add('hidden');
+            document.getElementById('cancel-edit-btn').classList.add('hidden');
+            editingImages = [];
+            updateAdminTexts();
+        }
+
+        async function saveNail() {
+            const editId = document.getElementById('edit-id').value;
             const name = document.getElementById('nail-name').value;
             const price = document.getElementById('nail-price').value;
             const oldPrice = document.getElementById('nail-old-price').value;
             const category = document.getElementById('nail-category').value || 'Manikúra';
-            const fileInput = document.getElementById('nail-file');
+            const fileInput = document.getElementById('nail-files');
             const t = adminTexts[currentAdminLang];
 
-            if (!name || !price || fileInput.files.length === 0) {
-                alert(currentAdminLang === 'cs' ? 'Vyplňte název, cenu a vyberte fotku!' : 'Vui lòng nhập tên, giá tiền và chọn ảnh!');
+            if (!name || !price) {
+                alert(currentAdminLang === 'cs' ? 'Vyplňte název a cenu!' : 'Vui lòng nhập tên và giá tiền!');
+                return;
+            }
+
+            if (!editId && fileInput.files.length === 0) {
+                alert(currentAdminLang === 'cs' ? 'Vyberte alespoň jednu fotku!' : 'Vui lòng chọn ít nhất một ảnh!');
                 return;
             }
 
@@ -270,51 +299,58 @@
             btn.disabled = true;
 
             try {
-                const formData = new FormData();
-                formData.append('image', fileInput.files[0]);
+                let uploadedUrls = [...editingImages];
 
-                const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-                    method: 'POST',
-                    body: formData
-                });
-                const imgbbData = await imgbbRes.json();
+                // Nếu có chọn file mới thì upload lên ImgBB
+                if (fileInput.files.length > 0) {
+                    uploadedUrls = []; // Thay thế hoàn toàn hoặc bạn có thể gộp tùy ý
+                    for (let i = 0; i < fileInput.files.length; i++) {
+                        const formData = new FormData();
+                        formData.append('image', fileInput.files[i]);
 
-                if (!imgbbData.success) {
-                    alert('Lỗi tải ảnh lên hệ thống!');
-                    btn.innerText = t.saveBtn;
+                        const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const imgbbData = await imgbbRes.json();
+                        if (imgbbData.success) {
+                            uploadedUrls.push(imgbbData.data.url);
+                        }
+                    }
+                }
+
+                if (uploadedUrls.length === 0) {
+                    alert('Không có ảnh nào được tải lên thành công!');
+                    btn.innerText = editId ? t.updateBtn : t.saveBtn;
                     btn.disabled = false;
                     return;
                 }
 
-                const newNail = {
-                    id: Date.now().toString(),
+                const nailData = {
+                    id: editId ? editId : Date.now().toString(),
                     name: name,
                     price: price,
                     oldPrice: oldPrice || '',
-                    img: imgbbData.data.url,
-                    category: category
+                    img: uploadedUrls[0], // Ảnh đại diện chính cho dữ liệu cũ tương thích ngược
+                    images: JSON.stringify(uploadedUrls), // Lưu dạng chuỗi JSON danh sách ảnh
+                    category: category,
+                    action: editId ? 'edit' : 'add'
                 };
 
                 await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(newNail)
+                    body: JSON.stringify(nailData)
                 });
 
-                document.getElementById('nail-name').value = '';
-                document.getElementById('nail-price').value = '';
-                document.getElementById('nail-old-price').value = '';
-                fileInput.value = '';
-                btn.innerText = t.saveBtn;
-                btn.disabled = false;
-
+                resetForm();
                 loadAdminNails();
-                alert(t.successAdd);
+                alert(editId ? t.successUpdate : t.successAdd);
 
             } catch (error) {
                 console.error(error);
                 alert('Đã xảy ra lỗi kết nối!');
-                btn.innerText = t.saveBtn;
+                btn.innerText = editId ? t.updateBtn : t.saveBtn;
                 btn.disabled = false;
             }
         }
@@ -331,8 +367,7 @@
                 });
 
                 const result = await response.json();
-                
-                if (result.status === 'deleted') {
+                if (result.status === 'deleted' || result.status === 'success') {
                     loadAdminNails();
                 } else {
                     alert('Không tìm thấy sản phẩm để xóa!');
