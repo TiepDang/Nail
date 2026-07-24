@@ -52,7 +52,7 @@
         <!-- Main Content -->
         <main class="container mx-auto px-4 py-6 flex-grow max-w-4xl space-y-6">
             
-            <!-- THANH CHUYỂN ĐỔI TAB (CHỌN KHU VỰC QUẢN LÝ RIÊNG BIỆT) -->
+            <!-- THANH CHUYỂN ĐỔI TAB -->
             <div class="flex rounded-2xl bg-white p-1.5 shadow-sm border border-pink-100">
                 <button onclick="switchTab('products')" id="tab-btn-products" class="flex-1 py-3 text-sm font-bold rounded-xl transition bg-pink-600 text-white shadow">
                     💅 Quản Lý Mẫu Móng (Sản Phẩm)
@@ -101,7 +101,7 @@
                         </div>
 
                         <div class="p-4 bg-pink-50/50 rounded-2xl border border-pink-100 space-y-3">
-                            <label class="block text-xs font-bold text-gray-700 uppercase">Chọn ảnh mẫu móng (Upload trực tiếp lên ImgBB)</label>
+                            <label class="block text-xs font-bold text-gray-700 uppercase">Chọn ảnh mẫu móng (Chọn 1 hoặc nhiều ảnh)</label>
                             <input type="file" id="imageInput" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 cursor-pointer border border-gray-200 rounded-xl p-1 bg-white">
                         </div>
 
@@ -133,23 +133,27 @@
 
             <!-- ================= TAB 2: QUẢN LÝ BỘ SƯU TẬP RIÊNG (GALLERY) ================= -->
             <div id="tab-content-gallery" class="hidden space-y-6">
-                <!-- Form upload hàng loạt bộ sưu tập -->
+                <!-- Form upload hàng loạt bộ sưu tập (Thiết kế giống hệt phần sản phẩm) -->
                 <div class="bg-white rounded-2xl shadow-md border border-pink-100 p-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                         <span>🖼️</span> Tải Ảnh Lên Bộ Sưu Tập Riêng
                     </h2>
 
                     <div class="p-4 bg-pink-50/50 rounded-2xl border border-pink-100 space-y-3 mb-4">
-                        <label class="block text-xs font-bold text-gray-700 uppercase">Chọn nhiều ảnh từ máy tính</label>
+                        <label class="block text-xs font-bold text-gray-700 uppercase">Chọn ảnh cho bộ sưu tập (Có thể chọn 1 hoặc nhiều ảnh cùng lúc)</label>
                         <input type="file" id="galleryImageInput" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 cursor-pointer border border-gray-200 rounded-xl p-1 bg-white">
-                        <p class="text-[11px] text-gray-500">💡 Ảnh tải lên đây sẽ chỉ hiển thị ở mục Bộ Sưu Tập chung của studio trên trang chủ.</p>
-                        
-                        <div id="gallery-preview-container" class="hidden flex flex-wrap gap-3 pt-3"></div>
-                        
-                        <button type="button" id="btn-upload-gallery" onclick="uploadGalleryImages()" class="hidden w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2.5 px-4 rounded-xl shadow transition text-sm">
-                            🚀 Xác Nhận Tải Lên Bộ Sưu Tập
-                        </button>
                     </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-2">Ảnh bộ sưu tập đã chọn chuẩn bị tải (<span id="gallery-img-count-label">0</span> ảnh):</label>
+                        <div id="gallery-preview-container" class="flex flex-wrap gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 min-h-[90px] items-center mb-4">
+                            <span class="text-xs text-gray-400 italic">Chưa có ảnh nào được chọn.</span>
+                        </div>
+                    </div>
+
+                    <button type="button" id="btn-upload-gallery" onclick="uploadGalleryImages()" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2.5 px-4 rounded-xl shadow transition text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                        🚀 Xác Nhận Tải Lên Bộ Sưu Tập
+                    </button>
                 </div>
 
                 <!-- Danh sách bộ sưu tập hiển thị để xóa -->
@@ -447,23 +451,25 @@
         document.getElementById('galleryImageInput').addEventListener('change', function(e) {
             const files = e.target.files;
             if (!files || files.length === 0) return;
-            galleryFiles = Array.from(files);
+            Array.from(files).forEach(file => galleryFiles.push(file));
+            e.target.value = '';
             renderGalleryPreview();
         });
 
+        function removeGalleryFile(index) {
+            galleryFiles.splice(index, 1);
+            renderGalleryPreview();
+        }
+
         function renderGalleryPreview() {
             const container = document.getElementById('gallery-preview-container');
-            const btnUpload = document.getElementById('btn-upload-gallery');
+            const totalCount = galleryFiles.length;
+            document.getElementById('gallery-img-count-label').innerText = totalCount;
 
-            if (galleryFiles.length === 0) {
-                container.classList.add('hidden');
-                btnUpload.classList.add('hidden');
-                container.innerHTML = '';
+            if (totalCount === 0) {
+                container.innerHTML = `<span class="text-xs text-gray-400 italic">Chưa có ảnh nào được chọn.</span>`;
                 return;
             }
-
-            container.classList.remove('hidden');
-            btnUpload.classList.remove('hidden');
 
             let html = '';
             galleryFiles.forEach((file, idx) => {
@@ -473,13 +479,11 @@
             container.innerHTML = html;
         }
 
-        function removeGalleryFile(index) {
-            galleryFiles.splice(index, 1);
-            renderGalleryPreview();
-        }
-
         async function uploadGalleryImages() {
-            if (galleryFiles.length === 0) return;
+            if (galleryFiles.length === 0) {
+                alert('Vui lòng chọn ít nhất một ảnh cho bộ sưu tập!');
+                return;
+            }
 
             const btnUpload = document.getElementById('btn-upload-gallery');
             btnUpload.disabled = true;
@@ -503,7 +507,6 @@
                 if (result.status === 'success') {
                     alert('Đã thêm ảnh vào bộ sưu tập thành công!');
                     galleryFiles = [];
-                    document.getElementById('galleryImageInput').value = '';
                     renderGalleryPreview();
                     loadAdminGallery();
                 } else {
