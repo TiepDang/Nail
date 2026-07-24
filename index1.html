@@ -10,7 +10,6 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .lang-transition { transition: opacity 0.25s ease-in-out; }
     </style>
 </head>
 <body class="bg-gradient-to-br from-pink-50 via-white to-pink-50 text-gray-800 min-h-screen flex flex-col justify-between">
@@ -77,7 +76,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main id="main-content" class="container mx-auto px-4 py-6 flex-grow space-y-12 lang-transition opacity-100">
+    <main class="container mx-auto px-4 py-6 flex-grow space-y-12">
         
         <!-- 1. PHẦN GIỚI THIỆU -->
         <section id="about-section" class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-pink-100 scroll-mt-28">
@@ -280,21 +279,13 @@
 
         function changeLanguage(lang) {
             if (currentLang === lang) return;
+            currentLang = lang;
+            localStorage.setItem('site_lang', lang);
             
-            const mainContent = document.getElementById('main-content');
-            mainContent.classList.remove('opacity-100');
-            mainContent.classList.add('opacity-0');
-
-            setTimeout(() => {
-                currentLang = lang;
-                localStorage.setItem('site_lang', lang);
-                updateTexts();
-                renderCategories();
-                renderGallery();
-
-                mainContent.classList.remove('opacity-0');
-                mainContent.classList.add('opacity-100');
-            }, 200);
+            // Cập nhật ngay văn bản, màu nút và vẽ lại giao diện từ dữ liệu có sẵn
+            updateTexts();
+            renderCategories();
+            renderGallery();
         }
 
         function updateTexts() {
@@ -306,7 +297,6 @@
             document.getElementById('shop-subtitle').innerText = t.shopSubtitle;
             document.getElementById('tesco-notice').innerText = t.tescoNotice;
             document.getElementById('fb-hero-text').innerText = t.fbHeroText;
-            document.getElementById('loading-text').innerText = t.loading;
             document.getElementById('admin-link').innerText = t.adminLink;
             document.getElementById('admin-link-footer').innerText = t.adminLinkFooter;
             document.getElementById('header-contact-phone').innerText = t.headerPhone;
@@ -340,7 +330,7 @@
                 document.getElementById('gallery-count').innerText = `${galleryItems.length} ${t.photosCount}`;
             }
 
-            // Cập nhật đổi màu Active đúng giữa nút CZ và VN
+            // Đổi màu active chuẩn xác cho nút CZ / VN
             const btnCs = document.getElementById('btn-cs');
             const btnVi = document.getElementById('btn-vi');
             if (currentLang === 'cs') {
@@ -525,7 +515,7 @@
             document.getElementById('image-modal').classList.add('hidden');
         }
 
-        // Khởi chạy ngay khi load trang
+        // Khởi chạy khi load trang
         updateTexts();
         loadPublicData();
     </script>
