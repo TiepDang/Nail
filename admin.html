@@ -33,7 +33,7 @@
         </div>
     </div>
 
-    <!-- ================= GIAO DIỆN QUẢN TRỊ CHÍNH (Ẩn đi khi chưa đăng nhập) ================= -->
+    <!-- ================= GIAO DIỆN QUẢN TRỊ CHÍNH ================= -->
     <div id="admin-panel" class="hidden flex flex-col min-h-screen justify-between">
         <!-- Header Admin -->
         <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-40 py-3">
@@ -50,109 +50,117 @@
         </header>
 
         <!-- Main Content -->
-        <main class="container mx-auto px-4 py-6 flex-grow max-w-4xl space-y-8">
+        <main class="container mx-auto px-4 py-6 flex-grow max-w-4xl space-y-6">
             
-            <!-- 1. QUẢN LÝ MẪU MÓNG (SẢN PHẨM) -->
-            <div class="bg-white rounded-2xl shadow-md border border-pink-100 p-6">
-                <h2 id="form-title" class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <span>➕</span> Thêm Mẫu Móng Mới (ImgBB)
-                </h2>
-                
-                <form id="nail-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
-                    <input type="hidden" id="edit-id">
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Tên mẫu móng</label>
-                            <input type="text" id="nail-name" required class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 text-sm" placeholder="VD: Gel Hồng Đính Đá">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Danh mục</label>
-                            <select id="nail-category" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 text-sm bg-white">
-                                <option value="Manikúra">Manikúra</option>
-                                <option value="Gelové nehty">Gelové nehty</option>
-                                <option value="Nail Art">Nail Art</option>
-                                <option value="Pedikúra">Pedikúra</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Giá bán (Kč)</label>
-                            <input type="number" id="nail-price" required class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 text-sm" placeholder="VD: 600">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Giá cũ (Nếu có sale)</label>
-                            <input type="number" id="nail-old-price" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 text-sm" placeholder="VD: 800">
-                        </div>
-                    </div>
-
-                    <!-- Chọn ảnh sản phẩm -->
-                    <div class="p-4 bg-pink-50/50 rounded-2xl border border-pink-100 space-y-3">
-                        <label class="block text-xs font-bold text-gray-700 uppercase">Chọn ảnh sản phẩm (Upload trực tiếp lên ImgBB)</label>
-                        <input type="file" id="imageInput" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 cursor-pointer border border-gray-200 rounded-xl p-1 bg-white">
-                        <p class="text-[11px] text-gray-500">💡 Chọn nhiều ảnh thoải mái, hệ thống sẽ đẩy lần lượt lên ImgBB lấy link lưu vào bảng.</p>
-                    </div>
-
-                    <!-- Preview ảnh sản phẩm -->
-                    <div>
-                        <label class="block text-xs font-bold text-gray-600 uppercase mb-2">Danh sách ảnh đã chọn (<span id="img-count-label">0</span> ảnh):</label>
-                        <div id="preview-container" class="flex flex-wrap gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 min-h-[90px] items-center">
-                            <span class="text-xs text-gray-400 italic">Chưa có ảnh nào được chọn.</span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-3 pt-2">
-                        <button type="submit" id="btn-save" class="flex-1 bg-pink-600 hover:bg-pink-700 text-white font-bold py-2.5 px-6 rounded-xl shadow transition text-sm">Lưu Sản Phẩm</button>
-                        <button type="button" id="btn-cancel" onclick="resetForm()" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2.5 px-4 rounded-xl transition text-sm">Hủy</button>
-                    </div>
-                </form>
+            <!-- THANH CHUYỂN ĐỔI TAB (CHỌN KHU VỰC QUẢN LÝ RIÊNG BIỆT) -->
+            <div class="flex rounded-2xl bg-white p-1.5 shadow-sm border border-pink-100">
+                <button onclick="switchTab('products')" id="tab-btn-products" class="flex-1 py-3 text-sm font-bold rounded-xl transition bg-pink-600 text-white shadow">
+                    💅 Quản Lý Mẫu Móng (Sản Phẩm)
+                </button>
+                <button onclick="switchTab('gallery')" id="tab-btn-gallery" class="flex-1 py-3 text-sm font-bold rounded-xl transition text-gray-600 hover:text-pink-600">
+                    🖼️ Quản Lý Bộ Sưu Tập Riêng
+                </button>
             </div>
 
-            <!-- Danh sách sản phẩm mẫu móng -->
-            <div class="bg-white rounded-2xl shadow-md border border-pink-100 p-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center justify-between">
-                    <span>📋 Danh Sách Mẫu Móng Đã Đăng</span>
-                    <span id="total-count" class="text-xs font-semibold px-3 py-1 bg-pink-100 text-pink-700 rounded-full">0 mẫu</span>
-                </h3>
+            <!-- ================= TAB 1: QUẢN LÝ SẢN PHẨM / MẪU MÓNG ================= -->
+            <div id="tab-content-products" class="space-y-6">
+                <!-- Form Thêm / Sửa Sản Phẩm -->
+                <div class="bg-white rounded-2xl shadow-md border border-pink-100 p-6">
+                    <h2 id="form-title" class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>➕</span> Thêm Mẫu Móng Mới
+                    </h2>
+                    
+                    <form id="nail-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        <input type="hidden" id="edit-id">
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Tên mẫu móng</label>
+                                <input type="text" id="nail-name" required class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 text-sm" placeholder="VD: Gel Hồng Đính Đá">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Danh mục</label>
+                                <select id="nail-category" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 text-sm bg-white">
+                                    <option value="Manikúra">Manikúra</option>
+                                    <option value="Gelové nehty">Gelové nehty</option>
+                                    <option value="Nail Art">Nail Art</option>
+                                    <option value="Pedikúra">Pedikúra</option>
+                                </select>
+                            </div>
+                        </div>
 
-                <div id="admin-product-list" class="space-y-3">
-                    <p class="text-gray-400 text-center py-10 text-sm">Đang tải danh sách...</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Giá bán (Kč)</label>
+                                <input type="number" id="nail-price" required class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 text-sm" placeholder="VD: 600">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Giá cũ (Nếu có sale)</label>
+                                <input type="number" id="nail-old-price" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 text-sm" placeholder="VD: 800">
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-pink-50/50 rounded-2xl border border-pink-100 space-y-3">
+                            <label class="block text-xs font-bold text-gray-700 uppercase">Chọn ảnh mẫu móng (Upload trực tiếp lên ImgBB)</label>
+                            <input type="file" id="imageInput" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 cursor-pointer border border-gray-200 rounded-xl p-1 bg-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 uppercase mb-2">Ảnh đã chọn (<span id="img-count-label">0</span> ảnh):</label>
+                            <div id="preview-container" class="flex flex-wrap gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 min-h-[90px] items-center">
+                                <span class="text-xs text-gray-400 italic">Chưa có ảnh nào được chọn.</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 pt-2">
+                            <button type="submit" id="btn-save" class="flex-1 bg-pink-600 hover:bg-pink-700 text-white font-bold py-2.5 px-6 rounded-xl shadow transition text-sm">Lưu Sản Phẩm</button>
+                            <button type="button" id="btn-cancel" onclick="resetForm()" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2.5 px-4 rounded-xl transition text-sm">Hủy</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Danh sách sản phẩm -->
+                <div class="bg-white rounded-2xl shadow-md border border-pink-100 p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center justify-between">
+                        <span>📋 Danh Sách Mẫu Móng Đã Đăng</span>
+                        <span id="total-count" class="text-xs font-semibold px-3 py-1 bg-pink-100 text-pink-700 rounded-full">0 mẫu</span>
+                    </h3>
+                    <div id="admin-product-list" class="space-y-3">
+                        <p class="text-gray-400 text-center py-10 text-sm">Đang tải danh sách...</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- 2. QUẢN LÝ BỘ SƯU TẬP ẢNH (GALLERY) -->
-            <div class="bg-white rounded-2xl shadow-md border border-pink-100 p-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <span>🖼️</span> Quản Lý Bộ Sưu Tập Studio (Gallery)
-                </h2>
+            <!-- ================= TAB 2: QUẢN LÝ BỘ SƯU TẬP RIÊNG (GALLERY) ================= -->
+            <div id="tab-content-gallery" class="hidden space-y-6">
+                <!-- Form upload hàng loạt bộ sưu tập -->
+                <div class="bg-white rounded-2xl shadow-md border border-pink-100 p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>🖼️</span> Tải Ảnh Lên Bộ Sưu Tập Riêng
+                    </h2>
 
-                <!-- Form upload hàng loạt cho bộ sưu tập -->
-                <div class="p-4 bg-pink-50/50 rounded-2xl border border-pink-100 space-y-3 mb-6">
-                    <label class="block text-xs font-bold text-gray-700 uppercase">Tải ảnh lên hàng loạt cho Bộ Sưu Tập</label>
-                    <input type="file" id="galleryImageInput" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 cursor-pointer border border-gray-200 rounded-xl p-1 bg-white">
-                    <p class="text-[11px] text-gray-500">💡 Chọn nhiều ảnh để đẩy trực tiếp lên ImgBB và thêm vào kho bộ sưu tập chung của studio.</p>
-                    
-                    <!-- Danh sách preview trước khi bấm nút lưu lên server -->
-                    <div id="gallery-preview-container" class="hidden flex flex-wrap gap-3 pt-3">
-                        <!-- Chứa các ảnh chuẩn bị upload -->
+                    <div class="p-4 bg-pink-50/50 rounded-2xl border border-pink-100 space-y-3 mb-4">
+                        <label class="block text-xs font-bold text-gray-700 uppercase">Chọn nhiều ảnh từ máy tính</label>
+                        <input type="file" id="galleryImageInput" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 cursor-pointer border border-gray-200 rounded-xl p-1 bg-white">
+                        <p class="text-[11px] text-gray-500">💡 Ảnh tải lên đây sẽ chỉ hiển thị ở mục Bộ Sưu Tập chung của studio trên trang chủ.</p>
+                        
+                        <div id="gallery-preview-container" class="hidden flex flex-wrap gap-3 pt-3"></div>
+                        
+                        <button type="button" id="btn-upload-gallery" onclick="uploadGalleryImages()" class="hidden w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2.5 px-4 rounded-xl shadow transition text-sm">
+                            🚀 Xác Nhận Tải Lên Bộ Sưu Tập
+                        </button>
                     </div>
-                    
-                    <button type="button" id="btn-upload-gallery" onclick="uploadGalleryImages()" class="hidden w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-xl shadow transition text-sm">
-                        Xác Nhận Tải Lên Bộ Sưu Tập
-                    </button>
                 </div>
 
-                <!-- Danh sách hiển thị các ảnh trong bộ sưu tập để tiện xóa -->
-                <div>
-                    <h3 class="text-sm font-bold text-gray-700 mb-3 flex items-center justify-between">
-                        <span>📋 Danh Sách Ảnh Trong Bộ Sưu Tập</span>
+                <!-- Danh sách bộ sưu tập hiển thị để xóa -->
+                <div class="bg-white rounded-2xl shadow-md border border-pink-100 p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center justify-between">
+                        <span>📋 Kho Ảnh Bộ Sưu Tập Hiện Tại</span>
                         <span id="gallery-total-count" class="text-xs font-semibold px-3 py-1 bg-pink-100 text-pink-700 rounded-full">0 ảnh</span>
                     </h3>
 
                     <div id="admin-gallery-list" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <p class="text-gray-400 text-center col-span-full py-6 text-sm">Đang tải bộ sưu tập...</p>
+                        <p class="text-gray-400 text-center col-span-full py-10 text-sm">Đang tải bộ sưu tập...</p>
                     </div>
                 </div>
             </div>
@@ -166,7 +174,7 @@
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbzxcC8x3PAhtu-C_vR5Qxiv3LSRBZHLKAUvQSELPmhJOxqluAZ572ZcaNcuCO9m9dIP/exec';
-        const IMGBB_API_KEY = 'ff6003803e7977c8212819c35faeb1d4'; // Key ImgBB của bạn
+        const IMGBB_API_KEY = 'ff6003803e7977c8212819c35faeb1d4';
 
         let allNails = [];
         let selectedFiles = []; 
@@ -175,14 +183,33 @@
         let galleryFiles = []; 
         let allGalleryImages = []; 
 
-        // Kiểm tra đăng nhập khi mở trang
         window.onload = function() {
             if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
                 unlockAdminPanel();
             }
         }
 
-        // Đăng nhập bảo mật PIN
+        // Chuyển đổi giữa 2 Tab
+        function switchTab(tabName) {
+            const btnProducts = document.getElementById('tab-btn-products');
+            const btnGallery = document.getElementById('tab-btn-gallery');
+            const contentProducts = document.getElementById('tab-content-products');
+            const contentGallery = document.getElementById('tab-content-gallery');
+
+            if (tabName === 'products') {
+                btnProducts.className = "flex-1 py-3 text-sm font-bold rounded-xl transition bg-pink-600 text-white shadow";
+                btnGallery.className = "flex-1 py-3 text-sm font-bold rounded-xl transition text-gray-600 hover:text-pink-600";
+                contentProducts.classList.remove('hidden');
+                contentGallery.classList.add('hidden');
+            } else {
+                btnGallery.className = "flex-1 py-3 text-sm font-bold rounded-xl transition bg-pink-600 text-white shadow";
+                btnProducts.className = "flex-1 py-3 text-sm font-bold rounded-xl transition text-gray-600 hover:text-pink-600";
+                contentGallery.classList.remove('hidden');
+                contentProducts.classList.add('hidden');
+                loadAdminGallery();
+            }
+        }
+
         async function handleLogin(event) {
             event.preventDefault();
             const pinInput = document.getElementById('pin-input').value;
@@ -203,7 +230,6 @@
                     document.getElementById('pin-input').value = '';
                 }
             } catch (error) {
-                console.error('Lỗi kết nối:', error);
                 alert('Không thể kết nối đến máy chủ Google Apps Script.');
             }
         }
@@ -212,7 +238,6 @@
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('admin-panel').classList.remove('hidden');
             loadAdminNails();
-            loadAdminGallery();
         }
 
         function handleLogout() {
@@ -220,42 +245,30 @@
             location.reload();
         }
 
-        // ================= HÀM UPLOAD IMGBB DÙNG CHUNG =================
         async function uploadSingleToImgBB(file) {
             const formData = new FormData();
             formData.append('image', file);
-
             const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
                 method: 'POST',
                 body: formData
             });
             const data = await res.json();
-            if (data && data.success) {
-                return data.data.url;
-            } else {
-                throw new Error(data.error?.message || 'Không thể upload lên ImgBB');
-            }
+            if (data && data.success) return data.data.url;
+            throw new Error(data.error?.message || 'Không thể upload lên ImgBB');
         }
 
-        // ================= PHẦN 1: QUẢN LÝ MẪU MÓNG =================
+        // ================= TAB 1: SẢN PHẨM =================
         document.getElementById('imageInput').addEventListener('change', function(e) {
             const files = e.target.files;
             if (!files || files.length === 0) return;
-
-            Array.from(files).forEach(file => {
-                selectedFiles.push(file);
-            });
+            Array.from(files).forEach(file => selectedFiles.push(file));
             e.target.value = '';
             renderPreviewImages();
         });
 
         function removeImage(index) {
-            const totalExisting = existingImageUrls.length;
-            if (index < totalExisting) {
-                existingImageUrls.splice(index, 1);
-            } else {
-                selectedFiles.splice(index - totalExisting, 1);
-            }
+            if (index < existingImageUrls.length) existingImageUrls.splice(index, 1);
+            else selectedFiles.splice(index - existingImageUrls.length, 1);
             renderPreviewImages();
         }
 
@@ -271,29 +284,12 @@
 
             let html = '';
             existingImageUrls.forEach((url, idx) => {
-                html += `
-                    <div class="relative group w-20 h-20 rounded-xl overflow-hidden border-2 border-pink-200 shadow-sm bg-white flex-shrink-0">
-                        <img src="${url}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                            <button type="button" onclick="removeImage(${idx})" class="bg-rose-600 text-white rounded-full w-6 h-6 text-xs font-bold flex items-center justify-center shadow">&times;</button>
-                        </div>
-                        <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center font-bold py-0.5">ImgBB ${idx + 1}</span>
-                    </div>
-                `;
+                html += `<div class="relative group w-20 h-20 rounded-xl overflow-hidden border-2 border-pink-200 shadow-sm bg-white flex-shrink-0"><img src="${url}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"><button type="button" onclick="removeImage(${idx})" class="bg-rose-600 text-white rounded-full w-6 h-6 text-xs font-bold flex items-center justify-center shadow">&times;</button></div></div>`;
             });
-
             selectedFiles.forEach((file, i) => {
                 const realIdx = existingImageUrls.length + i;
                 const tempUrl = URL.createObjectURL(file);
-                html += `
-                    <div class="relative group w-20 h-20 rounded-xl overflow-hidden border-2 border-pink-200 shadow-sm bg-white flex-shrink-0">
-                        <img src="${tempUrl}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                            <button type="button" onclick="removeImage(${realIdx})" class="bg-rose-600 text-white rounded-full w-6 h-6 text-xs font-bold flex items-center justify-center shadow">&times;</button>
-                        </div>
-                        <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center font-bold py-0.5">Mới ${realIdx + 1}</span>
-                    </div>
-                `;
+                html += `<div class="relative group w-20 h-20 rounded-xl overflow-hidden border-2 border-pink-200 shadow-sm bg-white flex-shrink-0"><img src="${tempUrl}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"><button type="button" onclick="removeImage(${realIdx})" class="bg-rose-600 text-white rounded-full w-6 h-6 text-xs font-bold flex items-center justify-center shadow">&times;</button></div></div>`;
             });
             container.innerHTML = html;
         }
@@ -315,7 +311,6 @@
         function renderAdminList() {
             const listContainer = document.getElementById('admin-product-list');
             document.getElementById('total-count').innerText = `${allNails.length} mẫu`;
-
             if (!allNails || allNails.length === 0) {
                 listContainer.innerHTML = `<p class="text-gray-400 text-center py-10 text-sm">Chưa có mẫu móng nào.</p>`;
                 return;
@@ -324,11 +319,7 @@
             let html = '';
             allNails.forEach(n => {
                 let imgList = [];
-                try { 
-                    imgList = typeof n.images === 'string' ? JSON.parse(n.images) : (n.images || [n.img]); 
-                } catch(e) { 
-                    imgList = [n.img]; 
-                }
+                try { imgList = typeof n.images === 'string' ? JSON.parse(n.images) : (n.images || [n.img]); } catch(e) { imgList = [n.img]; }
 
                 html += `
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100 hover:border-pink-200 transition">
@@ -336,7 +327,7 @@
                             <img src="${imgList[0] || ''}" class="w-12 h-12 object-cover rounded-lg border border-gray-200 shadow-sm flex-shrink-0">
                             <div>
                                 <h4 class="font-bold text-sm text-gray-800">${n.name}</h4>
-                                <p class="text-xs text-gray-500">Danh mục: <span class="font-medium text-pink-600">${n.category}</span> | Giá: <span class="font-bold text-gray-700">${n.price} Kč</span> (<span class="text-pink-600 font-bold">${imgList.length}</span> ảnh)</p>
+                                <p class="text-xs text-gray-500">Danh mục: <span class="font-medium text-pink-600">${n.category}</span> | Giá: <span class="font-bold text-gray-700">${n.price} Kč</span></p>
                             </div>
                         </div>
                         <div class="flex items-center space-x-2">
@@ -370,7 +361,7 @@
                 }
 
                 const finalImages = [...existingImageUrls, ...newlyUploadedUrls];
-                btnSave.innerText = "Đang lưu sản phẩm vào Google Sheets...";
+                btnSave.innerText = "Đang lưu sản phẩm...";
 
                 const id = document.getElementById('edit-id').value;
                 const payload = {
@@ -396,10 +387,10 @@
                     resetForm();
                     loadAdminNails();
                 } else {
-                    alert('Lỗi: ' + (result.error || 'Không lưu được'));
+                    alert('Lỗi lưu');
                 }
             } catch (error) {
-                alert('Lỗi upload ImgBB: ' + error.message);
+                alert('Lỗi: ' + error.message);
             } finally {
                 btnSave.innerText = "Lưu Sản Phẩm";
                 btnSave.disabled = false;
@@ -420,12 +411,7 @@
             document.getElementById('btn-save').innerText = "Cập Nhật";
             document.getElementById('btn-cancel').classList.remove('hidden');
 
-            try {
-                existingImageUrls = typeof nail.images === 'string' ? JSON.parse(nail.images) : (nail.images || [nail.img]);
-            } catch(e) {
-                existingImageUrls = [nail.img];
-            }
-
+            try { existingImageUrls = typeof nail.images === 'string' ? JSON.parse(nail.images) : (nail.images || [nail.img]); } catch(e) { existingImageUrls = [nail.img]; }
             selectedFiles = [];
             renderPreviewImages();
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -439,7 +425,7 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ action: 'delete', id: id })
                 });
-                alert('Đã xóa thành công!');
+                alert('Đã xóa!');
                 loadAdminNails();
             } catch (error) {
                 alert('Không thể xóa.');
@@ -457,11 +443,10 @@
             renderPreviewImages();
         }
 
-        // ================= PHẦN 2: QUẢN LÝ BỘ SƯU TẬP (GALLERY) =================
+        // ================= TAB 2: BỘ SƯU TẬP RIÊNG =================
         document.getElementById('galleryImageInput').addEventListener('change', function(e) {
             const files = e.target.files;
             if (!files || files.length === 0) return;
-
             galleryFiles = Array.from(files);
             renderGalleryPreview();
         });
@@ -483,14 +468,7 @@
             let html = '';
             galleryFiles.forEach((file, idx) => {
                 const tempUrl = URL.createObjectURL(file);
-                html += `
-                    <div class="relative group w-20 h-20 rounded-xl overflow-hidden border-2 border-pink-200 shadow-sm bg-white flex-shrink-0">
-                        <img src="${tempUrl}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                            <button type="button" onclick="removeGalleryFile(${idx})" class="bg-rose-600 text-white rounded-full w-6 h-6 text-xs font-bold flex items-center justify-center shadow">&times;</button>
-                        </div>
-                    </div>
-                `;
+                html += `<div class="relative group w-20 h-20 rounded-xl overflow-hidden border-2 border-pink-200 shadow-sm bg-white flex-shrink-0"><img src="${tempUrl}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"><button type="button" onclick="removeGalleryFile(${idx})" class="bg-rose-600 text-white rounded-full w-6 h-6 text-xs font-bold flex items-center justify-center shadow">&times;</button></div></div>`;
             });
             container.innerHTML = html;
         }
@@ -515,7 +493,6 @@
                 }
 
                 btnUpload.innerText = "Đang lưu vào bộ sưu tập...";
-
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -530,12 +507,12 @@
                     renderGalleryPreview();
                     loadAdminGallery();
                 } else {
-                    alert('Lỗi lưu bộ sưu tập: ' + (result.error || 'Không rõ'));
+                    alert('Lỗi lưu');
                 }
             } catch (error) {
                 alert('Lỗi: ' + error.message);
             } finally {
-                btnUpload.innerText = "Xác Nhận Tải Lên Bộ Sưu Tập";
+                btnUpload.innerText = "🚀 Xác Nhận Tải Lên Bộ Sưu Tập";
                 btnUpload.disabled = false;
             }
         }
@@ -559,7 +536,7 @@
             document.getElementById('gallery-total-count').innerText = `${allGalleryImages.length} ảnh`;
 
             if (!allGalleryImages || allGalleryImages.length === 0) {
-                container.innerHTML = `<p class="text-gray-400 text-center col-span-full py-6 text-sm">Chưa có ảnh nào trong bộ sưu tập.</p>`;
+                container.innerHTML = `<p class="text-gray-400 text-center col-span-full py-10 text-sm">Chưa có ảnh nào trong bộ sưu tập.</p>`;
                 return;
             }
 
@@ -588,10 +565,10 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ action: 'deleteGallery', id: id })
                 });
-                alert('Đã xóa ảnh thành công!');
+                alert('Đã xóa!');
                 loadAdminGallery();
             } catch (error) {
-                alert('Không thể xóa ảnh.');
+                alert('Không thể xóa.');
             }
         }
     </script>
