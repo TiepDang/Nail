@@ -8,7 +8,9 @@
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen py-10 relative">
 
-    <div class="absolute right-4 top-4 flex space-x-2">
+    <div class="absolute right-4 top-4 flex space-x-2 items-center">
+        <!-- Nút đăng xuất (hiện khi đã đăng nhập) -->
+        <button onclick="logout()" id="logout-btn" class="hidden px-3 py-1 text-sm font-bold bg-red-500 text-white rounded hover:bg-red-600 transition">Odhlásit / Đăng xuất</button>
         <button onclick="changeAdminLang('cs')" id="admin-btn-cs" class="px-3 py-1 text-sm font-bold bg-pink-600 text-white rounded">CZ</button>
         <button onclick="changeAdminLang('vi')" id="admin-btn-vi" class="px-3 py-1 text-sm font-bold bg-gray-200 text-gray-700 rounded">VN</button>
     </div>
@@ -21,7 +23,7 @@
             <input type="password" id="password-input" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500" placeholder="Zadejte heslo...">
         </div>
         <button onclick="checkLogin()" id="login-btn" class="w-full bg-pink-600 text-white font-bold py-2 rounded-lg hover:bg-pink-700 transition">Přihlásit se</button>
-        <p id="error-msg" class="text-red-500 text-sm text-center mt-3 hidden">Nesprávné heslo! (Tip: 12345)</p>
+        <p id="error-msg" class="text-red-500 text-sm text-center mt-3 hidden">Nesprávné heslo!</p>
     </div>
 
     <!-- KHUNG QUẢN TRỊ -->
@@ -78,7 +80,7 @@
         const adminTexts = {
             cs: {
                 loginTitle: "🔐 Přihlášení Admin", passLabel: "Heslo:", loginBtn: "Přihlásit se",
-                errorMsg: "Nesprávné heslo! (Tip: 12345)", dashTitle: "✨ Správa Položek",
+                errorMsg: "Nesprávné heslo!", dashTitle: "✨ Správa Položek",
                 homeLink: "Zpět na hlavní stránku", formTitleAdd: "Přidat nový vzor / službu", formTitleEdit: "Upravit položku",
                 placeholderName: "Název (např. Červené s kamínky)", placeholderPrice: "Cena (např. 500)",
                 placeholderOldPrice: "Původní cena (volitelně)", catLabel: "Kategorie (vyberte nebo napište vlastní):",
@@ -89,7 +91,7 @@
             },
             vi: {
                 loginTitle: "🔐 Đăng Nhập Admin", passLabel: "Mật khẩu:", loginBtn: "Đăng Nhập",
-                errorMsg: "Mật khẩu không đúng! (Gợi ý: 12345)", dashTitle: "✨ Quản Lý Dịch Vụ & Mẫu",
+                errorMsg: "Mật khẩu không đúng!", dashTitle: "✨ Quản Lý Dịch Vụ & Mẫu",
                 homeLink: "Xem trang chủ", formTitleAdd: "Thêm mẫu / dịch vụ mới", formTitleEdit: "Chỉnh sửa mẫu / dịch vụ",
                 placeholderName: "Tên (VD: Đỏ đính đá)", placeholderPrice: "Giá tiền (VD: 500)",
                 placeholderOldPrice: "Giá cũ (Không bắt buộc)", catLabel: "Loại dịch vụ (chọn nhanh hoặc tự gõ):",
@@ -104,6 +106,18 @@
         let cachedNails = [];
         let editingImages = [];
 
+        // Tự động kiểm tra trạng thái đăng nhập khi vừa mở trang
+        window.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('admin_logged_in');
+            if (isLoggedIn === 'true') {
+                document.getElementById('login-box').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                document.getElementById('logout-btn').classList.remove('hidden');
+                loadAdminNails();
+            }
+            updateAdminTexts();
+        });
+
         function changeAdminLang(lang) {
             currentAdminLang = lang;
             localStorage.setItem('admin_lang', lang);
@@ -112,43 +126,87 @@
 
         function updateAdminTexts() {
             const t = adminTexts[currentAdminLang];
-            document.getElementById('login-title').innerText = t.loginTitle;
-            document.getElementById('pass-label').innerText = t.passLabel;
-            document.getElementById('login-btn').innerText = t.loginBtn;
-            document.getElementById('error-msg').innerText = t.errorMsg;
-            document.getElementById('dash-title').innerText = t.dashTitle;
-            document.getElementById('home-link').innerText = t.homeLink;
+            const safeSetText = (id, text) => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = text;
+            };
+
+            safeSetText('login-title', t.loginTitle);
+            safeSetText('pass-label', t.passLabel);
+            safeSetText('login-btn', t.loginBtn);
+            safeSetText('error-msg', t.errorMsg);
+            safeSetText('dash-title', t.dashTitle);
+            safeSetText('home-link', t.homeLink);
             
-            const isEditing = document.getElementById('edit-id').value !== '';
-            document.getElementById('form-title').innerText = isEditing ? t.formTitleEdit : t.formTitleAdd;
-            document.getElementById('save-btn').innerText = isEditing ? t.updateBtn : t.saveBtn;
+            const isEditing = document.getElementById('edit-id') && document.getElementById('edit-id').value !== '';
+            safeSetText('form-title', isEditing ? t.formTitleEdit : t.formTitleAdd);
+            safeSetText('save-btn', isEditing ? t.updateBtn : t.saveBtn);
 
-            document.getElementById('nail-name').placeholder = t.placeholderName;
-            document.getElementById('nail-price').placeholder = t.placeholderPrice;
-            document.getElementById('nail-old-price').placeholder = t.placeholderOldPrice;
-            document.getElementById('cat-label').innerText = t.catLabel;
-            document.getElementById('file-label').innerText = t.fileLabel;
-            document.getElementById('list-title').innerText = t.listTitle;
-            document.getElementById('admin-loading').innerText = t.loading;
+            const nameInput = document.getElementById('nail-name');
+            if (nameInput) nameInput.placeholder = t.placeholderName;
 
-            if (currentAdminLang === 'cs') {
-                document.getElementById('admin-btn-cs').className = "px-3 py-1 text-sm font-bold bg-pink-600 text-white rounded";
-                document.getElementById('admin-btn-vi').className = "px-3 py-1 text-sm font-bold bg-gray-200 text-gray-700 rounded";
-            } else {
-                document.getElementById('admin-btn-vi').className = "px-3 py-1 text-sm font-bold bg-pink-600 text-white rounded";
-                document.getElementById('admin-btn-cs').className = "px-3 py-1 text-sm font-bold bg-gray-200 text-gray-700 rounded";
+            const priceInput = document.getElementById('nail-price');
+            if (priceInput) priceInput.placeholder = t.placeholderPrice;
+
+            const oldPriceInput = document.getElementById('nail-old-price');
+            if (oldPriceInput) oldPriceInput.placeholder = t.placeholderOldPrice;
+
+            safeSetText('cat-label', t.catLabel);
+            safeSetText('file-label', t.fileLabel);
+            safeSetText('list-title', t.listTitle);
+            safeSetText('admin-loading', t.loading);
+
+            const btnCs = document.getElementById('admin-btn-cs');
+            const btnVi = document.getElementById('admin-btn-vi');
+            if (btnCs && btnVi) {
+                if (currentAdminLang === 'cs') {
+                    btnCs.className = "px-3 py-1 text-sm font-bold bg-pink-600 text-white rounded";
+                    btnVi.className = "px-3 py-1 text-sm font-bold bg-gray-200 text-gray-700 rounded";
+                } else {
+                    btnVi.className = "px-3 py-1 text-sm font-bold bg-pink-600 text-white rounded";
+                    btnCs.className = "px-3 py-1 text-sm font-bold bg-gray-200 text-gray-700 rounded";
+                }
             }
         }
 
-        function checkLogin() {
+        // Gọi API lên Google Apps Script để kiểm tra mật khẩu bảo mật tuyệt đối
+        async function checkLogin() {
             const pass = document.getElementById('password-input').value;
-            if (pass === '12345') {
-                document.getElementById('login-box').classList.add('hidden');
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-                loadAdminNails();
-            } else {
-                document.getElementById('error-msg').classList.remove('hidden');
+            const loginBtn = document.getElementById('login-btn');
+            const originalText = loginBtn.innerText;
+            loginBtn.innerText = "Checking...";
+            loginBtn.disabled = true;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'login', password: pass })
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    localStorage.setItem('admin_logged_in', 'true');
+                    document.getElementById('login-box').classList.add('hidden');
+                    document.getElementById('admin-dashboard').classList.remove('hidden');
+                    document.getElementById('logout-btn').classList.remove('hidden');
+                    loadAdminNails();
+                } else {
+                    document.getElementById('error-msg').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error("Lỗi đăng nhập:", error);
+                alert("Lỗi kết nối máy chủ!");
+            } finally {
+                loginBtn.innerText = originalText;
+                loginBtn.disabled = false;
             }
+        }
+
+        function logout() {
+            localStorage.removeItem('admin_logged_in');
+            location.reload();
         }
 
         async function loadAdminNails() {
@@ -168,7 +226,6 @@
                     data = [];
                 }
                 
-                // KIỂM TRA CHẶT CHẼ: Bắt buộc data phải là Mảng (Array), tránh lỗi khi sheet trống
                 cachedNails = Array.isArray(data) ? data : [];
 
                 renderCategorySuggestions();
@@ -183,6 +240,7 @@
 
         function renderCategorySuggestions() {
             const container = document.getElementById('category-suggestions');
+            if (!container) return;
             const categories = [...new Set(cachedNails.map(n => n.category || 'Manikúra'))];
             if (categories.length === 0) categories.push('Manikúra', 'Pedikúra');
 
@@ -199,6 +257,7 @@
 
         function renderAdminNailListByCategory() {
             const list = document.getElementById('admin-nail-list');
+            if (!list) return;
             const t = adminTexts[currentAdminLang];
 
             if (!cachedNails || cachedNails.length === 0) {
@@ -394,8 +453,6 @@
                 alert('Đã xảy ra lỗi khi xóa!');
             }
         }
-
-        updateAdminTexts();
     </script>
 </body>
 </html>
