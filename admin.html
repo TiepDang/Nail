@@ -64,15 +64,25 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Chọn ảnh sản phẩm (Có thể chọn nhiều ảnh cùng lúc)</label>
-                    <!-- ĐÃ THÊM THUỘC TÍNH multiple Ở ĐÂY -->
-                    <input type="file" id="imageInput" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100 cursor-pointer border border-gray-200 rounded-xl p-1">
-                    <p class="text-[11px] text-gray-400 mt-1">💡 Mẹo: Giữ phím Ctrl (Windows) hoặc Cmd (Mac) để chọn nhiều ảnh cùng lúc.</p>
+                <!-- Khu vực chọn ảnh từng cái hoặc lặp lại -->
+                <div class="p-4 bg-pink-50/50 rounded-2xl border border-pink-100 space-y-3">
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Thêm ảnh sản phẩm (Có thể chọn lại chính ảnh đó nhiều lần)</label>
+                    <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+                        <input type="file" id="imageInput" accept="image/*" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 cursor-pointer border border-gray-200 rounded-xl p-1 bg-white">
+                        <button type="button" onclick="appendSingleImage()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow flex-shrink-0">
+                            ➕ Thêm ảnh này vào danh sách
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-gray-500">💡 Cách dùng: Chọn 1 ảnh ở ô trên ➔ Bấm "Thêm ảnh này vào danh sách". Bạn có thể làm lại nhiều lần để thêm 1 ảnh lặp lại hoặc thêm các ảnh khác nhau.</p>
                 </div>
 
-                <!-- Khu vực hiển thị ảnh xem trước -->
-                <div id="preview-container" class="flex flex-wrap gap-2 hidden"></div>
+                <!-- Khu vực hiển thị danh sách ảnh đã chọn (có nút xóa từng ảnh) -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-2">Danh sách ảnh đã chọn cho mẫu này (<span id="img-count-label">0</span> ảnh):</label>
+                    <div id="preview-container" class="flex flex-wrap gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 min-h-[90px] items-center">
+                        <span id="no-img-text" class="text-xs text-gray-400 italic">Chưa có ảnh nào được chọn.</span>
+                    </div>
+                </div>
 
                 <div class="flex items-center gap-3 pt-2">
                     <button type="submit" id="btn-save" class="flex-1 bg-pink-600 hover:bg-pink-700 text-white font-bold py-2.5 px-6 rounded-xl shadow transition text-sm">Lưu Sản Phẩm</button>
@@ -104,41 +114,60 @@
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbzxcC8x3PAhtu-C_vR5Qxiv3LSRBZHLKAUvQSELPmhJOxqluAZ572ZcaNcuCO9m9dIP/exec';
         let allNails = [];
-        let base64Images = []; // Mảng chứa các chuỗi base64 của nhiều ảnh được chọn
+        let base64Images = []; // Mảng chứa danh sách chuỗi base64 của ảnh
 
-        // Xử lý sự kiện khi chọn file ảnh
-        document.getElementById('imageInput').addEventListener('change', function(e) {
-            const files = e.target.files;
-            base64Images = [];
-            const previewContainer = document.getElementById('preview-container');
-            previewContainer.innerHTML = '';
+        // Hàm thêm 1 ảnh từ input file vào mảng base64Images
+        function appendSingleImage() {
+            const fileInput = document.getElementById('imageInput');
+            const file = fileInput.files[0];
 
-            if (files && files.length > 0) {
-                previewContainer.classList.remove('hidden');
-                
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const reader = new FileReader();
-                    
-                    reader.onload = function(uploadEvent) {
-                        const base64String = uploadEvent.target.result;
-                        base64Images.push(base64String);
-
-                        // Hiển thị ảnh xem trước nhỏ
-                        const imgThumb = document.createElement('div');
-                        imgThumb.className = "relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200 shadow-sm";
-                        imgThumb.innerHTML = `<img src="${base64String}" class="w-full h-full object-cover">`;
-                        previewContainer.appendChild(imgThumb);
-                    };
-                    
-                    reader.readAsDataURL(file);
-                }
-            } else {
-                previewContainer.classList.add('hidden');
+            if (!file) {
+                alert('Vui lòng chọn một file ảnh từ máy trước!');
+                return;
             }
-        });
 
-        // Tải danh sách sản phẩm từ Google Sheets
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64String = e.target.result;
+                base64Images.push(base64String); // Cho phép đẩy thoải mái kể cả trùng lặp ảnh cũ
+                renderPreviewImages();
+                fileInput.value = ''; // Reset input để có thể chọn lại chính file đó lần nữa nếu muốn
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Xóa 1 ảnh cụ thể ra khỏi danh sách đang chọn dựa vào vị trí index
+        function removeImage(index) {
+            base64Images.splice(index, 1);
+            renderPreviewImages();
+        }
+
+        // Vẽ lại giao diện danh sách ảnh thu nhỏ
+        function renderPreviewImages() {
+            const previewContainer = document.getElementById('preview-container');
+            const countLabel = document.getElementById('img-count-label');
+            countLabel.innerText = base64Images.length;
+
+            if (base64Images.length === 0) {
+                previewContainer.innerHTML = `<span id="no-img-text" class="text-xs text-gray-400 italic">Chưa có ảnh nào được chọn.</span>`;
+                return;
+            }
+
+            let html = '';
+            base64Images.forEach((imgUrl, idx) => {
+                html += `
+                    <div class="relative group w-20 h-20 rounded-xl overflow-hidden border-2 border-pink-200 shadow-sm bg-white flex-shrink-0">
+                        <img src="${imgUrl}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <button type="button" onclick="removeImage(${idx})" class="bg-rose-600 text-white rounded-full w-6 h-6 text-xs font-bold flex items-center justify-center shadow hover:bg-rose-700 transition" title="Xóa ảnh này">&times;</button>
+                        </div>
+                        <span class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] text-center font-bold py-0.5">Ảnh ${idx + 1}</span>
+                    </div>
+                `;
+            });
+            previewContainer.innerHTML = html;
+        }
+
         async function loadAdminNails() {
             try {
                 const response = await fetch(API_URL, {
@@ -179,7 +208,7 @@
                             <img src="${firstImg}" class="w-12 h-12 object-cover rounded-lg border border-gray-200 shadow-sm flex-shrink-0">
                             <div>
                                 <h4 class="font-bold text-sm text-gray-800">${n.name}</h4>
-                                <p class="text-xs text-gray-500">Danh mục: <span class="font-medium text-pink-600">${n.category || 'Manikúra'}</span> | Giá: <span class="font-bold text-gray-700">${n.price} Kč</span> (${imgList.length} ảnh)</p>
+                                <p class="text-xs text-gray-500">Danh mục: <span class="font-medium text-pink-600">${n.category || 'Manikúra'}</span> | Giá: <span class="font-bold text-gray-700">${n.price} Kč</span> (<span class="text-pink-600 font-bold">${imgList.length}</span> ảnh)</p>
                             </div>
                         </div>
                         <div class="flex items-center space-x-2">
@@ -193,7 +222,6 @@
             listContainer.innerHTML = html;
         }
 
-        // Xử lý submit Form (Thêm hoặc Sửa)
         async function handleFormSubmit(e) {
             e.preventDefault();
             const id = document.getElementById('edit-id').value;
@@ -202,8 +230,7 @@
             const price = document.getElementById('nail-price').value;
             const oldPrice = document.getElementById('nail-old-price').value;
 
-            // Kiểm tra nếu là thêm mới mà chưa chọn ảnh
-            if (!id && base64Images.length === 0) {
+            if (base64Images.length === 0) {
                 alert('Vui lòng chọn ít nhất một ảnh cho sản phẩm!');
                 return;
             }
@@ -218,14 +245,10 @@
                 name: name,
                 category: category,
                 price: price,
-                oldPrice: oldPrice
+                oldPrice: oldPrice,
+                images: JSON.stringify(base64Images),
+                img: base64Images[0]
             };
-
-            // Nếu có chọn ảnh mới thì cập nhật danh sách ảnh, nếu không giữ nguyên ảnh cũ khi sửa
-            if (base64Images.length > 0) {
-                payload.images = JSON.stringify(base64Images);
-                payload.img = base64Images[0]; // Ảnh đại diện chính
-            }
 
             try {
                 const response = await fetch(API_URL, {
@@ -249,7 +272,6 @@
             }
         }
 
-        // Đưa dữ liệu lên form để sửa
         function editNail(id) {
             const nail = allNails.find(n => n.id.toString() === id.toString());
             if (!nail) return;
@@ -264,7 +286,6 @@
             document.getElementById('btn-save').innerText = "Cập Nhật";
             document.getElementById('btn-cancel').classList.remove('hidden');
 
-            // Hiển thị trước các ảnh hiện có trong sản phẩm
             let imgList = [];
             if (nail.images) {
                 try { imgList = typeof nail.images === 'string' ? JSON.parse(nail.images) : nail.images; } catch(e){ imgList = [nail.img]; }
@@ -272,26 +293,17 @@
                 imgList = [nail.img];
             }
 
-            const previewContainer = document.getElementById('preview-container');
-            previewContainer.innerHTML = '';
-            previewContainer.classList.remove('hidden');
-
-            imgList.forEach(imgUrl => {
-                const imgThumb = document.createElement('div');
-                imgThumb.className = "relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200 shadow-sm";
-                imgThumb.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover">`;
-                previewContainer.appendChild(imgThumb);
-            });
+            base64Images = [...imgList];
+            renderPreviewImages();
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Xóa sản phẩm
         async function deleteNail(id) {
             if (!confirm('Bạn có chắc chắn muốn xóa mẫu móng này không?')) return;
 
             try {
-                const response = await fetch(API_URL, {
+                await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ action: 'delete', id: id })
@@ -303,19 +315,16 @@
             }
         }
 
-        // Reset form về trạng thái thêm mới
         function resetForm() {
             document.getElementById('nail-form').reset();
             document.getElementById('edit-id').value = '';
             document.getElementById('form-title').innerHTML = `<span>➕</span> Thêm Mẫu Móng Mới`;
             document.getElementById('btn-save').innerText = "Lưu Sản Phẩm";
             document.getElementById('btn-cancel').classList.add('hidden');
-            document.getElementById('preview-container').classList.add('hidden');
-            document.getElementById('preview-container').innerHTML = '';
             base64Images = [];
+            renderPreviewImages();
         }
 
-        // Khởi chạy khi tải trang
         loadAdminNails();
     </script>
 </body>
