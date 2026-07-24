@@ -3,211 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrace - Nehtové Studio</title>
+    <title id="page-title">Nehtové Studio - Luxusní Nehty</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen py-10 relative">
+<body class="bg-gradient-to-br from-pink-50 via-white to-pink-50 text-gray-800 min-h-screen flex flex-col justify-between">
 
-    <div class="absolute right-4 top-4 flex space-x-2">
-        <button onclick="changeAdminLang('cs')" id="admin-btn-cs" class="px-3 py-1 text-sm font-bold bg-pink-600 text-white rounded">CZ</button>
-        <button onclick="changeAdminLang('vi')" id="admin-btn-vi" class="px-3 py-1 text-sm font-bold bg-gray-200 text-gray-700 rounded">VN</button>
-    </div>
-
-    <!-- KHUNG ĐĂNG NHẬP -->
-    <div id="login-box" class="bg-white p-8 rounded-xl shadow-md w-96">
-        <h2 id="login-title" class="text-2xl font-bold text-center mb-6 text-pink-600">🔐 Přihlášení Admin</h2>
-        <div class="mb-4">
-            <label id="pass-label" class="block text-gray-700 text-sm font-bold mb-2">Heslo:</label>
-            <input type="password" id="password-input" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500" placeholder="Zadejte heslo...">
-        </div>
-        <button onclick="checkLogin()" id="login-btn" class="w-full bg-pink-600 text-white font-bold py-2 rounded-lg hover:bg-pink-700 transition">Přihlásit se</button>
-        <p id="error-msg" class="text-red-500 text-sm text-center mt-3 hidden">Nesprávné heslo! (Tip: 12345)</p>
-    </div>
-
-    <!-- KHUNG QUẢN TRỊ -->
-    <div id="admin-dashboard" class="hidden container mx-auto p-6 bg-white rounded-xl shadow-md max-w-2xl">
-        <div class="flex justify-between items-center mb-6 border-b pb-4">
-            <h2 id="dash-title" class="text-2xl font-bold text-pink-600">✨ Správa Položek</h2>
-            <a href="index.html" id="home-link" class="text-gray-500 text-sm hover:underline">Zpět na hlavní stránku</a>
-        </div>
-
-        <div class="bg-pink-50 p-4 rounded-lg mb-6">
-            <h3 id="form-title" class="font-bold text-gray-700 mb-3">Přidat nový vzor / službu</h3>
-            <input type="hidden" id="edit-id" value="">
-            <input type="text" id="nail-name" placeholder="Název (např. Červené s kamínky)" class="w-full p-2 mb-3 border rounded bg-white">
-            
-            <div class="grid grid-cols-2 gap-2 mb-3">
-                <input type="number" id="nail-price" min="0" placeholder="Cena (např. 500)" class="w-full p-2 border rounded bg-white">
-                <input type="number" id="nail-old-price" min="0" placeholder="Původní cena (např. 600)" class="w-full p-2 border rounded bg-white">
-            </div>
-            
-            <div class="mb-3">
-                <label id="cat-label" class="block text-gray-600 text-sm font-semibold mb-1">Kategorie / Loại dịch vụ:</label>
-                <div class="flex gap-2 mb-2">
-                    <input type="text" id="nail-category" value="Manikúra" placeholder="Nhập hoặc chọn bên dưới..." class="w-full p-2 border rounded bg-white text-sm">
-                </div>
-                <div id="category-suggestions" class="flex flex-wrap gap-1.5">
-                    <span class="text-xs text-gray-400">Načítání kategorií...</span>
+    <!-- Header & Thông tin liên hệ nhanh -->
+    <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 py-3 transition-all">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl">🌸</span>
+                <div>
+                    <h1 id="shop-title" class="text-lg sm:text-xl font-bold bg-gradient-to-r from-pink-600 to-rose-500 bg-clip-text text-transparent uppercase tracking-wider">Nehtové Studio</h1>
+                    <p id="header-contact-phone" class="text-xs text-gray-500 font-medium">📞 Tel: +420 123 456 789</p>
                 </div>
             </div>
-
-            <div class="mb-3">
-                <label id="file-label" class="block text-gray-600 text-sm font-semibold mb-1">Vybrat fotky (lze vybrat více):</label>
-                <input type="file" id="nail-files" accept="image/*" multiple class="w-full p-2 border rounded bg-white text-sm">
-                <p id="current-imgs-info" class="text-xs text-gray-500 mt-1 hidden">Đang có ảnh cũ, nếu chọn ảnh mới sẽ thay thế hoàn toàn.</p>
-            </div>
-
-            <div class="flex gap-2">
-                <button onclick="saveNail()" id="save-btn" class="flex-1 bg-pink-600 text-white px-4 py-2 rounded font-bold hover:bg-pink-700 transition">Uložit do Google Sheets</button>
-                <button onclick="resetForm()" id="cancel-edit-btn" class="hidden bg-gray-400 text-white px-4 py-2 rounded font-bold hover:bg-gray-500 transition">Hủy</button>
+            
+            <div class="flex items-center space-x-3">
+                <div class="flex bg-gray-100 p-1 rounded-full shadow-inner">
+                    <button onclick="changeLanguage('cs')" id="btn-cs" class="px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow">CZ</button>
+                    <button onclick="changeLanguage('vi')" id="btn-vi" class="px-3 py-1 text-xs font-bold text-gray-600 rounded-full transition hover:text-pink-600">VN</button>
+                </div>
+                <a href="admin.html" id="admin-link" class="hidden sm:inline-flex items-center text-xs font-semibold px-3 py-1.5 border border-pink-200 text-pink-600 rounded-full hover:bg-pink-50 transition">Admin</a>
             </div>
         </div>
+    </header>
 
-        <div>
-            <h3 id="list-title" class="font-bold text-gray-700 mb-3">Aktuální seznam:</h3>
-            <div id="admin-nail-list" class="space-y-4">
-                <p id="admin-loading" class="text-gray-500">Načítání...</p>
-            </div>
+    <!-- Hero Section -->
+    <section class="container mx-auto px-4 pt-8 pb-4 text-center">
+        <div class="max-w-2xl mx-auto">
+            <span id="badge-top" class="inline-block bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2 shadow-sm">✨ Premium Nail Art & Care</span>
+            <h2 id="hero-heading" class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Objevte svou krásu s námi</h2>
+            <p id="shop-subtitle" class="text-gray-500 mt-1 text-xs sm:text-sm">Profesionální design nehtů, luxusní gel a špičková péče.</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-4 flex-grow space-y-8">
+        <div id="categories-container">
+            <p id="loading-text" class="text-gray-400 text-center py-20 font-medium">Načítání galerie...</p>
+        </div>
+    </main>
+
+    <!-- Modal Phóng To Ảnh (Lightbox) -->
+    <div id="image-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4" onclick="closeModal()">
+        <div class="relative max-w-3xl w-full max-h-[90vh] flex items-center justify-center">
+            <button class="absolute -top-10 right-0 text-white text-3xl font-bold px-3 py-1">&times;</button>
+            <img id="modal-img" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl">
         </div>
     </div>
+
+    <!-- Footer Thông tin liên hệ chi tiết -->
+    <footer class="bg-white border-t border-pink-100 py-8 text-sm text-gray-600 mt-12">
+        <div class="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
+            <div>
+                <h4 id="footer-about-title" class="font-bold text-gray-800 mb-2">Nehtové Studio</h4>
+                <p id="footer-about-desc" class="text-xs text-gray-500">Kvalitní péče o nehty s dlouhou životností a moderním designem.</p>
+            </div>
+            <div>
+                <h4 id="footer-contact-title" class="font-bold text-gray-800 mb-2">Kontakty & Adresa</h4>
+                <p class="text-xs text-gray-500 mb-1" id="footer-address">📍 Adresa: Hlavní 123, Praha</p>
+                <p class="text-xs text-gray-500" id="footer-phone">📞 Telefon: +420 123 456 789</p>
+            </div>
+            <div class="flex flex-col items-center sm:items-end justify-center">
+                <a href="admin.html" id="admin-link-footer" class="text-pink-600 font-semibold hover:underline text-xs mb-2">Administrace systému</a>
+                <p class="text-xs text-gray-400">&copy; 2026 Nehtové Studio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbzxcC8x3PAhtu-C_vR5Qxiv3LSRBZHLKAUvQSELPmhJOxqluAZ572ZcaNcuCO9m9dIP/exec';
-        const IMGBB_API_KEY = 'ff6003803e7977c8212819c35faeb1d4';
+        let allNails = [];
 
-        const adminTexts = {
+        const translations = {
             cs: {
-                loginTitle: "🔐 Přihlášení Admin", passLabel: "Heslo:", loginBtn: "Přihlásit se",
-                errorMsg: "Nesprávné heslo! (Tip: 12345)", dashTitle: "✨ Správa Položek",
-                homeLink: "Zpět na hlavní stránku", formTitleAdd: "Přidat nový vzor / službu", formTitleEdit: "Upravit položku",
-                placeholderName: "Název (např. Červené s kamínky)", placeholderPrice: "Cena (např. 500)",
-                placeholderOldPrice: "Původní cena (volitelně)", catLabel: "Kategorie (vyberte nebo napište vlastní):",
-                fileLabel: "Vybrat fotky (lze vybrat více):", saveBtn: "Uložit do Google Sheets", updateBtn: "Aktualizovat položku",
-                listTitle: "Aktuální seznam:", loading: "Načítání...", deleteBtn: "Smazat", editBtn: "Upravit",
-                confirmDelete: "Opravdu chcete tuto položku smazat?", successAdd: "Položka byla úspěšně přidána!",
-                successUpdate: "Položka byla úspěšně aktualizována!", uploading: "Nahrávání fotek..."
+                title: "Nehtové Studio - Luxusní Nehty",
+                shopTitle: "Nehtové Studio",
+                badgeTop: "✨ Premium Nail Art & Care",
+                heroHeading: "Objevte svou krásu s námi",
+                shopSubtitle: "Profesionální design nehtů, luxusní gel a špičková péče.",
+                loading: "Načítání galerie...",
+                adminLink: "Admin",
+                adminLinkFooter: "Administrace systému",
+                error: "Nelze načíst data.",
+                empty: "Žádné položky v systému.",
+                headerPhone: "📞 Tel: +420 123 456 789",
+                footerAboutTitle: "O nás",
+                footerAboutDesc: "Kvalitní péče o nehty s dlouhou životností a moderním designem.",
+                footerContactTitle: "Kontakty & Adresa",
+                footerAddress: "📍 Adresa: Hlavní 123, Praha",
+                footerPhoneText: "📞 Telefon: +420 123 456 789"
             },
             vi: {
-                loginTitle: "🔐 Đăng Nhập Admin", passLabel: "Mật khẩu:", loginBtn: "Đăng Nhập",
-                errorMsg: "Mật khẩu không đúng! (Gợi ý: 12345)", dashTitle: "✨ Quản Lý Dịch Vụ & Mẫu",
-                homeLink: "Xem trang chủ", formTitleAdd: "Thêm mẫu / dịch vụ mới", formTitleEdit: "Chỉnh sửa mẫu / dịch vụ",
-                placeholderName: "Tên (VD: Đỏ đính đá)", placeholderPrice: "Giá tiền (VD: 500)",
-                placeholderOldPrice: "Giá cũ (Không bắt buộc)", catLabel: "Loại dịch vụ (chọn nhanh hoặc tự gõ):",
-                fileLabel: "Chọn ảnh (có thể chọn nhiều ảnh):", saveBtn: "Lưu Lên Google Sheets", updateBtn: "Cập Nhật Thay Đổi",
-                listTitle: "Danh sách hiện tại:", loading: "Đang tải...", deleteBtn: "Xóa", editBtn: "Sửa",
-                confirmDelete: "Bạn có chắc muốn xóa mẫu này không?", successAdd: "Đã thêm thành công!",
-                successUpdate: "Đã cập nhật thành công!", uploading: "Đang tải ảnh lên..."
+                title: "Tiệm Nails - Mẫu Móng Đẹp & Sang Trọng",
+                shopTitle: "Tiệm Nails Xinh",
+                badgeTop: "✨ Thiết Kế Móng Nghệ Thuật Cao Cấp",
+                heroHeading: "Tôn vinh vẻ đẹp đôi bàn tay của bạn",
+                shopSubtitle: "Chuyên thiết kế móng nghệ thuật, đính đá, gel cao cấp và chăm sóc tận tâm.",
+                loading: "Đang tải bộ sưu tập...",
+                adminLink: "Quản trị",
+                adminLinkFooter: "Trang quản trị hệ thống",
+                error: "Không thể tải dữ liệu từ máy chủ.",
+                empty: "Chưa có mẫu nào trong hệ thống.",
+                headerPhone: "📞 Đặt lịch: +420 123 456 789",
+                footerAboutTitle: "Về chúng tôi",
+                footerAboutDesc: "Chăm sóc móng chuyên nghiệp với độ bền cao và thiết kế thời thượng.",
+                footerContactTitle: "Liên hệ & Địa chỉ",
+                footerAddress: "📍 Địa chỉ: Hlavní 123, Praha",
+                footerPhoneText: "📞 Điện thoại: +420 123 456 789"
             }
         };
 
-        let currentAdminLang = localStorage.getItem('admin_lang') || 'cs';
-        let cachedNails = [];
-        let editingImages = []; // Lưu danh sách ảnh cũ khi đang ở chế độ sửa
+        let currentLang = localStorage.getItem('site_lang') || 'cs';
 
-        function changeAdminLang(lang) {
-            currentAdminLang = lang;
-            localStorage.setItem('admin_lang', lang);
-            updateAdminTexts();
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('site_lang', lang);
+            updateTexts();
+            renderCategories();
         }
 
-        function updateAdminTexts() {
-            const t = adminTexts[currentAdminLang];
-            document.getElementById('login-title').innerText = t.loginTitle;
-            document.getElementById('pass-label').innerText = t.passLabel;
-            document.getElementById('login-btn').innerText = t.loginBtn;
-            document.getElementById('error-msg').innerText = t.errorMsg;
-            document.getElementById('dash-title').innerText = t.dashTitle;
-            document.getElementById('home-link').innerText = t.homeLink;
-            
-            const isEditing = document.getElementById('edit-id').value !== '';
-            document.getElementById('form-title').innerText = isEditing ? t.formTitleEdit : t.formTitleAdd;
-            document.getElementById('save-btn').innerText = isEditing ? t.updateBtn : t.saveBtn;
+        function updateTexts() {
+            const t = translations[currentLang];
+            document.getElementById('page-title').innerText = t.title;
+            document.getElementById('shop-title').innerText = t.shopTitle;
+            document.getElementById('badge-top').innerText = t.badgeTop;
+            document.getElementById('hero-heading').innerText = t.heroHeading;
+            document.getElementById('shop-subtitle').innerText = t.shopSubtitle;
+            document.getElementById('loading-text').innerText = t.loading;
+            document.getElementById('admin-link').innerText = t.adminLink;
+            document.getElementById('admin-link-footer').innerText = t.adminLinkFooter;
+            document.getElementById('header-contact-phone').innerText = t.headerPhone;
+            document.getElementById('footer-about-title').innerText = t.footerAboutTitle;
+            document.getElementById('footer-about-desc').innerText = t.footerAboutDesc;
+            document.getElementById('footer-contact-title').innerText = t.footerContactTitle;
+            document.getElementById('footer-address').innerText = t.footerAddress;
+            document.getElementById('footer-phone').innerText = t.footerPhoneText;
 
-            document.getElementById('nail-name').placeholder = t.placeholderName;
-            document.getElementById('nail-price').placeholder = t.placeholderPrice;
-            document.getElementById('nail-old-price').placeholder = t.placeholderOldPrice;
-            document.getElementById('cat-label').innerText = t.catLabel;
-            document.getElementById('file-label').innerText = t.fileLabel;
-            document.getElementById('list-title').innerText = t.listTitle;
-            document.getElementById('admin-loading').innerText = t.loading;
-
-            if (currentAdminLang === 'cs') {
-                document.getElementById('admin-btn-cs').className = "px-3 py-1 text-sm font-bold bg-pink-600 text-white rounded";
-                document.getElementById('admin-btn-vi').className = "px-3 py-1 text-sm font-bold bg-gray-200 text-gray-700 rounded";
+            if (currentLang === 'cs') {
+                document.getElementById('btn-cs').className = "px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow";
+                document.getElementById('btn-vi').className = "px-3 py-1 text-xs font-bold text-gray-600 rounded-full transition hover:text-pink-600";
             } else {
-                document.getElementById('admin-btn-vi').className = "px-3 py-1 text-sm font-bold bg-pink-600 text-white rounded";
-                document.getElementById('admin-btn-cs').className = "px-3 py-1 text-sm font-bold bg-gray-200 text-gray-700 rounded";
+                document.getElementById('btn-vi').className = "px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow";
+                document.getElementById('btn-cs').className = "px-3 py-1 text-xs font-bold text-gray-600 rounded-full transition hover:text-pink-600";
             }
         }
 
-        function checkLogin() {
-            const pass = document.getElementById('password-input').value;
-            if (pass === '12345') {
-                document.getElementById('login-box').classList.add('hidden');
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-                loadAdminNails();
-            } else {
-                document.getElementById('error-msg').classList.remove('hidden');
-            }
-        }
-
-        async function loadAdminNails() {
+        async function loadPublicNails() {
             try {
                 const response = await fetch(API_URL);
-                cachedNails = await response.json();
-                renderCategorySuggestions();
-                renderAdminNailListByCategory();
+                allNails = await response.json();
+                renderCategories();
             } catch (error) {
-                console.error(error);
+                document.getElementById('categories-container').innerHTML = `<p class="text-rose-500 text-center font-medium">${translations[currentLang].error}</p>`;
             }
         }
 
-        function renderCategorySuggestions() {
-            const container = document.getElementById('category-suggestions');
-            const categories = [...new Set(cachedNails.map(n => n.category || 'Manikúra'))];
-            if (categories.length === 0) categories.push('Manikúra', 'Pedikúra');
+        function renderCategories() {
+            const container = document.getElementById('categories-container');
+            const t = translations[currentLang];
 
-            container.innerHTML = categories.map(cat => `
-                <button type="button" onclick="selectCategory('${cat}')" class="px-3 py-1 text-xs font-semibold bg-white border border-pink-300 text-pink-600 rounded-full hover:bg-pink-100 transition shadow-sm">
-                    + ${cat}
-                </button>
-            `).join('');
-        }
-
-        function selectCategory(cat) {
-            document.getElementById('nail-category').value = cat;
-        }
-
-        function renderAdminNailListByCategory() {
-            const list = document.getElementById('admin-nail-list');
-            const t = adminTexts[currentAdminLang];
-
-            if (!cachedNails || cachedNails.length === 0) {
-                list.innerHTML = '<p class="text-gray-500">Žádné položky.</p>';
+            if (!allNails || allNails.length === 0) {
+                container.innerHTML = `<p class="text-gray-400 text-center py-20 font-medium">${t.empty}</p>`;
                 return;
             }
 
-            const categories = [...new Set(cachedNails.map(n => n.category || 'Manikúra'))];
+            const categories = [...new Set(allNails.map(n => n.category || 'Manikúra'))];
             let html = '';
 
             categories.forEach(cat => {
-                const itemsInCat = cachedNails.filter(n => (n.category || 'Manikúra') === cat);
+                const itemsInCat = allNails.filter(n => (n.category || 'Manikúra') === cat);
 
                 html += `
-                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                        <div class="flex items-center justify-between mb-2 pb-1 border-b border-gray-200">
-                            <span class="font-bold text-sm text-pink-600 flex items-center gap-1.5">
-                                <span class="w-2 h-2 bg-pink-600 rounded-full inline-block"></span>
+                    <div class="mb-10">
+                        <div class="flex items-center justify-between mb-4 px-2">
+                            <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                                <span class="w-3 h-3 bg-pink-600 rounded-full inline-block"></span>
                                 ${cat}
+                            </h3>
+                            <span class="text-xs font-semibold px-3 py-1 bg-pink-100 text-pink-700 rounded-full">
+                                ${itemsInCat.length} ${currentLang === 'cs' ? 'položek' : 'mẫu'}
                             </span>
-                            <span class="text-xs text-gray-500 font-medium">${itemsInCat.length} ${currentAdminLang === 'cs' ? 'položek' : 'mẫu'}</span>
                         </div>
-                        <div class="space-y-2">
+
+                        <div class="flex overflow-x-auto gap-5 pb-4 pt-1 no-scrollbar scroll-smooth">
                 `;
 
                 itemsInCat.forEach(n => {
                     const hasDiscount = n.oldPrice && n.oldPrice.toString().trim() !== '';
-                    // Xử lý lấy mảng ảnh (Hỗ trợ cả dữ liệu cũ dạng chuỗi n.img hoặc mảng n.images)
+                    
+                    // Lấy danh sách ảnh hỗ trợ nhiều ảnh
                     let imgList = [];
                     if (n.images) {
                         try { imgList = typeof n.images === 'string' ? JSON.parse(n.images) : n.images; } catch(e){ imgList = [n.img]; }
@@ -215,21 +207,47 @@
                         imgList = [n.img];
                     }
 
+                    const uniqueId = 'slider-' + n.id;
+
                     html += `
-                        <div class="flex items-center justify-between bg-white p-2.5 rounded border shadow-sm">
-                            <div class="flex items-center space-x-3">
-                                <img src="${imgList[0]}" class="w-12 h-12 object-cover rounded">
-                                <div>
-                                    <p class="font-bold text-sm">${n.name} <span class="text-xs text-gray-400 font-normal">(${imgList.length} ảnh)</span></p>
-                                    <p class="text-xs text-pink-600 font-semibold">
-                                        ${hasDiscount ? `<span class="line-through text-gray-400 mr-1">${n.oldPrice} Kč</span>` : ''}
-                                        <span>${n.price} Kč</span>
-                                    </p>
-                                </div>
+                        <div class="min-w-[260px] max-w-[260px] bg-white rounded-2xl shadow-sm border border-pink-100/60 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col flex-shrink-0 relative">
+                            ${hasDiscount ? `<span class="absolute top-3 right-3 z-10 bg-rose-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md uppercase tracking-wider">Sale</span>` : ''}
+                            
+                            <!-- Slider ảnh sản phẩm -->
+                            <div class="w-full h-72 bg-neutral-900 relative group overflow-hidden flex items-center">
+                                <div id="${uniqueId}" class="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth">
+                    `;
+
+                    imgList.forEach((imgUrl, idx) => {
+                        html += `
+                            <div class="w-full h-full flex-shrink-0 snap-center flex items-center justify-center cursor-pointer" onclick="openModal('${imgUrl}')">
+                                <img src="${imgUrl}" alt="${n.name}" class="w-full h-full object-contain">
                             </div>
-                            <div class="flex space-x-1">
-                                <button onclick="startEdit('${n.id}')" class="text-blue-600 hover:underline text-xs font-semibold px-2 py-1">${t.editBtn}</button>
-                                <button onclick="deleteNail('${n.id}')" class="text-red-600 hover:underline text-xs font-semibold px-2 py-1">${t.deleteBtn}</button>
+                        `;
+                    });
+
+                    html += `
+                                </div>
+                                ${imgList.length > 1 ? `
+                                    <button onclick="scrollSlider('${uniqueId}', -1)" class="absolute left-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-1 rounded-full text-xs hover:bg-black/70 transition opacity-0 group-hover:opacity-100">&#10094;</button>
+                                    <button onclick="scrollSlider('${uniqueId}', 1)" class="absolute right-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-1 rounded-full text-xs hover:bg-black/70 transition opacity-0 group-hover:opacity-100">&#10095;</button>
+                                    <div class="absolute bottom-2 left-0 right-0 flex justify-center space-x-1 pointer-events-none">
+                                        <span class="text-[10px] bg-black/50 text-white px-2 py-0.5 rounded-full">${imgList.length} ảnh</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+
+                            <div class="p-4 flex flex-col flex-grow justify-between bg-white">
+                                <div>
+                                    <h4 class="font-bold text-base text-gray-800 truncate" title="${n.name}">${n.name}</h4>
+                                </div>
+                                <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
+                                    <span class="text-xs text-gray-400 font-medium uppercase">Cena</span>
+                                    <div class="text-right">
+                                        ${hasDiscount ? `<span class="line-through text-gray-400 text-xs mr-1.5">${n.oldPrice} Kč</span>` : ''}
+                                        <span class="text-pink-600 font-bold text-base">${n.price} Kč</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -238,147 +256,29 @@
                 html += `</div></div>`;
             });
 
-            list.innerHTML = html;
+            container.innerHTML = html;
         }
 
-        function startEdit(id) {
-            const item = cachedNails.find(n => n.id === id);
-            if (!item) return;
-
-            document.getElementById('edit-id').value = item.id;
-            document.getElementById('nail-name').value = item.name;
-            document.getElementById('nail-price').value = item.price;
-            document.getElementById('nail-old-price').value = item.oldPrice || '';
-            document.getElementById('nail-category').value = item.category || 'Manikúra';
-            
-            if (item.images) {
-                try { editingImages = typeof item.images === 'string' ? JSON.parse(item.images) : item.images; } catch(e){ editingImages = [item.img]; }
-            } else {
-                editingImages = [item.img];
-            }
-
-            document.getElementById('current-imgs-info').classList.remove('hidden');
-            document.getElementById('cancel-edit-btn').classList.remove('hidden');
-            updateAdminTexts();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function resetForm() {
-            document.getElementById('edit-id').value = '';
-            document.getElementById('nail-name').value = '';
-            document.getElementById('nail-price').value = '';
-            document.getElementById('nail-old-price').value = '';
-            document.getElementById('nail-files').value = '';
-            document.getElementById('current-imgs-info').classList.add('hidden');
-            document.getElementById('cancel-edit-btn').classList.add('hidden');
-            editingImages = [];
-            updateAdminTexts();
-        }
-
-        async function saveNail() {
-            const editId = document.getElementById('edit-id').value;
-            const name = document.getElementById('nail-name').value;
-            const price = document.getElementById('nail-price').value;
-            const oldPrice = document.getElementById('nail-old-price').value;
-            const category = document.getElementById('nail-category').value || 'Manikúra';
-            const fileInput = document.getElementById('nail-files');
-            const t = adminTexts[currentAdminLang];
-
-            if (!name || !price) {
-                alert(currentAdminLang === 'cs' ? 'Vyplňte název a cenu!' : 'Vui lòng nhập tên và giá tiền!');
-                return;
-            }
-
-            if (!editId && fileInput.files.length === 0) {
-                alert(currentAdminLang === 'cs' ? 'Vyberte alespoň jednu fotku!' : 'Vui lòng chọn ít nhất một ảnh!');
-                return;
-            }
-
-            const btn = document.getElementById('save-btn');
-            btn.innerText = t.uploading;
-            btn.disabled = true;
-
-            try {
-                let uploadedUrls = [...editingImages];
-
-                // Nếu có chọn file mới thì upload lên ImgBB
-                if (fileInput.files.length > 0) {
-                    uploadedUrls = []; // Thay thế hoàn toàn hoặc bạn có thể gộp tùy ý
-                    for (let i = 0; i < fileInput.files.length; i++) {
-                        const formData = new FormData();
-                        formData.append('image', fileInput.files[i]);
-
-                        const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-                            method: 'POST',
-                            body: formData
-                        });
-                        const imgbbData = await imgbbRes.json();
-                        if (imgbbData.success) {
-                            uploadedUrls.push(imgbbData.data.url);
-                        }
-                    }
-                }
-
-                if (uploadedUrls.length === 0) {
-                    alert('Không có ảnh nào được tải lên thành công!');
-                    btn.innerText = editId ? t.updateBtn : t.saveBtn;
-                    btn.disabled = false;
-                    return;
-                }
-
-                const nailData = {
-                    id: editId ? editId : Date.now().toString(),
-                    name: name,
-                    price: price,
-                    oldPrice: oldPrice || '',
-                    img: uploadedUrls[0], // Ảnh đại diện chính cho dữ liệu cũ tương thích ngược
-                    images: JSON.stringify(uploadedUrls), // Lưu dạng chuỗi JSON danh sách ảnh
-                    category: category,
-                    action: editId ? 'edit' : 'add'
-                };
-
-                await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(nailData)
-                });
-
-                resetForm();
-                loadAdminNails();
-                alert(editId ? t.successUpdate : t.successAdd);
-
-            } catch (error) {
-                console.error(error);
-                alert('Đã xảy ra lỗi kết nối!');
-                btn.innerText = editId ? t.updateBtn : t.saveBtn;
-                btn.disabled = false;
+        function scrollSlider(sliderId, direction) {
+            const slider = document.getElementById(sliderId);
+            if (slider) {
+                slider.scrollBy({ left: direction * 260, behavior: 'smooth' });
             }
         }
 
-        async function deleteNail(id) {
-            const t = adminTexts[currentAdminLang];
-            if (!confirm(t.confirmDelete)) return;
-
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'delete', id: id })
-                });
-
-                const result = await response.json();
-                if (result.status === 'deleted' || result.status === 'success') {
-                    loadAdminNails();
-                } else {
-                    alert('Không tìm thấy sản phẩm để xóa!');
-                }
-            } catch (error) {
-                console.error(error);
-                alert('Đã xảy ra lỗi khi xóa!');
-            }
+        function openModal(imgUrl) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            modalImg.src = imgUrl;
+            modal.classList.remove('hidden');
         }
 
-        updateAdminTexts();
+        function closeModal() {
+            document.getElementById('image-modal').classList.add('hidden');
+        }
+
+        updateTexts();
+        loadPublicNails();
     </script>
 </body>
 </html>
