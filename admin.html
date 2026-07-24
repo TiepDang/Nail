@@ -64,19 +64,14 @@
                     </div>
                 </div>
 
-                <!-- Khu vực chọn ảnh từng cái hoặc lặp lại -->
+                <!-- Khu vực chọn ảnh tự động thêm -->
                 <div class="p-4 bg-pink-50/50 rounded-2xl border border-pink-100 space-y-3">
-                    <label class="block text-xs font-bold text-gray-700 uppercase">Thêm ảnh sản phẩm (Có thể chọn lại chính ảnh đó nhiều lần)</label>
-                    <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
-                        <input type="file" id="imageInput" accept="image/*" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 cursor-pointer border border-gray-200 rounded-xl p-1 bg-white">
-                        <button type="button" onclick="appendSingleImage()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow flex-shrink-0">
-                            ➕ Thêm ảnh này vào danh sách
-                        </button>
-                    </div>
-                    <p class="text-[11px] text-gray-500">💡 Cách dùng: Chọn 1 ảnh ở ô trên ➔ Bấm "Thêm ảnh này vào danh sách". Bạn có thể làm lại nhiều lần để thêm 1 ảnh lặp lại hoặc thêm các ảnh khác nhau.</p>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Chọn ảnh sản phẩm (Tự động thêm vào danh sách)</label>
+                    <input type="file" id="imageInput" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 cursor-pointer border border-gray-200 rounded-xl p-1 bg-white">
+                    <p class="text-[11px] text-gray-500">💡 Mẹo: Bạn có thể chọn nhiều ảnh cùng lúc, hoặc chọn từng ảnh (hoặc chọn lại chính ảnh đó nhiều lần) — hệ thống sẽ tự động đưa vào danh sách bên dưới.</p>
                 </div>
 
-                <!-- Khu vực hiển thị danh sách ảnh đã chọn (có nút xóa từng ảnh) -->
+                <!-- Khu vực hiển thị danh sách ảnh đã chọn -->
                 <div>
                     <label class="block text-xs font-bold text-gray-600 uppercase mb-2">Danh sách ảnh đã chọn cho mẫu này (<span id="img-count-label">0</span> ảnh):</label>
                     <div id="preview-container" class="flex flex-wrap gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 min-h-[90px] items-center">
@@ -114,35 +109,41 @@
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbzxcC8x3PAhtu-C_vR5Qxiv3LSRBZHLKAUvQSELPmhJOxqluAZ572ZcaNcuCO9m9dIP/exec';
         let allNails = [];
-        let base64Images = []; // Mảng chứa danh sách chuỗi base64 của ảnh
+        let base64Images = [];
 
-        // Hàm thêm 1 ảnh từ input file vào mảng base64Images
-        function appendSingleImage() {
-            const fileInput = document.getElementById('imageInput');
-            const file = fileInput.files[0];
+        // Lắng nghe sự kiện thay đổi file để tự động thêm vào danh sách
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (!files || files.length === 0) return;
 
-            if (!file) {
-                alert('Vui lòng chọn một file ảnh từ máy trước!');
-                return;
+            let loadedCount = 0;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                reader.onload = function(uploadEvent) {
+                    const base64String = uploadEvent.target.result;
+                    base64Images.push(base64String); // Tự động đẩy vào mảng (cho phép trùng lặp hoặc chọn nhiều)
+                    loadedCount++;
+
+                    // Khi đọc xong tất cả các file vừa chọn thì render lại giao diện và reset input
+                    if (loadedCount === files.length) {
+                        renderPreviewImages();
+                        e.target.value = ''; 
+                    }
+                };
+                
+                reader.readAsDataURL(file);
             }
+        });
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64String = e.target.result;
-                base64Images.push(base64String); // Cho phép đẩy thoải mái kể cả trùng lặp ảnh cũ
-                renderPreviewImages();
-                fileInput.value = ''; // Reset input để có thể chọn lại chính file đó lần nữa nếu muốn
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Xóa 1 ảnh cụ thể ra khỏi danh sách đang chọn dựa vào vị trí index
+        // Xóa 1 ảnh cụ thể ra khỏi danh sách đang chọn
         function removeImage(index) {
             base64Images.splice(index, 1);
             renderPreviewImages();
         }
 
-        // Vẽ lại giao diện danh sách ảnh thu nhỏ
+        // Vẽ lại danh sách ảnh thu nhỏ
         function renderPreviewImages() {
             const previewContainer = document.getElementById('preview-container');
             const countLabel = document.getElementById('img-count-label');
