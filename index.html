@@ -157,7 +157,8 @@
                 `;
 
                 itemsInCat.forEach(n => {
-                    const hasDiscount = n.oldPrice && n.oldPrice.trim() !== '';
+                    // Kiểm tra xem có giá cũ hay không (oldPrice tồn tại và khác rỗng)
+                    const hasDiscount = n.oldPrice && n.oldPrice.toString().trim() !== '';
 
                     html += `
                         <div class="min-w-[260px] max-w-[260px] bg-white rounded-2xl shadow-sm border border-pink-100/60 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col flex-shrink-0 relative">
@@ -173,7 +174,9 @@
                                 <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
                                     <span class="text-xs text-gray-400 font-medium uppercase">Cena</span>
                                     <div class="text-right">
+                                        <!-- Hiển thị giá cũ bị gạch ngang kèm chữ Kč, nếu có -->
                                         ${hasDiscount ? `<span class="line-through text-gray-400 text-xs mr-1.5">${n.oldPrice} Kč</span>` : ''}
+                                        <!-- Hiển thị giá mới kèm chữ Kč -->
                                         <span class="text-pink-600 font-bold text-base">${n.price} Kč</span>
                                     </div>
                                 </div>
