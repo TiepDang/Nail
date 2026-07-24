@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Quản Trị Hệ Thống</title>
+    <title>Trang Quản Trị Hệ Thống - Nail Shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -28,58 +28,112 @@
         </div>
     </div>
 
-    <!-- ================= GIAO DIỆN QUẢN TRỊ CHÍNH (Ẩn khi chưa đăng nhập) ================= -->
+    <!-- ================= GIAO DIỆN QUẢN TRỊ CHÍNH (Đầy đủ chức năng) ================= -->
     <div id="admin-panel" class="hidden max-w-7xl mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800"><i class="fa-solid fa-gauge-high mr-2"></i> Quản Lý Dữ Liệu</h1>
+            <h1 class="text-3xl font-bold text-gray-800"><i class="fa-solid fa-gauge-high mr-2"></i> Quản Lý Hệ Thống Tiệm Móng</h1>
             <button onclick="handleLogout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
                 <i class="fa-solid fa-right-from-bracket mr-1"></i> Đăng Xuất
             </button>
         </div>
 
-        <!-- Khu vực chứa bảng dữ liệu và chức năng (Thêm/Sửa/Xóa/Upload ImgBB) -->
+        <!-- KHU VỰC TẢI ẢNH HÀNG LOẠT (IMGGB) & BỘ SƯU TẬP -->
         <div class="bg-white rounded-lg shadow p-6 mb-6">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-semibold text-gray-700">Danh Sách Sản Phẩm / Dữ Liệu</h2>
-                <button onclick="fetchData()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm">
-                    <i class="fa-solid fa-rotate mr-1"></i> Làm Mới Dữ Liệu
-                </button>
+            <h2 class="text-xl font-semibold text-gray-700 mb-4"><i class="fa-solid fa-images mr-2"></i> Tải Ảnh Nhanh (ImgBB)</h2>
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition cursor-pointer" id="drop-zone">
+                <input type="file" id="image-file-input" multiple accept="image/*" class="hidden" onchange="handleFiles(this.files)">
+                <label for="image-file-input" class="cursor-pointer">
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-blue-500 mb-2"></i>
+                    <p class="text-gray-600 font-medium">Kéo thả ảnh vào đây hoặc bấm để chọn ảnh tải lên</p>
+                    <p class="text-xs text-gray-400 mt-1">Hỗ trợ chọn nhiều ảnh cùng lúc</p>
+                </label>
+            </div>
+            <!-- Khu vực hiển thị kết quả link ảnh sau khi upload -->
+            <div id="upload-results" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+        </div>
+
+        <!-- KHU VỰC THÊM / SỬA SẢN PHẨM & DANH SÁCH -->
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                <h2 class="text-xl font-semibold text-gray-700"><i class="fa-solid fa-box-archive mr-2"></i> Quản Lý Sản Phẩm</h2>
+                <div class="flex gap-2">
+                    <button onclick="openAddModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm">
+                        <i class="fa-solid fa-plus mr-1"></i> Thêm Sản Phẩm Mới
+                    </button>
+                    <button onclick="fetchData()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm">
+                        <i class="fa-solid fa-rotate mr-1"></i> Làm Mới
+                    </button>
+                </div>
             </div>
             
-            <!-- Bảng hiển thị dữ liệu động -->
+            <!-- Bảng hiển thị dữ liệu -->
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse" id="data-table">
                     <thead>
                         <tr class="bg-gray-200 text-gray-700 text-sm uppercase">
                             <th class="p-3 border">ID</th>
-                            <th class="p-3 border">Tên</th>
+                            <th class="p-3 border">Hình Ảnh</th>
+                            <th class="p-3 border">Tên Sản Phẩm</th>
                             <th class="p-3 border">Danh Mục</th>
                             <th class="p-3 border">Giá</th>
-                            <th class="p-3 border">Ảnh (URL)</th>
                             <th class="p-3 border text-center">Hành Động</th>
                         </tr>
                     </thead>
                     <tbody id="table-body" class="text-gray-600 text-sm">
-                        <!-- Dữ liệu sẽ được load tự động vào đây -->
+                        <!-- Dữ liệu được load động bằng JavaScript -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
+    <!-- MODAL THÊM / SỬA SẢN PHẨM -->
+    <div id="product-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg p-6">
+            <h3 id="modal-title" class="text-xl font-bold text-gray-800 mb-4">Thêm Sản Phẩm Mới</h3>
+            <form id="product-form" onsubmit="saveProduct(event)">
+                <input type="hidden" id="prod-original-id">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">ID Sản Phẩm:</label>
+                    <input type="text" id="prod-id" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Tên Sản Phẩm:</label>
+                    <input type="text" id="prod-name" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Danh Mục:</label>
+                    <input type="text" id="prod-category" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Giá:</label>
+                    <input type="text" id="prod-price" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Link Ảnh (URL):</label>
+                    <input type="text" id="prod-images" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Dán link ảnh hoặc upload ở trên">
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="closeModal()" class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition">Hủy</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Lưu Lại</>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ================= JAVASCRIPT XỬ LÝ LOGIC ================= -->
     <script>
         // ⚠️ THAY LINK WEB APP GOOGLE APPS SCRIPT CỦA BẠN VÀO ĐÂY
-        const API_URL = "https://script.google.com/macros/s/AKfycbzxcC8x3PAhtu-C_vR5Qxiv3LSRBZHLKAUvQSELPmhJOxqluAZ572ZcaNcuCO9m9dIP/exec"; 
+        const API_URL = "DÁN_LINK_WEB_APP_CỦA_BẠN_Ở_ĐÂY"; 
+        const IMGBB_API_KEY = "36729c7b1341c2d9213d803657b01b63"; // Key ImgBB của bạn (hoặc key tùy ý)
 
-        // Kiểm tra trạng thái đăng nhập sẵn có trong phiên trình duyệt
         window.onload = function() {
             if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
                 unlockAdminPanel();
             }
         }
 
-        // Xử lý gửi mã PIN lên Google Apps Script để kiểm tra bảo mật
+        // Đăng nhập bảo mật qua Apps Script
         async function handleLogin(event) {
             event.preventDefault();
             const pinInput = document.getElementById('pin-input').value;
@@ -88,12 +142,8 @@
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ 
-                        action: 'login', 
-                        password: pinInput // Khớp hoàn toàn với code Apps Script của bạn
-                    })
+                    body: JSON.stringify({ action: 'login', password: pinInput })
                 });
-                
                 const result = await response.json();
 
                 if (result.status === 'success') {
@@ -112,15 +162,15 @@
         function unlockAdminPanel() {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('admin-panel').classList.remove('hidden');
-            fetchData(); // Tải dữ liệu khi vào trang thành công
+            fetchData();
         }
 
         function handleLogout() {
             sessionStorage.removeItem('isAdminLoggedIn');
-            location.reload(); // Tải lại trang để hiện lại màn hình nhập PIN
+            location.reload();
         }
 
-        // Hàm gọi lấy dữ liệu từ Google Sheets thông qua Apps Script
+        // Tải dữ liệu sản phẩm từ Google Sheets
         async function fetchData() {
             try {
                 const response = await fetch(API_URL, {
@@ -134,26 +184,149 @@
                 tbody.innerHTML = '';
 
                 if (Array.isArray(data) && data.length > 0) {
+                    window.allProducts = data; // Lưu lại để dùng khi sửa
                     data.forEach(item => {
+                        let imgUrl = item.images || item.img || '';
                         let tr = document.createElement('tr');
                         tr.className = "border-b hover:bg-gray-50";
                         tr.innerHTML = `
-                            <td class="p-3 border">${item.id || ''}</td>
+                            <td class="p-3 border font-semibold">${item.id || ''}</td>
+                            <td class="p-3 border"><img src="${imgUrl}" class="w-12 h-12 object-cover rounded shadow" onerror="this.src='https://via.placeholder.com/50'"></td>
                             <td class="p-3 border font-medium">${item.name || ''}</td>
                             <td class="p-3 border">${item.category || ''}</td>
-                            <td class="p-3 border">${item.price || ''}</td>
-                            <td class="p-3 border truncate max-w-xs">${item.images || item.img || ''}</td>
-                            <td class="p-3 border text-center">
-                                <span class="text-gray-400 italic">Đang hiển thị</span>
+                            <td class="p-3 border text-red-600 font-semibold">${item.price || ''}</td>
+                            <td class="p-3 border text-center space-x-2">
+                                <button onclick="openEditModal('${item.id}')" class="bg-yellow-500 text-white px-3 py-1 rounded text-xs hover:bg-yellow-600"><i class="fa-solid fa-pen"></i> Sửa</button>
+                                <button onclick="deleteProduct('${item.id}')" class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700"><i class="fa-solid fa-trash"></i> Xóa</button>
                             </td>
                         `;
                         tbody.appendChild(tr);
                     });
                 } else {
-                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">Chưa có dữ liệu trong bảng.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">Chưa có dữ liệu sản phẩm.</td></tr>`;
                 }
             } catch (error) {
                 console.error('Lỗi tải dữ liệu:', error);
+            }
+        }
+
+        // Thêm / Sửa sản phẩm
+        function openAddModal() {
+            document.getElementById('modal-title').innerText = "Thêm Sản Phẩm Mới";
+            document.getElementById('product-form').reset();
+            document.getElementById('prod-original-id').value = '';
+            document.getElementById('prod-id').disabled = false;
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function openEditModal(id) {
+            const product = window.allProducts.find(p => p.id.toString() === id.toString());
+            if (!product) return;
+
+            document.getElementById('modal-title').innerText = "Sửa Thông Tin Sản Phẩm";
+            document.getElementById('prod-original-id').value = product.id;
+            document.getElementById('prod-id').value = product.id;
+            document.getElementById('prod-id').disabled = true; // Không cho sửa ID chính để tránh lỗi lệch dòng
+            document.getElementById('prod-name').value = product.name || '';
+            document.getElementById('prod-category').value = product.category || '';
+            document.getElementById('prod-price').value = product.price || '';
+            document.getElementById('prod-images').value = product.images || product.img || '';
+            
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        async function saveProduct(event) {
+            event.preventDefault();
+            const originalId = document.getElementById('prod-original-id').value;
+            const actionType = originalId ? 'edit' : 'add';
+
+            const payload = {
+                action: actionType,
+                id: document.getElementById('prod-id').value,
+                name: document.getElementById('prod-name').value,
+                category: document.getElementById('prod-category').value,
+                price: document.getElementById('prod-price').value,
+                images: document.getElementById('prod-images').value
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    alert('Lưu sản phẩm thành công!');
+                    closeModal();
+                    fetchData();
+                } else {
+                    alert('Có lỗi xảy ra: ' + (result.message || 'Không thành công'));
+                }
+            } catch (error) {
+                alert('Lỗi kết nối khi lưu sản phẩm!');
+            }
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm(`Bạn có chắc chắn muốn xóa sản phẩm có ID: ${id} không?`)) return;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'delete', id: id })
+                });
+                const result = await response.json();
+                if (result.status === 'deleted') {
+                    alert('Đã xóa sản phẩm thành công!');
+                    fetchData();
+                } else {
+                    alert('Không tìm thấy sản phẩm để xóa.');
+                }
+            } catch (error) {
+                alert('Lỗi kết nối khi xóa sản phẩm!');
+            }
+        }
+
+        // Xử lý upload ảnh hàng loạt lên ImgBB
+        async function handleFiles(files) {
+            const resultsContainer = document.getElementById('upload-results');
+            resultsContainer.innerHTML = '';
+
+            for (let file of files) {
+                let formData = new FormData();
+                formData.append('image', file);
+
+                let loadingDiv = document.createElement('div');
+                loadingDiv.className = "p-2 border rounded bg-gray-50 text-xs text-center flex flex-col items-center justify-center";
+                loadingDiv.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-blue-500 text-lg mb-1"></i> Đang tải ${file.name}...`;
+                resultsContainer.appendChild(loadingDiv);
+
+                try {
+                    let res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    let data = await res.json();
+
+                    if (data.success) {
+                        let imageUrl = data.data.url;
+                        loadingDiv.innerHTML = `
+                            <img src="${imageUrl}" class="w-full h-20 object-cover rounded mb-1">
+                            <input type="text" readonly value="${imageUrl}" class="w-full text-[10px] p-1 border rounded bg-white select-all mb-1" onclick="this.select()">
+                            <button onclick="navigator.clipboard.writeText('${imageUrl}'); alert('Đã copy link ảnh!');" class="bg-blue-500 text-white px-2 py-0.5 rounded text-[10px] w-full hover:bg-blue-600">Copy Link</button>
+                        `;
+                    } else {
+                        loadingDiv.innerHTML = `<span class="text-red-500 text-xs">Lỗi tải ${file.name}</span>`;
+                    }
+                } catch (err) {
+                    loadingDiv.innerHTML = `<span class="text-red-500 text-xs">Lỗi mạng khi tải ảnh</span>`;
+                }
             }
         }
     </script>
