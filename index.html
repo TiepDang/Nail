@@ -1,201 +1,404 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="cs">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koprivnice CityNail - Tiệm Móng Chuyên Nghiệp</title>
+    <title id="page-title">Koprivnice CityNail - Luxusní Nehty</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-pink-50 via-white to-pink-50 text-gray-800 min-h-screen flex flex-col justify-between">
 
-    <!-- Header / Navbar -->
-    <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 py-3">
+    <!-- Header & Thông tin liên hệ nhanh -->
+    <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 py-3 transition-all">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <span class="text-2xl">💅</span>
-                <h1 class="text-base sm:text-lg font-bold bg-gradient-to-r from-pink-600 to-rose-500 bg-clip-text text-transparent uppercase tracking-wider">Koprivnice CityNail</h1>
+                <span class="text-2xl">🌸</span>
+                <div>
+                    <h1 id="shop-title" class="text-lg sm:text-xl font-bold bg-gradient-to-r from-pink-600 to-rose-500 bg-clip-text text-transparent uppercase tracking-wider">Koprivnice CityNail</h1>
+                    <p id="header-contact-phone" class="text-xs text-gray-500 font-medium">📞 Tel: +420 123 456 789</p>
+                </div>
             </div>
-            <div class="flex items-center space-x-2">
-                <a href="admin.html" class="text-xs font-semibold px-3 py-1.5 bg-pink-100 text-pink-700 rounded-full hover:bg-pink-200 transition">🔐 Quản Trị</a>
+            
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <!-- Nút đặt lịch qua FB trên Header -->
+                <a href="https://m.me/4" target="_blank" id="btn-fb-header" class="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow transition">
+                    <span>💬</span> <span class="hidden md:inline">Đặt lịch FB</span><span class="md:hidden">FB</span>
+                </a>
+
+                <div class="flex bg-gray-100 p-1 rounded-full shadow-inner">
+                    <button onclick="changeLanguage('cs')" id="btn-cs" class="px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow">CZ</button>
+                    <button onclick="changeLanguage('vi')" id="btn-vi" class="px-3 py-1 text-xs font-bold text-gray-600 rounded-full transition hover:text-pink-600">VN</button>
+                </div>
+                <a href="admin.html" id="admin-link" class="hidden sm:inline-flex items-center text-xs font-semibold px-3 py-1.5 border border-pink-200 text-pink-600 rounded-full hover:bg-pink-50 transition">Admin</a>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-6 flex-grow max-w-4xl space-y-6">
-        
-        <!-- Banner Chào Mừng -->
-        <div class="bg-gradient-to-r from-pink-500 to-rose-500 rounded-3xl p-6 text-white shadow-lg text-center space-y-2">
-            <h2 class="text-xl sm:text-2xl font-extrabold">Chào mừng bạn đến với Tiệm Móng!</h2>
-            <p class="text-xs sm:text-sm text-pink-100">Khám phá các mẫu móng mới nhất hoặc gửi mẫu yêu thích của bạn để chúng mình phục vụ nhé.</p>
-        </div>
-
-        <!-- Bộ lọc danh mục -->
-        <div class="flex overflow-x-auto space-x-2 pb-2 scrollbar-none">
-            <button onclick="filterCategory('All')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-pink-600 text-white shadow transition flex-shrink-0">Tất cả</button>
-            <button onclick="filterCategory('Manikúra')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-gray-600 border border-gray-200 hover:bg-pink-50 transition flex-shrink-0">Manikúra</button>
-            <button onclick="filterCategory('Gelové nehty')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-gray-600 border border-gray-200 hover:bg-pink-50 transition flex-shrink-0">Gelové nehty</button>
-            <button onclick="filterCategory('Nail Art')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-gray-600 border border-gray-200 hover:bg-pink-50 transition flex-shrink-0">Nail Art</button>
-            <button onclick="filterCategory('Pedikúra')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-gray-600 border border-gray-200 hover:bg-pink-50 transition flex-shrink-0">Pedikúra</button>
-        </div>
-
-        <!-- Lưới Hiển Thị Bộ Sưu Tập Mẫu Móng -->
-        <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            <div class="col-span-full text-center py-12 text-gray-400 text-sm">Đang tải bộ sưu tập...</div>
-        </div>
-
-        <!-- Khu vực Khách hàng tải ảnh mẫu lên gửi Messenger -->
-        <div class="bg-white rounded-2xl shadow-sm border border-pink-100 p-6 my-6">
-            <h3 class="text-base font-bold text-gray-800 mb-2 flex items-center gap-2">
-                <span>📤</span> Gửi mẫu móng bạn muốn làm
-            </h3>
-            <p class="text-xs text-gray-500 mb-4">Bạn có mẫu móng yêu thích? Hãy tải ảnh lên đây để gửi nhanh cho tiệm qua Messenger nhé!</p>
+    <!-- Hero Section -->
+    <section class="container mx-auto px-4 pt-8 pb-4 text-center">
+        <div class="max-w-2xl mx-auto">
+            <span id="badge-top" class="inline-block bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2 shadow-sm">✨ Premium Nail Art & Care</span>
+            <h2 id="hero-heading" class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Objevte svou krásu s námi</h2>
+            <p id="shop-subtitle" class="text-gray-500 mt-1 text-xs sm:text-sm">Profesionální design nehtů, luxusní gel a špičková péče.</p>
             
-            <div class="space-y-3">
-                <input type="file" id="clientImageInput" accept="image/*" multiple class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 cursor-pointer border border-gray-200 rounded-xl p-1 bg-white">
-                
-                <!-- Hiển thị ảnh xem trước -->
-                <div id="client-preview" class="flex flex-wrap gap-2 min-h-[60px] items-center"></div>
-                
-                <button type="button" onclick="sendImagesToMessenger()" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2.5 rounded-xl shadow transition text-sm flex items-center justify-center gap-2">
-                    <span>💬 Gửi mẫu qua Messenger</span>
-                </button>
+            <div class="mt-3 flex flex-wrap justify-center gap-2 items-center">
+                <p id="tesco-notice" class="inline-block bg-pink-50 text-pink-700 text-xs font-semibold px-3 py-1 rounded-full border border-pink-200">
+                    🛍️ Uvnitř supermarketu Tesco (Nádražní 228/2, Kopřivnice)
+                </p>
+                <a href="https://m.me/4" target="_blank" id="btn-fb-hero" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-md transition transform hover:scale-105">
+                    <span>💬</span> <span id="fb-hero-text">Rezervovat přes Facebook</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-4 flex-grow space-y-8">
+        <div id="categories-container">
+            <p id="loading-text" class="text-gray-400 text-center py-20 font-medium">Načítání galerie...</p>
+        </div>
+
+        <!-- Bộ sưu tập riêng section -->
+        <div id="gallery-section" class="mt-12 pt-8 border-t border-pink-100 hidden">
+            <div class="flex items-center justify-between mb-4 px-2">
+                <h3 id="gallery-section-title" class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                    <span class="w-3 h-3 bg-rose-500 rounded-full inline-block"></span>
+                    Bộ Sưu Tập Riêng
+                </h3>
+            </div>
+            <div id="gallery-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <!-- Gallery items injected here -->
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-pink-100 py-4 text-center text-xs text-gray-400">
-        &copy; 2026 Koprivnice CityNail Studio
+    <!-- Google Maps Section -->
+    <section class="py-10 bg-white/80 border-t border-pink-100 my-6">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h3 id="map-title" class="text-xl font-bold text-center mb-2 text-pink-600">📍 Kde nás najdete / Địa chỉ của chúng tôi</h3>
+            <div class="text-center mb-4">
+                <span id="map-subtitle" class="inline-block bg-pink-50 text-pink-700 text-xs sm:text-sm font-medium px-4 py-1.5 rounded-full border border-pink-200">
+                    🛍️ Uvnitř supermarketu Tesco, Nádražní 228/2, Kopřivnice
+                </span>
+            </div>
+            <div class="rounded-2xl overflow-hidden shadow-lg border border-pink-200 bg-white p-2">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2585.6200678626687!2d18.14606427622466!3d49.60491377144311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4713ed0055760b5b%3A0x7c62d5f3d48d7e8!2sKoprivnice%20CityNai!5e0!3m2!1svi!2scz!4v1784904727458!5m2!1svi!2scz" 
+                    width="100%" 
+                    height="400" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Phóng To Ảnh (Lightbox) -->
+    <div id="image-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4" onclick="closeModal()">
+        <div class="relative max-w-3xl w-full max-h-[90vh] flex items-center justify-center">
+            <button class="absolute -top-10 right-0 text-white text-3xl font-bold px-3 py-1">&times;</button>
+            <img id="modal-img" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl">
+        </div>
+    </div>
+
+    <!-- Footer Thông tin liên hệ chi tiết -->
+    <footer class="bg-white border-t border-pink-100 py-8 text-sm text-gray-600">
+        <div class="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
+            <div>
+                <h4 id="footer-about-title" class="font-bold text-gray-800 mb-2">Nehtové Studio</h4>
+                <p id="footer-about-desc" class="text-xs text-gray-500">Kvalitní péče o nehty s dlouhou životností a moderním designem.</p>
+            </div>
+            <div>
+                <h4 id="footer-contact-title" class="font-bold text-gray-800 mb-2">Kontakty & Adresa</h4>
+                <p class="text-xs text-gray-500 mb-1" id="footer-address">📍 Adresa: Tesco, Nádražní 228/2, Kopřivnice</p>
+                <p class="text-xs text-gray-500 mb-1" id="footer-phone">📞 Telefon: +420 123 456 789</p>
+                <p class="text-xs mt-2"><a href="https://m.me/4" target="_blank" class="text-blue-600 font-semibold hover:underline">💬 Nhắn tin Facebook đặt lịch</a></p>
+            </div>
+            <div class="flex flex-col items-center sm:items-end justify-center">
+                <a href="admin.html" id="admin-link-footer" class="text-pink-600 font-semibold hover:underline text-xs mb-2">Administrace systému</a>
+                <p class="text-xs text-gray-400">&copy; 2026 Koprivnice CityNail. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
 
-    <!-- Script Tải Dữ Liệu và Xử lý Khách Hàng -->
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbzxcC8x3PAhtu-C_vR5Qxiv3LSRBZHLKAUvQSELPmhJOxqluAZ572ZcaNcuCO9m9dIP/exec';
-        const IMGBB_KEY_CLIENT = 'ff6003803e7977c8212819c35faeb1d4';
-        
-        let allNailsData = [];
-        let uploadedClientImages = [];
+        let allNails = [];
+        let galleryItems = [];
 
-        // Tải dữ liệu mẫu móng từ Google Sheets khi mở trang
-        async function loadIndexNails() {
+        const translations = {
+            cs: {
+                title: "Koprivnice CityNail - Luxusní Nehty",
+                shopTitle: "Koprivnice CityNail",
+                badgeTop: "✨ Premium Nail Art & Care",
+                heroHeading: "Objevte svou krásu s námi",
+                shopSubtitle: "Profesionální design nehtů, luxusní gel a špičková péče.",
+                tescoNotice: "🛍️ Uvnitř supermarketu Tesco (Nádražní 228/2, Kopřivnice)",
+                fbHeroText: "Rezervovat přes Facebook",
+                fbItemBtn: "Rezervovat",
+                loading: "Načítání galerie...",
+                adminLink: "Admin",
+                adminLinkFooter: "Administrace systému",
+                error: "Nelze načíst data.",
+                empty: "Žádné položky v systému.",
+                headerPhone: "📞 Tel: +420 123 456 789",
+                footerAboutTitle: "O nás",
+                footerAboutDesc: "Kvalitní péče o nehty s dlouhou životností a moderním designem.",
+                footerContactTitle: "Kontakty & Adresa",
+                footerAddress: "📍 Adresa: Tesco, Nádražní 228/2, Kopřivnice",
+                footerPhoneText: "📞 Telefon: +420 123 456 789",
+                mapTitle: "📍 Kde nás najdete",
+                mapSubtitle: "🛍️ Uvnitř supermarketu Tesco, Nádražní 228/2, Kopřivnice",
+                galleryTitle: "Osobní galerie"
+            },
+            vi: {
+                title: "Koprivnice CityNail - Mẫu Móng Đẹp & Sang Trọng",
+                shopTitle: "Koprivnice CityNail",
+                badgeTop: "✨ Thiết Kế Móng Nghệ Thuật Cao Cấp",
+                heroHeading: "Tôn vinh vẻ đẹp đôi bàn tay của bạn",
+                shopSubtitle: "Chuyên thiết kế móng nghệ thuật, đính đá, gel cao cấp và chăm sóc tận tâm.",
+                tescoNotice: "🛍️ Bên trong siêu thị Tesco (Nádražní 228/2, Kopřivnice)",
+                fbHeroText: "Đặt lịch qua Facebook",
+                fbItemBtn: "Đặt lịch mẫu này",
+                loading: "Đang tải bộ sưu tập...",
+                adminLink: "Quản trị",
+                adminLinkFooter: "Trang quản trị hệ thống",
+                error: "Không thể tải dữ liệu từ máy chủ.",
+                empty: "Chưa có mẫu nào trong hệ thống.",
+                headerPhone: "📞 Đặt lịch: +420 123 456 789",
+                footerAboutTitle: "Về chúng tôi",
+                footerAboutDesc: "Chăm sóc móng chuyên nghiệp với độ bền cao và thiết kế thời thượng.",
+                footerContactTitle: "Liên hệ & Địa chỉ",
+                footerAddress: "📍 Địa chỉ: Siêu thị Tesco, Nádražní 228/2, Kopřivnice",
+                footerPhoneText: "📞 Điện thoại: +420 123 456 789",
+                mapTitle: "📍 Địa chỉ bản đồ của chúng tôi",
+                mapSubtitle: "🛍️ Bên trong siêu thị Tesco, Nádražní 228/2, Kopřivnice",
+                galleryTitle: "Bộ Sưu Tập Riêng"
+            }
+        };
+
+        let currentLang = localStorage.getItem('site_lang') || 'cs';
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('site_lang', lang);
+            updateTexts();
+            renderCategories();
+            renderGallery();
+        }
+
+        function updateTexts() {
+            const t = translations[currentLang];
+            document.getElementById('page-title').innerText = t.title;
+            document.getElementById('shop-title').innerText = t.shopTitle;
+            document.getElementById('badge-top').innerText = t.badgeTop;
+            document.getElementById('hero-heading').innerText = t.heroHeading;
+            document.getElementById('shop-subtitle').innerText = t.shopSubtitle;
+            document.getElementById('tesco-notice').innerText = t.tescoNotice;
+            document.getElementById('fb-hero-text').innerText = t.fbHeroText;
+            document.getElementById('loading-text').innerText = t.loading;
+            document.getElementById('admin-link').innerText = t.adminLink;
+            document.getElementById('admin-link-footer').innerText = t.adminLinkFooter;
+            document.getElementById('header-contact-phone').innerText = t.headerPhone;
+            document.getElementById('footer-about-title').innerText = t.footerAboutTitle;
+            document.getElementById('footer-about-desc').innerText = t.footerAboutDesc;
+            document.getElementById('footer-contact-title').innerText = t.footerContactTitle;
+            document.getElementById('footer-address').innerText = t.footerAddress;
+            document.getElementById('footer-phone').innerText = t.footerPhoneText;
+            document.getElementById('map-title').innerText = t.mapTitle;
+            document.getElementById('map-subtitle').innerText = t.mapSubtitle;
+            
+            const galleryTitleEl = document.getElementById('gallery-section-title');
+            if (galleryTitleEl) {
+                galleryTitleEl.innerHTML = `<span class="w-3 h-3 bg-rose-500 rounded-full inline-block"></span> ${t.galleryTitle}`;
+            }
+
+            if (currentLang === 'cs') {
+                document.getElementById('btn-cs').className = "px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow";
+                document.getElementById('btn-vi').className = "px-3 py-1 text-xs font-bold text-gray-600 rounded-full transition hover:text-pink-600";
+            } else {
+                document.getElementById('btn-vi').className = "px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow";
+                document.getElementById('btn-cs').className = "px-3 py-1 text-xs font-bold text-gray-600 rounded-full transition hover:text-pink-600";
+            }
+        }
+
+        async function loadPublicData() {
             try {
-                const response = await fetch(API_URL, {
+                // Tải sản phẩm (Sheet1)
+                const resProd = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ action: 'get' })
                 });
-                allNailsData = await response.json();
-                renderNails(allNailsData);
-            } catch (err) {
-                document.getElementById('product-grid').innerHTML = `<p class="col-span-full text-center text-rose-500 text-xs">Không thể tải bộ sưu tập.</p>`;
+                allNails = await resProd.json();
+                renderCategories();
+            } catch (error) {
+                document.getElementById('categories-container').innerHTML = `<p class="text-rose-500 text-center font-medium">${translations[currentLang].error}</p>`;
+            }
+
+            try {
+                // Tải bộ sưu tập riêng (Gallery)
+                const resGal = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'getGallery' })
+                });
+                galleryItems = await resGal.json();
+                renderGallery();
+            } catch (error) {
+                console.error("Không thể tải Gallery", error);
             }
         }
 
-        function renderNails(list) {
-            const grid = document.getElementById('product-grid');
-            if (!list || list.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-gray-400 text-xs py-10">Chưa có mẫu móng nào trong danh mục này.</p>`;
+        function renderCategories() {
+            const container = document.getElementById('categories-container');
+            const t = translations[currentLang];
+
+            if (!allNails || allNails.length === 0) {
+                container.innerHTML = `<p class="text-gray-400 text-center py-10 font-medium">${t.empty}</p>`;
                 return;
             }
 
+            const categories = [...new Set(allNails.map(n => n.category || 'Manikúra'))];
             let html = '';
-            list.forEach(n => {
-                let imgList = [];
-                try {
-                    imgList = typeof n.images === 'string' ? JSON.parse(n.images) : (n.images || [n.img]);
-                } catch(e) {
-                    imgList = [n.img];
-                }
 
-                const mainImg = imgList[0] || 'https://via.placeholder.com/300';
-                
-                // Kiểm tra nếu có giá thì hiển thị, nếu không có giá (để trống) thì ẩn đi
-                let priceHtml = '';
-                if (n.price && n.price.toString().trim() !== '') {
-                    priceHtml = `<span class="text-xs font-bold text-pink-600">${n.price} Kč</span>`;
-                }
+            categories.forEach(cat => {
+                const itemsInCat = allNails.filter(n => (n.category || 'Manikúra') === cat);
 
                 html += `
-                    <div class="bg-white rounded-2xl shadow-sm border border-pink-100 overflow-hidden flex flex-col justify-between group hover:shadow-md transition">
-                        <div class="relative aspect-square overflow-hidden bg-pink-50">
-                            <img src="${mainImg}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy">
+                    <div class="mb-10">
+                        <div class="flex items-center justify-between mb-4 px-2">
+                            <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                                <span class="w-3 h-3 bg-pink-600 rounded-full inline-block"></span>
+                                ${cat}
+                            </h3>
+                            <span class="text-xs font-semibold px-3 py-1 bg-pink-100 text-pink-700 rounded-full">
+                                ${itemsInCat.length} ${currentLang === 'cs' ? 'položek' : 'mẫu'}
+                            </span>
                         </div>
-                        <div class="p-3 space-y-1">
-                            <span class="text-[10px] font-semibold px-2 py-0.5 bg-pink-50 text-pink-600 rounded-md">${n.category}</span>
-                            <h4 class="font-bold text-xs text-gray-800 truncate">${n.name}</h4>
-                            ${priceHtml}
+
+                        <div class="flex overflow-x-auto gap-5 pb-4 pt-1 no-scrollbar scroll-smooth">
+                `;
+
+                itemsInCat.forEach(n => {
+                    const hasDiscount = n.oldPrice && n.oldPrice.toString().trim() !== '';
+                    
+                    let imgList = [];
+                    if (n.images) {
+                        try { imgList = typeof n.images === 'string' ? JSON.parse(n.images) : n.images; } catch(e){ imgList = [n.img]; }
+                    } else {
+                        imgList = [n.img];
+                    }
+
+                    const uniqueId = 'slider-' + n.id;
+                    const fbMsgUrl = `https://m.me/4`;
+
+                    html += `
+                        <div class="min-w-[260px] max-w-[260px] bg-white rounded-2xl shadow-sm border border-pink-100/60 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col flex-shrink-0 relative">
+                            ${hasDiscount ? `<span class="absolute top-3 right-3 z-10 bg-rose-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md uppercase tracking-wider">Sale</span>` : ''}
+                            
+                            <div class="w-full h-72 bg-neutral-900 relative group overflow-hidden flex items-center">
+                                <div id="${uniqueId}" class="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth">
+                    `;
+
+                    imgList.forEach((imgUrl, idx) => {
+                        html += `
+                            <div class="w-full h-full flex-shrink-0 snap-center flex items-center justify-center cursor-pointer" onclick="openModal('${imgUrl}')">
+                                <img src="${imgUrl}" alt="${n.name}" class="w-full h-full object-contain">
+                            </div>
+                        `;
+                    });
+
+                    html += `
+                                </div>
+                                ${imgList.length > 1 ? `
+                                    <button onclick="scrollSlider('${uniqueId}', -1)" class="absolute left-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-1 rounded-full text-xs hover:bg-black/70 transition opacity-0 group-hover:opacity-100">&#10094;</button>
+                                    <button onclick="scrollSlider('${uniqueId}', 1)" class="absolute right-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-1 rounded-full text-xs hover:bg-black/70 transition opacity-0 group-hover:opacity-100">&#10095;</button>
+                                    <div class="absolute bottom-2 left-0 right-0 flex justify-center space-x-1 pointer-events-none">
+                                        <span class="text-[10px] bg-black/50 text-white px-2 py-0.5 rounded-full">${imgList.length} ảnh</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+
+                            <div class="p-4 flex flex-col flex-grow justify-between bg-white">
+                                <div>
+                                    <h4 class="font-bold text-base text-gray-800 truncate" title="${n.name}">${n.name}</h4>
+                                </div>
+                                <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
+                                    <span class="text-xs text-gray-400 font-medium uppercase">Cena</span>
+                                    <div class="text-right">
+                                        ${hasDiscount ? `<span class="line-through text-gray-400 text-xs mr-1.5">${n.oldPrice} Kč</span>` : ''}
+                                        <span class="text-pink-600 font-bold text-base">${n.price} Kč</span>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="${fbMsgUrl}" target="_blank" class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-3 rounded-xl shadow transition">
+                                        💬 ${t.fbItemBtn}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div></div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function renderGallery() {
+            const section = document.getElementById('gallery-section');
+            const container = document.getElementById('gallery-container');
+
+            if (!galleryItems || galleryItems.length === 0) {
+                section.classList.add('hidden');
+                return;
+            }
+
+            section.classList.remove('hidden');
+            let html = '';
+
+            galleryItems.forEach(item => {
+                html += `
+                    <div class="bg-white rounded-xl shadow-sm border border-pink-100 overflow-hidden group hover:shadow-md transition">
+                        <div class="w-full h-48 bg-gray-100 overflow-hidden cursor-pointer flex items-center justify-center" onclick="openModal('${item.url}')">
+                            <img src="${item.url}" alt="Gallery Item" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                         </div>
                     </div>
                 `;
             });
-            grid.innerHTML = html;
+
+            container.innerHTML = html;
         }
 
-        function filterCategory(cat) {
-            // Đổi trạng thái active nút danh mục
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                if (btn.innerText.includes(cat) || (cat === 'All' && btn.innerText.includes('Tất cả'))) {
-                    btn.className = "cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-pink-600 text-white shadow transition flex-shrink-0";
-                } else {
-                    btn.className = "cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-gray-600 border border-gray-200 hover:bg-pink-50 transition flex-shrink-0";
-                }
-            });
-
-            if (cat === 'All') {
-                renderNails(allNailsData);
-            } else {
-                const filtered = allNailsData.filter(n => n.category === cat);
-                renderNails(filtered);
+        function scrollSlider(sliderId, direction) {
+            const slider = document.getElementById(sliderId);
+            if (slider) {
+                slider.scrollBy({ left: direction * 260, behavior: 'smooth' });
             }
         }
 
-        // Xử lý khách hàng tải ảnh lên gửi Messenger
-        document.getElementById('clientImageInput').addEventListener('change', async function(e) {
-            const files = e.target.files;
-            if (!files || files.length === 0) return;
-
-            const previewContainer = document.getElementById('client-preview');
-            previewContainer.innerHTML = `<span class="text-xs text-pink-600 animate-pulse">Đang tải ảnh lên hệ thống...</span>`;
-
-            for (let file of files) {
-                const formData = new FormData();
-                formData.append('image', file);
-                try {
-                    const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY_CLIENT}`, {
-                        method: 'POST',
-                        body: formData
-                    });
-                    const data = await res.json();
-                    if (data && data.success) {
-                        uploadedClientImages.push(data.data.url);
-                    }
-                } catch (err) {
-                    console.error('Lỗi upload:', err);
-                }
-            }
-
-            let html = '';
-            uploadedClientImages.forEach(url => {
-                html += `<img src="${url}" class="w-16 h-16 object-cover rounded-lg border border-pink-200 shadow-sm">`;
-            });
-            previewContainer.innerHTML = html;
-        });
-
-        function sendImagesToMessenger() {
-            if (uploadedClientImages.length === 0) {
-                alert('Vui lòng chọn và tải ảnh lên trước!');
-                return;
-            }
-            const linksText = uploadedClientImages.join('\n');
-            const message = encodeURIComponent(`Chào tiệm, mình muốn làm mẫu móng theo các ảnh sau:\n${linksText}`);
-            window.open(`https://m.me/tiepdang.2k?text=${message}`, '_blank');
+        function openModal(imgUrl) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            modalImg.src = imgUrl;
+            modal.classList.remove('hidden');
         }
 
-        // Khởi chạy khi load trang
-        loadIndexNails();
+        function closeModal() {
+            document.getElementById('image-modal').classList.add('hidden');
+        }
+
+        updateTexts();
+        loadPublicData();
     </script>
 </body>
 </html>
