@@ -35,9 +35,8 @@
     </footer>
 
     <script>
-        const API_URL = 'YOUR_SHEETDB_API_URL';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxkzU3F2k3wO2A8XOJhifZW3c-vkc9UrKQFVe8KkbPkVkdnuOXcdLJeKeQDQDbZMgbc/exec';
 
-        // Từ điển đa ngôn ngữ (Tiếng Séc là chính - 'cs')
         const translations = {
             cs: {
                 title: "Nehtové Studio - Luxusní Nehty",
@@ -59,7 +58,6 @@
             }
         };
 
-        // Mặc định là Tiếng Séc ('cs')
         let currentLang = localStorage.getItem('site_lang') || 'cs';
 
         function changeLanguage(lang) {
@@ -77,7 +75,6 @@
             document.getElementById('loading-text').innerText = t.loading;
             document.getElementById('admin-link').innerText = t.adminLink;
 
-            // Highlight nút ngôn ngữ
             if (currentLang === 'cs') {
                 document.getElementById('btn-cs').className = "px-3 py-1 text-sm font-bold bg-pink-600 text-white rounded";
                 document.getElementById('btn-vi').className = "px-3 py-1 text-sm font-bold bg-gray-200 text-gray-700 rounded";
@@ -93,7 +90,7 @@
                 const nails = await response.json();
                 const listContainer = document.getElementById('nail-list');
 
-                if (nails.length === 0) {
+                if (!nails || nails.length === 0) {
                     listContainer.innerHTML = '<p class="text-gray-500 col-span-full text-center">Žádné vzory nehtů.</p>';
                     return;
                 }
