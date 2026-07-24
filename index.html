@@ -8,14 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        /* Ẩn thanh cuộn nhưng vẫn lướt được ngang mượt mà */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-gradient-to-br from-pink-50 via-white to-pink-50 text-gray-800 min-h-screen flex flex-col justify-between">
@@ -28,7 +22,6 @@
                 <h1 id="shop-title" class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-pink-600 to-rose-500 bg-clip-text text-transparent uppercase tracking-wider">Nehtové Studio</h1>
             </div>
             
-            <!-- Nút ngôn ngữ & Quản trị -->
             <div class="flex items-center space-x-3">
                 <div class="flex bg-gray-100 p-1 rounded-full shadow-inner">
                     <button onclick="changeLanguage('cs')" id="btn-cs" class="px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow">CZ</button>
@@ -48,7 +41,7 @@
         </div>
     </section>
 
-    <!-- Main Content: Chia theo từng khu vực danh mục riêng biệt -->
+    <!-- Main Content -->
     <main class="container mx-auto px-4 py-6 flex-grow space-y-12">
         <div id="categories-container">
             <p id="loading-text" class="text-gray-400 text-center py-20 font-medium">Načítání galerie...</p>
@@ -142,18 +135,14 @@
                 return;
             }
 
-            // Lấy danh sách các danh mục độc nhất từ dữ liệu
             const categories = [...new Set(allNails.map(n => n.category || 'Manikúra'))];
-
             let html = '';
 
             categories.forEach(cat => {
-                // Lọc các mẫu thuộc danh mục này
                 const itemsInCat = allNails.filter(n => (n.category || 'Manikúra') === cat);
 
                 html += `
                     <div class="mb-10">
-                        <!-- Tiêu đề từng mục -->
                         <div class="flex items-center justify-between mb-4 px-2">
                             <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
                                 <span class="w-3 h-3 bg-pink-600 rounded-full inline-block"></span>
@@ -164,14 +153,16 @@
                             </span>
                         </div>
 
-                        <!-- Khung lướt ngang (Horizontal Scroll / Carousel) -->
                         <div class="flex overflow-x-auto gap-5 pb-4 pt-1 no-scrollbar scroll-smooth">
                 `;
 
                 itemsInCat.forEach(n => {
+                    const hasDiscount = n.oldPrice && n.oldPrice.trim() !== '';
+
                     html += `
-                        <div class="min-w-[260px] max-w-[260px] bg-white rounded-2xl shadow-sm border border-pink-100/60 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col flex-shrink-0">
-                            <!-- Ảnh hiển thị trọn vẹn 100% không bị cắt (dùng object-contain và nền sáng) -->
+                        <div class="min-w-[260px] max-w-[260px] bg-white rounded-2xl shadow-sm border border-pink-100/60 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col flex-shrink-0 relative">
+                            ${hasDiscount ? `<span class="absolute top-3 right-3 z-10 bg-rose-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md uppercase tracking-wider">Sale</span>` : ''}
+                            
                             <div class="w-full h-72 bg-neutral-900 flex items-center justify-center relative group overflow-hidden">
                                 <img src="${n.img}" alt="${n.name}" class="w-full h-full object-contain group-hover:scale-105 transition duration-500">
                             </div>
@@ -181,7 +172,10 @@
                                 </div>
                                 <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
                                     <span class="text-xs text-gray-400 font-medium uppercase">Cena</span>
-                                    <span class="text-pink-600 font-bold text-base">${n.price}</span>
+                                    <div class="text-right">
+                                        ${hasDiscount ? `<span class="line-through text-gray-400 text-xs mr-1.5">${n.oldPrice} Kč</span>` : ''}
+                                        <span class="text-pink-600 font-bold text-base">${n.price} Kč</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
