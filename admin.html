@@ -219,7 +219,7 @@
                                 <span class="w-2 h-2 bg-pink-600 rounded-full inline-block"></span>
                                 ${cat}
                             </span>
-                            <span class="text-xs text-gray-500 font-medium">${itemsInCat.length} ${currentLang === 'cs' ? 'položek' : 'mẫu'}</span>
+                            <span class="text-xs text-gray-500 font-medium">${itemsInCat.length} ${currentAdminLang === 'cs' ? 'položek' : 'mẫu'}</span>
                         </div>
                         <div class="space-y-2">
                 `;
@@ -319,7 +319,6 @@
             }
         }
 
-        // Dùng phương thức POST với action: 'delete' để xóa thành công qua Google Apps Script
         async function deleteNail(id) {
             const t = adminTexts[currentAdminLang];
             if (!confirm(t.confirmDelete)) return;
