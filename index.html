@@ -8,12 +8,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        /* Ẩn thanh cuộn nhưng vẫn lướt được ngang mượt mà */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-pink-50 via-white to-pink-50 text-gray-800 min-h-screen flex flex-col justify-between">
 
     <!-- Header & Nút chuyển đổi ngôn ngữ -->
-    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 py-4 transition-all">
+    <header class="bg-white/85 backdrop-blur-md shadow-sm sticky top-0 z-50 py-4 transition-all">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center space-x-2">
                 <span class="text-2xl">🌸</span>
@@ -38,17 +46,12 @@
             <h2 id="hero-heading" class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">Objevte svou krásu s námi</h2>
             <p id="shop-subtitle" class="text-gray-500 mt-2 text-sm sm:text-base">Profesionální design nehtů, luxusní gel a špičková péče.</p>
         </div>
-
-        <!-- Bộ lọc danh mục tự động sinh ra từ dữ liệu -->
-        <div id="category-filters" class="flex flex-wrap justify-center gap-2 mt-8">
-            <button onclick="filterCategory('all')" id="tab-all" class="px-5 py-2 text-sm font-semibold rounded-full bg-pink-600 text-white shadow-md shadow-pink-200 transition">Vše / Tất cả</button>
-        </div>
     </section>
 
-    <!-- Main Content Grid -->
-    <main class="container mx-auto px-4 py-6 flex-grow">
-        <div id="nail-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <p id="loading-text" class="text-gray-400 col-span-full text-center py-20 font-medium">Načítání galerie...</p>
+    <!-- Main Content: Chia theo từng khu vực danh mục riêng biệt -->
+    <main class="container mx-auto px-4 py-6 flex-grow space-y-12">
+        <div id="categories-container">
+            <p id="loading-text" class="text-gray-400 text-center py-20 font-medium">Načítání galerie...</p>
         </div>
     </main>
 
@@ -63,7 +66,6 @@
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbzxcC8x3PAhtu-C_vR5Qxiv3LSRBZHLKAUvQSELPmhJOxqluAZ572ZcaNcuCO9m9dIP/exec';
         let allNails = [];
-        let currentCategory = 'all';
 
         const translations = {
             cs: {
@@ -76,8 +78,7 @@
                 adminLink: "Admin",
                 adminLinkFooter: "Administrace systému",
                 error: "Nelze načíst data.",
-                all: "Všechny",
-                empty: "Žádné položky v této kategorii."
+                empty: "Žádné položky v systému."
             },
             vi: {
                 title: "Tiệm Nails - Mẫu Móng Đẹp & Sang Trọng",
@@ -89,8 +90,7 @@
                 adminLink: "Quản trị",
                 adminLinkFooter: "Trang quản trị hệ thống",
                 error: "Không thể tải dữ liệu từ máy chủ.",
-                all: "Tất cả",
-                empty: "Chưa có mẫu nào trong mục này."
+                empty: "Chưa có mẫu nào trong hệ thống."
             }
         };
 
@@ -100,8 +100,7 @@
             currentLang = lang;
             localStorage.setItem('site_lang', lang);
             updateTexts();
-            renderFilters();
-            renderNails();
+            renderCategories();
         }
 
         function updateTexts() {
@@ -114,7 +113,6 @@
             document.getElementById('loading-text').innerText = t.loading;
             document.getElementById('admin-link').innerText = t.adminLink;
             document.getElementById('admin-link-footer').innerText = t.adminLinkFooter;
-            document.getElementById('tab-all').innerText = t.all;
 
             if (currentLang === 'cs') {
                 document.getElementById('btn-cs').className = "px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow";
@@ -129,65 +127,74 @@
             try {
                 const response = await fetch(API_URL);
                 allNails = await response.json();
-                renderFilters();
-                renderNails();
+                renderCategories();
             } catch (error) {
-                document.getElementById('nail-list').innerHTML = `<p class="text-rose-500 col-span-full text-center font-medium">${translations[currentLang].error}</p>`;
+                document.getElementById('categories-container').innerHTML = `<p class="text-rose-500 text-center font-medium">${translations[currentLang].error}</p>`;
             }
         }
 
-        function renderFilters() {
-            const filterContainer = document.getElementById('category-filters');
+        function renderCategories() {
+            const container = document.getElementById('categories-container');
             const t = translations[currentLang];
-            const categories = [...new Set(allNails.map(n => n.category || 'Manikúra'))];
 
-            let html = `<button onclick="filterCategory('all')" id="tab-all" class="px-5 py-2 text-sm font-semibold rounded-full ${currentCategory === 'all' ? 'bg-pink-600 text-white shadow-md shadow-pink-200' : 'bg-white text-gray-600 border border-gray-200 hover:bg-pink-50'} transition">${t.all}</button>`;
-
-            categories.forEach(cat => {
-                const isActive = currentCategory === cat;
-                html += `<button onclick="filterCategory('${cat}')" class="px-5 py-2 text-sm font-semibold rounded-full ${isActive ? 'bg-pink-600 text-white shadow-md shadow-pink-200' : 'bg-white text-gray-600 border border-gray-200 hover:bg-pink-50'} transition">${cat}</button>`;
-            });
-
-            filterContainer.innerHTML = html;
-        }
-
-        function filterCategory(cat) {
-            currentCategory = cat;
-            renderFilters();
-            renderNails();
-        }
-
-        function renderNails() {
-            const listContainer = document.getElementById('nail-list');
-            const t = translations[currentLang];
-            const filtered = currentCategory === 'all' 
-                ? allNails 
-                : allNails.filter(n => (n.category || 'Manikúra') === currentCategory);
-
-            if (!filtered || filtered.length === 0) {
-                listContainer.innerHTML = `<p class="text-gray-400 col-span-full text-center py-20 font-medium">${t.empty}</p>`;
+            if (!allNails || allNails.length === 0) {
+                container.innerHTML = `<p class="text-gray-400 text-center py-20 font-medium">${t.empty}</p>`;
                 return;
             }
 
-            listContainer.innerHTML = filtered.map(n => `
-                <div class="bg-white rounded-2xl shadow-sm border border-pink-100/60 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col">
-                    <div class="w-full h-72 overflow-hidden bg-gray-50 relative group">
-                        <img src="${n.img}" alt="${n.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500">
-                        <span class="absolute top-3 left-3 text-xs font-bold px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm text-pink-600 shadow-sm">
-                            ${n.category || 'Manikúra'}
-                        </span>
-                    </div>
-                    <div class="p-5 flex flex-col flex-grow justify-between">
-                        <div>
-                            <h3 class="font-bold text-lg text-gray-800 line-clamp-1">${n.name}</h3>
+            // Lấy danh sách các danh mục độc nhất từ dữ liệu
+            const categories = [...new Set(allNails.map(n => n.category || 'Manikúra'))];
+
+            let html = '';
+
+            categories.forEach(cat => {
+                // Lọc các mẫu thuộc danh mục này
+                const itemsInCat = allNails.filter(n => (n.category || 'Manikúra') === cat);
+
+                html += `
+                    <div class="mb-10">
+                        <!-- Tiêu đề từng mục -->
+                        <div class="flex items-center justify-between mb-4 px-2">
+                            <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                                <span class="w-3 h-3 bg-pink-600 rounded-full inline-block"></span>
+                                ${cat}
+                            </h3>
+                            <span class="text-xs font-semibold px-3 py-1 bg-pink-100 text-pink-700 rounded-full">
+                                ${itemsInCat.length} ${currentLang === 'cs' ? 'položek' : 'mẫu'}
+                            </span>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
-                            <span class="text-xs text-gray-400 font-medium uppercase tracking-wide">Cena / Giá</span>
-                            <span class="text-pink-600 font-bold text-lg">${n.price}</span>
+
+                        <!-- Khung lướt ngang (Horizontal Scroll / Carousel) -->
+                        <div class="flex overflow-x-auto gap-5 pb-4 pt-1 no-scrollbar scroll-smooth">
+                `;
+
+                itemsInCat.forEach(n => {
+                    html += `
+                        <div class="min-w-[260px] max-w-[260px] bg-white rounded-2xl shadow-sm border border-pink-100/60 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col flex-shrink-0">
+                            <!-- Ảnh hiển thị trọn vẹn 100% không bị cắt (dùng object-contain và nền sáng) -->
+                            <div class="w-full h-72 bg-neutral-900 flex items-center justify-center relative group overflow-hidden">
+                                <img src="${n.img}" alt="${n.name}" class="w-full h-full object-contain group-hover:scale-105 transition duration-500">
+                            </div>
+                            <div class="p-4 flex flex-col flex-grow justify-between bg-white">
+                                <div>
+                                    <h4 class="font-bold text-base text-gray-800 truncate" title="${n.name}">${n.name}</h4>
+                                </div>
+                                <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
+                                    <span class="text-xs text-gray-400 font-medium uppercase">Cena</span>
+                                    <span class="text-pink-600 font-bold text-base">${n.price}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            });
+
+            container.innerHTML = html;
         }
 
         updateTexts();
