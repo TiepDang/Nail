@@ -34,7 +34,12 @@
         <div class="bg-pink-50 p-4 rounded-lg mb-6">
             <h3 id="form-title" class="font-bold text-gray-700 mb-3">Přidat nový vzor / službu</h3>
             <input type="text" id="nail-name" placeholder="Název (např. Červené s kamínky)" class="w-full p-2 mb-3 border rounded">
-            <input type="text" id="nail-price" placeholder="Cena (např. 500 Kč)" class="w-full p-2 mb-3 border rounded">
+            
+            <!-- Đã đổi type="text" thành type="number" để chỉ nhập được số -->
+            <div class="grid grid-cols-2 gap-2 mb-3">
+                <input type="number" id="nail-price" min="0" placeholder="Cena (např. 500)" class="w-full p-2 border rounded">
+                <input type="number" id="nail-old-price" min="0" placeholder="Původní cena (např. 600)" class="w-full p-2 border rounded">
+            </div>
             
             <!-- Phần danh mục: Ô nhập + Gợi ý các mục đã có -->
             <div class="mb-3">
@@ -78,7 +83,8 @@
                 homeLink: "Zpět na hlavní stránku",
                 formTitle: "Přidat nový vzor / službu",
                 placeholderName: "Název (např. Červené s kamínky)",
-                placeholderPrice: "Cena (např. 500 Kč)",
+                placeholderPrice: "Cena (pouze číslo, např. 500)",
+                placeholderOldPrice: "Původní cena (volitelně)",
                 catLabel: "Kategorie (vyberte nebo napište vlastní):",
                 fileLabel: "Vybrat fotku:",
                 saveBtn: "Uložit do Google Sheets",
@@ -98,7 +104,8 @@
                 homeLink: "Xem trang chủ",
                 formTitle: "Thêm mẫu / dịch vụ mới",
                 placeholderName: "Tên (VD: Đỏ đính đá)",
-                placeholderPrice: "Giá tiền (VD: 500 Kč)",
+                placeholderPrice: "Giá tiền (Chỉ nhập số, VD: 500)",
+                placeholderOldPrice: "Giá cũ (Không bắt buộc, VD: 600)",
                 catLabel: "Loại dịch vụ (chọn nhanh hoặc tự gõ):",
                 fileLabel: "Chọn ảnh từ thiết bị:",
                 saveBtn: "Lưu Lên Google Sheets",
@@ -131,6 +138,7 @@
             document.getElementById('form-title').innerText = t.formTitle;
             document.getElementById('nail-name').placeholder = t.placeholderName;
             document.getElementById('nail-price').placeholder = t.placeholderPrice;
+            document.getElementById('nail-old-price').placeholder = t.placeholderOldPrice;
             document.getElementById('cat-label').innerText = t.catLabel;
             document.getElementById('file-label').innerText = t.fileLabel;
             document.getElementById('save-btn').innerText = t.saveBtn;
@@ -202,7 +210,7 @@
                         <img src="${n.img}" class="w-12 h-12 object-cover rounded">
                         <div>
                             <p class="font-bold">${n.name} <span class="text-xs px-2 py-0.5 rounded bg-pink-100 text-pink-700">${n.category || 'Manikúra'}</span></p>
-                            <p class="text-sm text-pink-600">${n.price}</p>
+                            <p class="text-sm text-pink-600 font-semibold">${n.price} Kč ${n.oldPrice ? `<span class="line-through text-gray-400 text-xs ml-1">${n.oldPrice} Kč</span>` : ''}</p>
                         </div>
                     </div>
                     <button onclick="deleteNail('${n.id}')" class="text-red-600 hover:underline text-sm font-semibold">${t.deleteBtn}</button>
@@ -213,12 +221,13 @@
         async function addNail() {
             const name = document.getElementById('nail-name').value;
             const price = document.getElementById('nail-price').value;
+            const oldPrice = document.getElementById('nail-old-price').value;
             const category = document.getElementById('nail-category').value || 'Manikúra';
             const fileInput = document.getElementById('nail-file');
             const t = adminTexts[currentAdminLang];
 
-            if (!name || fileInput.files.length === 0) {
-                alert(currentAdminLang === 'cs' ? 'Vyplňte název a vyberte fotku!' : 'Vui lòng nhập tên và chọn ảnh!');
+            if (!name || !price || fileInput.files.length === 0) {
+                alert(currentAdminLang === 'cs' ? 'Vyplňte název, cenu a vyberte fotku!' : 'Vui lòng nhập tên, giá tiền và chọn ảnh!');
                 return;
             }
 
@@ -247,6 +256,7 @@
                     id: Date.now().toString(),
                     name: name,
                     price: price,
+                    oldPrice: oldPrice || '',
                     img: imgbbData.data.url,
                     category: category
                 };
@@ -259,6 +269,7 @@
 
                 document.getElementById('nail-name').value = '';
                 document.getElementById('nail-price').value = '';
+                document.getElementById('nail-old-price').value = '';
                 fileInput.value = '';
                 btn.innerText = t.saveBtn;
                 btn.disabled = false;
