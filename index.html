@@ -59,31 +59,69 @@
     </section>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-4 flex-grow space-y-8">
-        <div id="categories-container">
-            <p id="loading-text" class="text-gray-400 text-center py-20 font-medium">Načítání galerie...</p>
-        </div>
+    <main class="container mx-auto px-4 py-4 flex-grow space-y-12">
+        
+        <!-- 1. PHẦN GIỚI THIỆU (ABOUT SECTION) -->
+        <section id="about-section" class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-pink-100">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <span class="inline-block bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-3" id="badge-about">👋 O našem studiu / Về chúng tôi</span>
+                    <h3 id="about-main-title" class="text-2xl font-bold text-gray-900 mb-4">Luxusní péče a moderní styl pro vaše nehty</h3>
+                    <p id="about-text-1" class="text-gray-600 text-sm leading-relaxed mb-3">
+                        Vítáme vás v <strong>Koprivnice CityNail</strong>. Nacházíme se přímo uvnitř supermarketu Tesco v Kopřivnici. Specializujeme se na moderní manikúru, gelové nehty, modeláž, zpevnění přírodních nehtů a precizní nail art s dlouhou životností.
+                    </p>
+                    <p id="about-text-2" class="text-gray-600 text-sm leading-relaxed mb-4">
+                        Chúng tôi tự hào mang đến không gian chăm sóc móng sang trọng, trang thiết bị hiện đại cùng đội ngũ thợ lành nghề. Cam kết sử dụng sản phẩm chất lượng cao, an toàn và bền đẹp theo thời gian.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 pt-2 border-t border-gray-100">
+                        <div>
+                            <h4 class="font-bold text-pink-600 text-base">100+</h4>
+                            <p class="text-xs text-gray-500" id="about-stat-1">Mẫu thiết kế thịnh hành</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-pink-600 text-base">100%</h4>
+                            <p class="text-xs text-gray-500" id="about-stat-2">Hài lòng & Tận tâm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <img src="https://images.unsplash.com/photo-1632345031435-8777f6b9ae8c?auto=format&fit=crop&w=500&q=80" alt="Nail Art 1" class="rounded-2xl object-cover h-48 w-full shadow-md hover:scale-105 transition duration-300">
+                    <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=500&q=80" alt="Nail Art 2" class="rounded-2xl object-cover h-48 w-full shadow-md hover:scale-105 transition duration-300 mt-6">
+                </div>
+            </div>
+        </section>
 
-        <!-- Bộ sưu tập riêng dạng menu cuộn ngang (Slider) giống phần sản phẩm -->
-        <div id="gallery-section" class="mt-12 pt-8 border-t border-pink-100 hidden">
-            <div class="flex items-center justify-between mb-4 px-2">
-                <h3 id="gallery-section-title" class="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                    <span class="w-3 h-3 bg-rose-500 rounded-full inline-block"></span>
-                    Bộ Sưu Tập Riêng
-                </h3>
+        <!-- 2. PHẦN BỘ SƯU TẬP RIÊNG (GALLERY SECTION) -->
+        <section id="gallery-section" class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-pink-100 hidden">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <span class="inline-block bg-rose-100 text-rose-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2" id="badge-gallery">📸 Galerie</span>
+                    <h3 id="gallery-section-title" class="text-2xl font-bold text-gray-900">Bộ Sưu Tập Riêng / Osobní galerie</h3>
+                </div>
                 <span id="gallery-count" class="text-xs font-semibold px-3 py-1 bg-rose-100 text-rose-700 rounded-full">0 ảnh</span>
             </div>
 
-            <!-- Khung cuộn ngang -->
             <div class="relative group">
                 <div id="gallery-slider" class="flex overflow-x-auto gap-5 pb-4 pt-1 no-scrollbar scroll-smooth">
                     <!-- Gallery items injected here -->
                 </div>
-                <!-- Nút điều hướng trái/phải cho menu cuộn -->
                 <button onclick="scrollGallery(-1)" class="absolute left-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full text-sm hover:bg-black/70 transition opacity-0 group-hover:opacity-100 z-10">&#10094;</button>
                 <button onclick="scrollGallery(1)" class="absolute right-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full text-sm hover:bg-black/70 transition opacity-0 group-hover:opacity-100 z-10">&#10095;</button>
             </div>
-        </div>
+        </section>
+
+        <!-- 3. PHẦN SẢN PHẨM / DANH MỤC MẪU MÓNG (PRODUCTS / CATEGORIES SECTION) -->
+        <section id="products-section" class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-pink-100">
+            <div class="mb-6">
+                <span class="inline-block bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2" id="badge-products">💎 Nabídka</span>
+                <h3 id="products-section-title" class="text-2xl font-bold text-gray-900">Danh Mục Mẫu Móng & Dịch Vụ / Ceník & Vzory</h3>
+            </div>
+            
+            <div id="categories-container">
+                <p id="loading-text" class="text-gray-400 text-center py-20 font-medium">Načítání galerie...</p>
+            </div>
+        </section>
+
     </main>
 
     <!-- Google Maps Section -->
@@ -164,7 +202,16 @@
                 footerPhoneText: "📞 Telefon: +420 123 456 789",
                 mapTitle: "📍 Kde nás najdete",
                 mapSubtitle: "🛍️ Uvnitř supermarketu Tesco, Nádražní 228/2, Kopřivnice",
+                badgeAbout: "👋 O našem studiu",
+                aboutMainTitle: "Luxusní péče a moderní styl pro vaše nehty",
+                aboutText1: "Vítáme vás v Koprivnice CityNail. Nacházíme se přímo uvnitř supermarketu Tesco v Kopřivnici. Specializujeme se na moderní manikúru, gelové nehty, modeláž, zpevnění přírodních nehtů a precizní nail art s dlouhou životností.",
+                aboutText2: "Chúng tôi tự hào mang đến không gian chăm sóc móng sang trọng, trang thiết bị hiện đại cùng đội ngũ thợ lành nghề. Cam kết sử dụng sản phẩm chất lượng cao, an toàn và bền đẹp theo thời gian.",
+                aboutStat1: "Mẫu thiết kế thịnh hành",
+                aboutStat2: "Hài lòng & Tận tâm",
+                badgeGallery: "📸 Galerie",
                 galleryTitle: "Osobní galerie",
+                badgeProducts: "💎 Nabídka",
+                productsTitle: "Ceník & Vzory",
                 itemsCount: "položek",
                 photosCount: "fotografií"
             },
@@ -190,7 +237,16 @@
                 footerPhoneText: "📞 Điện thoại: +420 123 456 789",
                 mapTitle: "📍 Địa chỉ bản đồ của chúng tôi",
                 mapSubtitle: "🛍️ Bên trong siêu thị Tesco, Nádražní 228/2, Kopřivnice",
+                badgeAbout: "👋 Về chúng tôi",
+                aboutMainTitle: "Dịch Vụ Chăm Sóc Móng Chuyên Nghiệp & Sang Trọng",
+                aboutText1: "Vítáme vás v Koprivnice CityNail. Nacházíme se přímo uvnitř supermarketu Tesco v Kopřivnici. Specializujeme se na moderní manikúru, gelové nehty, modeláž, zpevnění přírodních nehtů a precizní nail art s dlouhou životností.",
+                aboutText2: "Chào mừng quý khách đến với Koprivnice CityNail, tọa lạc ngay bên trong siêu thị Tesco Kopřivnice. Chúng tôi chuyên cung cấp các dịch vụ làm móng nghệ thuật, đính đá, đắp gel và chăm sóc móng chuyên nghiệp với độ bền cao và phong cách thời thượng.",
+                aboutStat1: "Mẫu thiết kế thịnh hành",
+                aboutStat2: "Hài lòng & Tận tâm",
+                badgeGallery: "📸 Bộ sưu tập",
                 galleryTitle: "Bộ Sưu Tập Riêng",
+                badgeProducts: "💎 Sản phẩm",
+                productsTitle: "Danh Mục Mẫu Móng & Dịch Vụ",
                 itemsCount: "mẫu",
                 photosCount: "ảnh"
             }
@@ -227,10 +283,18 @@
             document.getElementById('map-title').innerText = t.mapTitle;
             document.getElementById('map-subtitle').innerText = t.mapSubtitle;
             
-            const galleryTitleEl = document.getElementById('gallery-section-title');
-            if (galleryTitleEl) {
-                galleryTitleEl.innerHTML = `<span class="w-3 h-3 bg-rose-500 rounded-full inline-block"></span> ${t.galleryTitle}`;
-            }
+            document.getElementById('badge-about').innerText = t.badgeAbout;
+            document.getElementById('about-main-title').innerText = t.aboutMainTitle;
+            document.getElementById('about-text-1').innerText = t.aboutText1;
+            document.getElementById('about-text-2').innerText = t.aboutText2;
+            document.getElementById('about-stat-1').innerText = t.aboutStat1;
+            document.getElementById('about-stat-2').innerText = t.aboutStat2;
+            
+            document.getElementById('badge-gallery').innerText = t.badgeGallery;
+            document.getElementById('gallery-section-title').innerText = t.galleryTitle;
+
+            document.getElementById('badge-products').innerText = t.badgeProducts;
+            document.getElementById('products-section-title').innerText = t.productsTitle;
 
             if (galleryItems.length > 0) {
                 document.getElementById('gallery-count').innerText = `${galleryItems.length} ${t.photosCount}`;
@@ -287,12 +351,12 @@
                 const itemsInCat = allNails.filter(n => (n.category || 'Manikúra') === cat);
 
                 html += `
-                    <div class="mb-10">
+                    <div class="mb-10 last:mb-0">
                         <div class="flex items-center justify-between mb-4 px-2">
-                            <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                            <h4 class="text-xl font-bold text-gray-800 flex items-center gap-2">
                                 <span class="w-3 h-3 bg-pink-600 rounded-full inline-block"></span>
                                 ${cat}
-                            </h3>
+                            </h4>
                             <span class="text-xs font-semibold px-3 py-1 bg-pink-100 text-pink-700 rounded-full">
                                 ${itemsInCat.length} ${t.itemsCount}
                             </span>
@@ -343,7 +407,7 @@
 
                             <div class="p-4 flex flex-col flex-grow justify-between bg-white">
                                 <div>
-                                    <h4 class="font-bold text-base text-gray-800 truncate" title="${n.name}">${n.name}</h4>
+                                    <h5 class="font-bold text-base text-gray-800 truncate" title="${n.name}">${n.name}</h5>
                                 </div>
                                 <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
                                     <span class="text-xs text-gray-400 font-medium uppercase">Cena</span>
