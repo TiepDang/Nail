@@ -102,7 +102,7 @@
 
         let currentAdminLang = localStorage.getItem('admin_lang') || 'cs';
         let cachedNails = [];
-        let editingImages = []; // Lưu danh sách ảnh cũ khi đang ở chế độ sửa
+        let editingImages = [];
 
         function changeAdminLang(lang) {
             currentAdminLang = lang;
@@ -153,7 +153,11 @@
 
         async function loadAdminNails() {
             try {
-                const response = await fetch(API_URL);
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'get' })
+                });
                 cachedNails = await response.json();
                 renderCategorySuggestions();
                 renderAdminNailListByCategory();
@@ -207,7 +211,6 @@
 
                 itemsInCat.forEach(n => {
                     const hasDiscount = n.oldPrice && n.oldPrice.toString().trim() !== '';
-                    // Xử lý lấy mảng ảnh (Hỗ trợ cả dữ liệu cũ dạng chuỗi n.img hoặc mảng n.images)
                     let imgList = [];
                     if (n.images) {
                         try { imgList = typeof n.images === 'string' ? JSON.parse(n.images) : n.images; } catch(e){ imgList = [n.img]; }
@@ -301,9 +304,8 @@
             try {
                 let uploadedUrls = [...editingImages];
 
-                // Nếu có chọn file mới thì upload lên ImgBB
                 if (fileInput.files.length > 0) {
-                    uploadedUrls = []; // Thay thế hoàn toàn hoặc bạn có thể gộp tùy ý
+                    uploadedUrls = [];
                     for (let i = 0; i < fileInput.files.length; i++) {
                         const formData = new FormData();
                         formData.append('image', fileInput.files[i]);
@@ -331,8 +333,8 @@
                     name: name,
                     price: price,
                     oldPrice: oldPrice || '',
-                    img: uploadedUrls[0], // Ảnh đại diện chính cho dữ liệu cũ tương thích ngược
-                    images: JSON.stringify(uploadedUrls), // Lưu dạng chuỗi JSON danh sách ảnh
+                    img: uploadedUrls[0],
+                    images: JSON.stringify(uploadedUrls),
                     category: category,
                     action: editId ? 'edit' : 'add'
                 };
