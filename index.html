@@ -14,12 +14,15 @@
 </head>
 <body class="bg-gradient-to-br from-pink-50 via-white to-pink-50 text-gray-800 min-h-screen flex flex-col justify-between">
 
-    <!-- Header & Nút chuyển đổi ngôn ngữ -->
-    <header class="bg-white/85 backdrop-blur-md shadow-sm sticky top-0 z-50 py-4 transition-all">
+    <!-- Header & Thông tin liên hệ nhanh -->
+    <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 py-3 transition-all">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center space-x-2">
                 <span class="text-2xl">🌸</span>
-                <h1 id="shop-title" class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-pink-600 to-rose-500 bg-clip-text text-transparent uppercase tracking-wider">Nehtové Studio</h1>
+                <div>
+                    <h1 id="shop-title" class="text-lg sm:text-xl font-bold bg-gradient-to-r from-pink-600 to-rose-500 bg-clip-text text-transparent uppercase tracking-wider">Nehtové Studio</h1>
+                    <p id="header-contact-phone" class="text-xs text-gray-500 font-medium">📞 Tel: +420 123 456 789</p>
+                </div>
             </div>
             
             <div class="flex items-center space-x-3">
@@ -33,26 +36,45 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="container mx-auto px-4 pt-10 pb-6 text-center">
+    <section class="container mx-auto px-4 pt-8 pb-4 text-center">
         <div class="max-w-2xl mx-auto">
-            <span id="badge-top" class="inline-block bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-3 shadow-sm">✨ Premium Nail Art & Care</span>
-            <h2 id="hero-heading" class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">Objevte svou krásu s námi</h2>
-            <p id="shop-subtitle" class="text-gray-500 mt-2 text-sm sm:text-base">Profesionální design nehtů, luxusní gel a špičková péče.</p>
+            <span id="badge-top" class="inline-block bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2 shadow-sm">✨ Premium Nail Art & Care</span>
+            <h2 id="hero-heading" class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Objevte svou krásu s námi</h2>
+            <p id="shop-subtitle" class="text-gray-500 mt-1 text-xs sm:text-sm">Profesionální design nehtů, luxusní gel a špičková péče.</p>
         </div>
     </section>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-6 flex-grow space-y-12">
+    <main class="container mx-auto px-4 py-4 flex-grow space-y-8">
         <div id="categories-container">
             <p id="loading-text" class="text-gray-400 text-center py-20 font-medium">Načítání galerie...</p>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-pink-100 py-8 text-center text-sm text-gray-500 mt-12">
-        <div class="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p>&copy; 2026 Nehtové Studio. All rights reserved.</p>
-            <a href="admin.html" id="admin-link-footer" class="text-pink-600 font-semibold hover:underline">Administrace systému</a>
+    <!-- Modal Phóng To Ảnh (Lightbox) -->
+    <div id="image-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4" onclick="closeModal()">
+        <div class="relative max-w-3xl w-full max-h-[90vh] flex items-center justify-center">
+            <button class="absolute -top-10 right-0 text-white text-3xl font-bold px-3 py-1">&times;</button>
+            <img id="modal-img" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl">
+        </div>
+    </div>
+
+    <!-- Footer Thông tin liên hệ chi tiết -->
+    <footer class="bg-white border-t border-pink-100 py-8 text-sm text-gray-600 mt-12">
+        <div class="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
+            <div>
+                <h4 id="footer-about-title" class="font-bold text-gray-800 mb-2">Nehtové Studio</h4>
+                <p id="footer-about-desc" class="text-xs text-gray-500">Kvalitní péče o nehty s dlouhou životností a moderním designem.</p>
+            </div>
+            <div>
+                <h4 id="footer-contact-title" class="font-bold text-gray-800 mb-2">Kontakty & Adresa</h4>
+                <p class="text-xs text-gray-500 mb-1" id="footer-address">📍 Adresa: Hlavní 123, Praha</p>
+                <p class="text-xs text-gray-500" id="footer-phone">📞 Telefon: +420 123 456 789</p>
+            </div>
+            <div class="flex flex-col items-center sm:items-end justify-center">
+                <a href="admin.html" id="admin-link-footer" class="text-pink-600 font-semibold hover:underline text-xs mb-2">Administrace systému</a>
+                <p class="text-xs text-gray-400">&copy; 2026 Nehtové Studio. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
@@ -71,7 +93,13 @@
                 adminLink: "Admin",
                 adminLinkFooter: "Administrace systému",
                 error: "Nelze načíst data.",
-                empty: "Žádné položky v systému."
+                empty: "Žádné položky v systému.",
+                headerPhone: "📞 Tel: +420 123 456 789",
+                footerAboutTitle: "O nás",
+                footerAboutDesc: "Kvalitní péče o nehty s dlouhou životností a moderním designem.",
+                footerContactTitle: "Kontakty & Adresa",
+                footerAddress: "📍 Adresa: Hlavní 123, Praha",
+                footerPhoneText: "📞 Telefon: +420 123 456 789"
             },
             vi: {
                 title: "Tiệm Nails - Mẫu Móng Đẹp & Sang Trọng",
@@ -83,7 +111,13 @@
                 adminLink: "Quản trị",
                 adminLinkFooter: "Trang quản trị hệ thống",
                 error: "Không thể tải dữ liệu từ máy chủ.",
-                empty: "Chưa có mẫu nào trong hệ thống."
+                empty: "Chưa có mẫu nào trong hệ thống.",
+                headerPhone: "📞 Đặt lịch: +420 123 456 789",
+                footerAboutTitle: "Về chúng tôi",
+                footerAboutDesc: "Chăm sóc móng chuyên nghiệp với độ bền cao và thiết kế thời thượng.",
+                footerContactTitle: "Liên hệ & Địa chỉ",
+                footerAddress: "📍 Địa chỉ: Hlavní 123, Praha",
+                footerPhoneText: "📞 Điện thoại: +420 123 456 789"
             }
         };
 
@@ -106,6 +140,12 @@
             document.getElementById('loading-text').innerText = t.loading;
             document.getElementById('admin-link').innerText = t.adminLink;
             document.getElementById('admin-link-footer').innerText = t.adminLinkFooter;
+            document.getElementById('header-contact-phone').innerText = t.headerPhone;
+            document.getElementById('footer-about-title').innerText = t.footerAboutTitle;
+            document.getElementById('footer-about-desc').innerText = t.footerAboutDesc;
+            document.getElementById('footer-contact-title').innerText = t.footerContactTitle;
+            document.getElementById('footer-address').innerText = t.footerAddress;
+            document.getElementById('footer-phone').innerText = t.footerPhoneText;
 
             if (currentLang === 'cs') {
                 document.getElementById('btn-cs').className = "px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow";
@@ -118,7 +158,11 @@
 
         async function loadPublicNails() {
             try {
-                const response = await fetch(API_URL);
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'get' })
+                });
                 allNails = await response.json();
                 renderCategories();
             } catch (error) {
@@ -157,16 +201,44 @@
                 `;
 
                 itemsInCat.forEach(n => {
-                    // Kiểm tra xem có giá cũ hay không (oldPrice tồn tại và khác rỗng)
                     const hasDiscount = n.oldPrice && n.oldPrice.toString().trim() !== '';
+                    
+                    let imgList = [];
+                    if (n.images) {
+                        try { imgList = typeof n.images === 'string' ? JSON.parse(n.images) : n.images; } catch(e){ imgList = [n.img]; }
+                    } else {
+                        imgList = [n.img];
+                    }
+
+                    const uniqueId = 'slider-' + n.id;
 
                     html += `
                         <div class="min-w-[260px] max-w-[260px] bg-white rounded-2xl shadow-sm border border-pink-100/60 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col flex-shrink-0 relative">
                             ${hasDiscount ? `<span class="absolute top-3 right-3 z-10 bg-rose-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md uppercase tracking-wider">Sale</span>` : ''}
                             
-                            <div class="w-full h-72 bg-neutral-900 flex items-center justify-center relative group overflow-hidden">
-                                <img src="${n.img}" alt="${n.name}" class="w-full h-full object-contain group-hover:scale-105 transition duration-500">
+                            <div class="w-full h-72 bg-neutral-900 relative group overflow-hidden flex items-center">
+                                <div id="${uniqueId}" class="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth">
+                    `;
+
+                    imgList.forEach((imgUrl, idx) => {
+                        html += `
+                            <div class="w-full h-full flex-shrink-0 snap-center flex items-center justify-center cursor-pointer" onclick="openModal('${imgUrl}')">
+                                <img src="${imgUrl}" alt="${n.name}" class="w-full h-full object-contain">
                             </div>
+                        `;
+                    });
+
+                    html += `
+                                </div>
+                                ${imgList.length > 1 ? `
+                                    <button onclick="scrollSlider('${uniqueId}', -1)" class="absolute left-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-1 rounded-full text-xs hover:bg-black/70 transition opacity-0 group-hover:opacity-100">&#10094;</button>
+                                    <button onclick="scrollSlider('${uniqueId}', 1)" class="absolute right-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-1 rounded-full text-xs hover:bg-black/70 transition opacity-0 group-hover:opacity-100">&#10095;</button>
+                                    <div class="absolute bottom-2 left-0 right-0 flex justify-center space-x-1 pointer-events-none">
+                                        <span class="text-[10px] bg-black/50 text-white px-2 py-0.5 rounded-full">${imgList.length} ảnh</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+
                             <div class="p-4 flex flex-col flex-grow justify-between bg-white">
                                 <div>
                                     <h4 class="font-bold text-base text-gray-800 truncate" title="${n.name}">${n.name}</h4>
@@ -174,9 +246,7 @@
                                 <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
                                     <span class="text-xs text-gray-400 font-medium uppercase">Cena</span>
                                     <div class="text-right">
-                                        <!-- Hiển thị giá cũ bị gạch ngang kèm chữ Kč, nếu có -->
                                         ${hasDiscount ? `<span class="line-through text-gray-400 text-xs mr-1.5">${n.oldPrice} Kč</span>` : ''}
-                                        <!-- Hiển thị giá mới kèm chữ Kč -->
                                         <span class="text-pink-600 font-bold text-base">${n.price} Kč</span>
                                     </div>
                                 </div>
@@ -185,13 +255,28 @@
                     `;
                 });
 
-                html += `
-                        </div>
-                    </div>
-                `;
+                html += `</div></div>`;
             });
 
             container.innerHTML = html;
+        }
+
+        function scrollSlider(sliderId, direction) {
+            const slider = document.getElementById(sliderId);
+            if (slider) {
+                slider.scrollBy({ left: direction * 260, behavior: 'smooth' });
+            }
+        }
+
+        function openModal(imgUrl) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            modalImg.src = imgUrl;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('image-modal').classList.add('hidden');
         }
 
         updateTexts();
