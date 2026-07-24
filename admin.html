@@ -21,24 +21,35 @@
             <input type="password" id="password-input" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500" placeholder="Zadejte heslo...">
         </div>
         <button onclick="checkLogin()" id="login-btn" class="w-full bg-pink-600 text-white font-bold py-2 rounded-lg hover:bg-pink-700 transition">Přihlásit se</button>
-        <p id="error-msg" class="text-red-500 text-sm text-center mt-3 hidden">Nesprávné heslo! (Tip: 112345)</p>
+        <p id="error-msg" class="text-red-500 text-sm text-center mt-3 hidden">Nesprávné heslo! (Tip: 12345)</p>
     </div>
 
     <!-- KHUNG QUẢN TRỊ -->
     <div id="admin-dashboard" class="hidden container mx-auto p-6 bg-white rounded-xl shadow-md max-w-2xl">
         <div class="flex justify-between items-center mb-6 border-b pb-4">
-            <h2 id="dash-title" class="text-2xl font-bold text-pink-600">✨ Správa Vzorů Nehtů</h2>
+            <h2 id="dash-title" class="text-2xl font-bold text-pink-600">✨ Správa Položek</h2>
             <a href="index.html" id="home-link" class="text-gray-500 text-sm hover:underline">Zpět na hlavní stránku</a>
         </div>
 
         <div class="bg-pink-50 p-4 rounded-lg mb-6">
-            <h3 id="form-title" class="font-bold text-gray-700 mb-3">Přidat nový vzor</h3>
-            <input type="text" id="nail-name" placeholder="Název vzoru (např. Červené s kamínky)" class="w-full p-2 mb-3 border rounded">
+            <h3 id="form-title" class="font-bold text-gray-700 mb-3">Přidat nový vzor / službu</h3>
+            <input type="text" id="nail-name" placeholder="Název (např. Červené s kamínky)" class="w-full p-2 mb-3 border rounded">
             <input type="text" id="nail-price" placeholder="Cena (např. 500 Kč)" class="w-full p-2 mb-3 border rounded">
             
-            <!-- Phần chọn file ảnh từ máy -->
+            <!-- Phần danh mục: Ô nhập + Gợi ý các mục đã có -->
             <div class="mb-3">
-                <label id="file-label" class="block text-gray-600 text-sm font-semibold mb-1">Vybrat fotku z galerie:</label>
+                <label id="cat-label" class="block text-gray-600 text-sm font-semibold mb-1">Kategorie / Loại dịch vụ:</label>
+                <div class="flex gap-2 mb-2">
+                    <input type="text" id="nail-category" value="Manikúra" placeholder="Nhập hoặc chọn bên dưới..." class="w-full p-2 border rounded bg-white text-sm">
+                </div>
+                <div id="category-suggestions" class="flex flex-wrap gap-1.5">
+                    <span class="text-xs text-gray-400">Načítání kategorií...</span>
+                </div>
+            </div>
+
+            <!-- Chọn file ảnh -->
+            <div class="mb-3">
+                <label id="file-label" class="block text-gray-600 text-sm font-semibold mb-1">Vybrat fotku:</label>
                 <input type="file" id="nail-file" accept="image/*" class="w-full p-2 border rounded bg-white text-sm">
             </div>
 
@@ -54,9 +65,7 @@
     </div>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbxkzU3F2k3wO2A8XOJhifZW3c-vkc9UrKQFVe8KkbPkVkdnuOXcdLJeKeQDQDbZMgbc/exec';
-        
-        // Đã tích hợp ImgBB API Key của bạn vào đây
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzxcC8x3PAhtu-C_vR5Qxiv3LSRBZHLKAUvQSELPmhJOxqluAZ572ZcaNcuCO9m9dIP/exec';
         const IMGBB_API_KEY = 'ff6003803e7977c8212819c35faeb1d4';
 
         const adminTexts = {
@@ -64,43 +73,46 @@
                 loginTitle: "🔐 Přihlášení Admin",
                 passLabel: "Heslo:",
                 loginBtn: "Přihlásit se",
-                errorMsg: "Nesprávné heslo! (Tip: 112345)",
-                dashTitle: "✨ Správa Vzorů Nehtů",
+                errorMsg: "Nesprávné heslo! (Tip: 12345)",
+                dashTitle: "✨ Správa Položek",
                 homeLink: "Zpět na hlavní stránku",
-                formTitle: "Přidat nový vzor",
-                placeholderName: "Název vzoru (např. Červené s kamínky)",
+                formTitle: "Přidat nový vzor / službu",
+                placeholderName: "Název (např. Červené s kamínky)",
                 placeholderPrice: "Cena (např. 500 Kč)",
-                fileLabel: "Vybrat fotku z galerie:",
+                catLabel: "Kategorie (vyberte nebo napište vlastní):",
+                fileLabel: "Vybrat fotku:",
                 saveBtn: "Uložit do Google Sheets",
                 listTitle: "Aktuální seznam:",
                 loading: "Načítání...",
                 deleteBtn: "Smazat",
-                confirmDelete: "Opravdu chcete tento vzor smazat?",
-                successAdd: "Vzor byl úspěšně přidán!",
+                confirmDelete: "Opravdu chcete tuto položku smazat?",
+                successAdd: "Položka byla úspěšně přidána!",
                 uploading: "Nahrávání fotky..."
             },
             vi: {
                 loginTitle: "🔐 Đăng Nhập Admin",
                 passLabel: "Mật khẩu:",
                 loginBtn: "Đăng Nhập",
-                errorMsg: "Mật khẩu không đúng! (Gợi ý: 112345)",
-                dashTitle: "✨ Quản Lý Mẫu Móng Nails",
+                errorMsg: "Mật khẩu không đúng! (Gợi ý: 12345)",
+                dashTitle: "✨ Quản Lý Dịch Vụ & Mẫu",
                 homeLink: "Xem trang chủ",
-                formTitle: "Thêm mẫu móng mới",
-                placeholderName: "Tên mẫu móng (VD: Đỏ đính đá)",
+                formTitle: "Thêm mẫu / dịch vụ mới",
+                placeholderName: "Tên (VD: Đỏ đính đá)",
                 placeholderPrice: "Giá tiền (VD: 500 Kč)",
+                catLabel: "Loại dịch vụ (chọn nhanh hoặc tự gõ):",
                 fileLabel: "Chọn ảnh từ thiết bị:",
                 saveBtn: "Lưu Lên Google Sheets",
                 listTitle: "Danh sách hiện tại:",
                 loading: "Đang tải...",
                 deleteBtn: "Xóa",
                 confirmDelete: "Bạn có chắc muốn xóa mẫu này không?",
-                successAdd: "Đã thêm mẫu móng thành công!",
+                successAdd: "Đã thêm thành công!",
                 uploading: "Đang tải ảnh lên..."
             }
         };
 
         let currentAdminLang = localStorage.getItem('admin_lang') || 'cs';
+        let cachedNails = [];
 
         function changeAdminLang(lang) {
             currentAdminLang = lang;
@@ -119,6 +131,7 @@
             document.getElementById('form-title').innerText = t.formTitle;
             document.getElementById('nail-name').placeholder = t.placeholderName;
             document.getElementById('nail-price').placeholder = t.placeholderPrice;
+            document.getElementById('cat-label').innerText = t.catLabel;
             document.getElementById('file-label').innerText = t.fileLabel;
             document.getElementById('save-btn').innerText = t.saveBtn;
             document.getElementById('list-title').innerText = t.listTitle;
@@ -135,7 +148,7 @@
 
         function checkLogin() {
             const pass = document.getElementById('password-input').value;
-            if (pass === '112345') {
+            if (pass === '12345') {
                 document.getElementById('login-box').classList.add('hidden');
                 document.getElementById('admin-dashboard').classList.remove('hidden');
                 loadAdminNails();
@@ -147,35 +160,60 @@
         async function loadAdminNails() {
             try {
                 const response = await fetch(API_URL);
-                const nails = await response.json();
-                const list = document.getElementById('admin-nail-list');
-                const t = adminTexts[currentAdminLang];
-
-                if (!nails || nails.length === 0) {
-                    list.innerHTML = '<p class="text-gray-500">Žádné vzory.</p>';
-                    return;
-                }
-
-                list.innerHTML = nails.map(n => `
-                    <div class="flex items-center justify-between bg-gray-50 p-3 rounded border">
-                        <div class="flex items-center space-x-3">
-                            <img src="${n.img}" class="w-12 h-12 object-cover rounded">
-                            <div>
-                                <p class="font-bold">${n.name}</p>
-                                <p class="text-sm text-pink-600">${n.price}</p>
-                            </div>
-                        </div>
-                        <button onclick="deleteNail('${n.id}')" class="text-red-600 hover:underline text-sm font-semibold">${t.deleteBtn}</button>
-                    </div>
-                `).join('');
+                cachedNails = await response.json();
+                renderCategorySuggestions();
+                renderNailListTable();
             } catch (error) {
                 console.error(error);
             }
         }
 
+        function renderCategorySuggestions() {
+            const container = document.getElementById('category-suggestions');
+            const categories = [...new Set(cachedNails.map(n => n.category || 'Manikúra'))];
+            
+            if (categories.length === 0) {
+                categories.push('Manikúra', 'Pedikúra');
+            }
+
+            container.innerHTML = categories.map(cat => `
+                <button type="button" onclick="selectCategory('${cat}')" class="px-3 py-1 text-xs font-semibold bg-white border border-pink-300 text-pink-600 rounded-full hover:bg-pink-100 transition shadow-sm">
+                    + ${cat}
+                </button>
+            `).join('');
+        }
+
+        function selectCategory(cat) {
+            document.getElementById('nail-category').value = cat;
+        }
+
+        function renderNailListTable() {
+            const list = document.getElementById('admin-nail-list');
+            const t = adminTexts[currentAdminLang];
+
+            if (!cachedNails || cachedNails.length === 0) {
+                list.innerHTML = '<p class="text-gray-500">Žádné položky.</p>';
+                return;
+            }
+
+            list.innerHTML = cachedNails.map(n => `
+                <div class="flex items-center justify-between bg-gray-50 p-3 rounded border">
+                    <div class="flex items-center space-x-3">
+                        <img src="${n.img}" class="w-12 h-12 object-cover rounded">
+                        <div>
+                            <p class="font-bold">${n.name} <span class="text-xs px-2 py-0.5 rounded bg-pink-100 text-pink-700">${n.category || 'Manikúra'}</span></p>
+                            <p class="text-sm text-pink-600">${n.price}</p>
+                        </div>
+                    </div>
+                    <button onclick="deleteNail('${n.id}')" class="text-red-600 hover:underline text-sm font-semibold">${t.deleteBtn}</button>
+                </div>
+            `).join('');
+        }
+
         async function addNail() {
             const name = document.getElementById('nail-name').value;
             const price = document.getElementById('nail-price').value;
+            const category = document.getElementById('nail-category').value || 'Manikúra';
             const fileInput = document.getElementById('nail-file');
             const t = adminTexts[currentAdminLang];
 
@@ -189,7 +227,6 @@
             btn.disabled = true;
 
             try {
-                // 1. Tải ảnh lên ImgBB tự động
                 const formData = new FormData();
                 formData.append('image', fileInput.files[0]);
 
@@ -206,14 +243,12 @@
                     return;
                 }
 
-                const imageUrl = imgbbData.data.url;
-
-                // 2. Lưu thông tin vào Google Sheets qua Apps Script
                 const newNail = {
                     id: Date.now().toString(),
                     name: name,
                     price: price,
-                    img: imageUrl
+                    img: imgbbData.data.url,
+                    category: category
                 };
 
                 await fetch(API_URL, {
@@ -222,7 +257,6 @@
                     body: JSON.stringify(newNail)
                 });
 
-                // Reset form
                 document.getElementById('nail-name').value = '';
                 document.getElementById('nail-price').value = '';
                 fileInput.value = '';
