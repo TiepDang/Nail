@@ -76,10 +76,10 @@
         </div>
     </nav>
 
-    <!-- Main Content: Các mục nằm cùng 1 cấp (Giới thiệu, Bộ sưu tập, Sản phẩm) -->
+    <!-- Main Content -->
     <main id="main-content" class="container mx-auto px-4 py-6 flex-grow space-y-12 lang-transition opacity-100">
         
-        <!-- 1. PHẦN GIỚI THIỆU (ABOUT SECTION) -->
+        <!-- 1. PHẦN GIỚI THIỆU -->
         <section id="about-section" class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-pink-100 scroll-mt-28">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div>
@@ -109,7 +109,7 @@
             </div>
         </section>
 
-        <!-- 2. PHẦN BỘ SƯU TẬP RIÊNG (GALLERY SECTION) -->
+        <!-- 2. PHẦN BỘ SƯU TẬP RIÊNG -->
         <section id="gallery-section" class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-pink-100 scroll-mt-28">
             <div class="flex items-center justify-between mb-6">
                 <div>
@@ -120,15 +120,13 @@
             </div>
 
             <div class="relative group">
-                <div id="gallery-slider" class="flex overflow-x-auto gap-5 pb-4 pt-1 no-scrollbar scroll-smooth">
-                    <!-- Gallery items injected here by script -->
-                </div>
+                <div id="gallery-slider" class="flex overflow-x-auto gap-5 pb-4 pt-1 no-scrollbar scroll-smooth"></div>
                 <button onclick="scrollGallery(-1)" class="absolute left-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full text-sm hover:bg-black/70 transition opacity-0 group-hover:opacity-100 z-10">&#10094;</button>
                 <button onclick="scrollGallery(1)" class="absolute right-1 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full text-sm hover:bg-black/70 transition opacity-0 group-hover:opacity-100 z-10">&#10095;</button>
             </div>
         </section>
 
-        <!-- 3. PHẦN SẢN PHẨM / DANH MỤC MẪU MÓNG (PRODUCTS SECTION) -->
+        <!-- 3. PHẦN SẢN PHẨM / DANH MỤC MẪU MÓNG -->
         <section id="products-section" class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-pink-100 scroll-mt-28">
             <div class="mb-6">
                 <span class="inline-block bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2" id="badge-products">💎 Nabídka</span>
@@ -172,7 +170,7 @@
         </div>
     </div>
 
-    <!-- Footer Thông tin liên hệ chi tiết -->
+    <!-- Footer -->
     <footer class="bg-white border-t border-pink-100 py-8 text-sm text-gray-600">
         <div class="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
             <div>
@@ -284,7 +282,6 @@
             if (currentLang === lang) return;
             
             const mainContent = document.getElementById('main-content');
-            // Hiệu ứng mờ dần khi chuẩn bị đổi ngôn ngữ
             mainContent.classList.remove('opacity-100');
             mainContent.classList.add('opacity-0');
 
@@ -295,7 +292,6 @@
                 renderCategories();
                 renderGallery();
 
-                // Hiện lại nội dung sau khi đã đổi chữ xong
                 mainContent.classList.remove('opacity-0');
                 mainContent.classList.add('opacity-100');
             }, 200);
@@ -344,12 +340,15 @@
                 document.getElementById('gallery-count').innerText = `${galleryItems.length} ${t.photosCount}`;
             }
 
+            // Cập nhật đổi màu Active đúng giữa nút CZ và VN
+            const btnCs = document.getElementById('btn-cs');
+            const btnVi = document.getElementById('btn-vi');
             if (currentLang === 'cs') {
-                document.getElementById('btn-cs').className = "px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow";
-                document.getElementById('btn-vi').className = "px-3 py-1 text-xs font-bold text-gray-600 rounded-full transition hover:text-pink-600";
+                btnCs.className = "px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow";
+                btnVi.className = "px-3 py-1 text-xs font-bold text-gray-600 rounded-full transition hover:text-pink-600";
             } else {
-                document.getElementById('btn-vi').className = "px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow";
-                document.getElementById('btn-cs').className = "px-3 py-1 text-xs font-bold text-gray-600 rounded-full transition hover:text-pink-600";
+                btnVi.className = "px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow";
+                btnCs.className = "px-3 py-1 text-xs font-bold text-gray-600 rounded-full transition hover:text-pink-600";
             }
         }
 
@@ -430,7 +429,7 @@
                                 <div id="${uniqueId}" class="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth">
                     `;
 
-                    imgList.forEach((imgUrl, idx) => {
+                    imgList.forEach((imgUrl) => {
                         html += `
                             <div class="w-full h-full flex-shrink-0 snap-center flex items-center justify-center cursor-pointer" onclick="openModal('${imgUrl}')">
                                 <img src="${imgUrl}" alt="${n.name}" class="w-full h-full object-contain">
@@ -477,7 +476,6 @@
         }
 
         function renderGallery() {
-            const section = document.getElementById('gallery-section');
             const container = document.getElementById('gallery-slider');
             const t = translations[currentLang];
 
