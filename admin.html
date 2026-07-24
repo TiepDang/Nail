@@ -35,8 +35,14 @@
             <h3 id="form-title" class="font-bold text-gray-700 mb-3">Přidat nový vzor</h3>
             <input type="text" id="nail-name" placeholder="Název vzoru (např. Červené s kamínky)" class="w-full p-2 mb-3 border rounded">
             <input type="text" id="nail-price" placeholder="Cena (např. 500 Kč)" class="w-full p-2 mb-3 border rounded">
-            <input type="text" id="nail-img" placeholder="Odkaz na obrázek (URL)" class="w-full p-2 mb-3 border rounded">
-            <button onclick="addNail()" id="save-btn" class="bg-pink-600 text-white px-4 py-2 rounded font-bold hover:bg-pink-700">Uložit do Google Sheets</button>
+            
+            <!-- Phần chọn file ảnh từ máy -->
+            <div class="mb-3">
+                <label id="file-label" class="block text-gray-600 text-sm font-semibold mb-1">Vybrat fotku z galerie:</label>
+                <input type="file" id="nail-file" accept="image/*" class="w-full p-2 border rounded bg-white text-sm">
+            </div>
+
+            <button onclick="addNail()" id="save-btn" class="w-full bg-pink-600 text-white px-4 py-2 rounded font-bold hover:bg-pink-700 transition">Uložit do Google Sheets</button>
         </div>
 
         <div>
@@ -49,6 +55,9 @@
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbxkzU3F2k3wO2A8XOJhifZW3c-vkc9UrKQFVe8KkbPkVkdnuOXcdLJeKeQDQDbZMgbc/exec';
+        
+        // Đã tích hợp ImgBB API Key của bạn vào đây
+        const IMGBB_API_KEY = 'ff6003803e7977c8212819c35faeb1d4';
 
         const adminTexts = {
             cs: {
@@ -61,13 +70,14 @@
                 formTitle: "Přidat nový vzor",
                 placeholderName: "Název vzoru (např. Červené s kamínky)",
                 placeholderPrice: "Cena (např. 500 Kč)",
-                placeholderImg: "Odkaz na obrázek (URL)",
+                fileLabel: "Vybrat fotku z galerie:",
                 saveBtn: "Uložit do Google Sheets",
                 listTitle: "Aktuální seznam:",
                 loading: "Načítání...",
                 deleteBtn: "Smazat",
                 confirmDelete: "Opravdu chcete tento vzor smazat?",
-                successAdd: "Vzor byl úspěšně přidán!"
+                successAdd: "Vzor byl úspěšně přidán!",
+                uploading: "Nahrávání fotky..."
             },
             vi: {
                 loginTitle: "🔐 Đăng Nhập Admin",
@@ -79,13 +89,14 @@
                 formTitle: "Thêm mẫu móng mới",
                 placeholderName: "Tên mẫu móng (VD: Đỏ đính đá)",
                 placeholderPrice: "Giá tiền (VD: 500 Kč)",
-                placeholderImg: "Link hình ảnh trực tiếp (URL)",
+                fileLabel: "Chọn ảnh từ thiết bị:",
                 saveBtn: "Lưu Lên Google Sheets",
                 listTitle: "Danh sách hiện tại:",
                 loading: "Đang tải...",
                 deleteBtn: "Xóa",
                 confirmDelete: "Bạn có chắc muốn xóa mẫu này không?",
-                successAdd: "Đã thêm mẫu móng thành công!"
+                successAdd: "Đã thêm mẫu móng thành công!",
+                uploading: "Đang tải ảnh lên..."
             }
         };
 
@@ -108,7 +119,7 @@
             document.getElementById('form-title').innerText = t.formTitle;
             document.getElementById('nail-name').placeholder = t.placeholderName;
             document.getElementById('nail-price').placeholder = t.placeholderPrice;
-            document.getElementById('nail-img').placeholder = t.placeholderImg;
+            document.getElementById('file-label').innerText = t.fileLabel;
             document.getElementById('save-btn').innerText = t.saveBtn;
             document.getElementById('list-title').innerText = t.listTitle;
             document.getElementById('admin-loading').innerText = t.loading;
@@ -165,33 +176,68 @@
         async function addNail() {
             const name = document.getElementById('nail-name').value;
             const price = document.getElementById('nail-price').value;
-            const img = document.getElementById('nail-img').value;
+            const fileInput = document.getElementById('nail-file');
             const t = adminTexts[currentAdminLang];
 
-            if (!name || !img) {
-                alert('Vyplňte název a obrázek!');
+            if (!name || fileInput.files.length === 0) {
+                alert(currentAdminLang === 'cs' ? 'Vyplňte název a vyberte fotku!' : 'Vui lòng nhập tên và chọn ảnh!');
                 return;
             }
 
-            const newNail = {
-                id: Date.now().toString(),
-                name: name,
-                price: price,
-                img: img
-            };
+            const btn = document.getElementById('save-btn');
+            btn.innerText = t.uploading;
+            btn.disabled = true;
 
-            await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(newNail)
-            });
+            try {
+                // 1. Tải ảnh lên ImgBB tự động
+                const formData = new FormData();
+                formData.append('image', fileInput.files[0]);
 
-            document.getElementById('nail-name').value = '';
-            document.getElementById('nail-price').value = '';
-            document.getElementById('nail-img').value = '';
+                const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const imgbbData = await imgbbRes.json();
 
-            loadAdminNails();
-            alert(t.successAdd);
+                if (!imgbbData.success) {
+                    alert('Lỗi tải ảnh lên hệ thống!');
+                    btn.innerText = t.saveBtn;
+                    btn.disabled = false;
+                    return;
+                }
+
+                const imageUrl = imgbbData.data.url;
+
+                // 2. Lưu thông tin vào Google Sheets qua Apps Script
+                const newNail = {
+                    id: Date.now().toString(),
+                    name: name,
+                    price: price,
+                    img: imageUrl
+                };
+
+                await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(newNail)
+                });
+
+                // Reset form
+                document.getElementById('nail-name').value = '';
+                document.getElementById('nail-price').value = '';
+                fileInput.value = '';
+                btn.innerText = t.saveBtn;
+                btn.disabled = false;
+
+                loadAdminNails();
+                alert(t.successAdd);
+
+            } catch (error) {
+                console.error(error);
+                alert('Đã xảy ra lỗi kết nối!');
+                btn.innerText = t.saveBtn;
+                btn.disabled = false;
+            }
         }
 
         async function deleteNail(id) {
