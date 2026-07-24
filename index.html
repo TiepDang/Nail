@@ -25,7 +25,12 @@
                 </div>
             </div>
             
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <!-- Nút đặt lịch qua FB trên Header -->
+                <a href="https://www.facebook.com/messages/t/YOUR_FACEBOOK_ID" target="_blank" id="btn-fb-header" class="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow transition">
+                    <span>💬</span> <span class="hidden md:inline">Đặt lịch FB</span><span class="md:hidden">FB</span>
+                </a>
+
                 <div class="flex bg-gray-100 p-1 rounded-full shadow-inner">
                     <button onclick="changeLanguage('cs')" id="btn-cs" class="px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow">CZ</button>
                     <button onclick="changeLanguage('vi')" id="btn-vi" class="px-3 py-1 text-xs font-bold text-gray-600 rounded-full transition hover:text-pink-600">VN</button>
@@ -41,9 +46,15 @@
             <span id="badge-top" class="inline-block bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2 shadow-sm">✨ Premium Nail Art & Care</span>
             <h2 id="hero-heading" class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Objevte svou krásu s námi</h2>
             <p id="shop-subtitle" class="text-gray-500 mt-1 text-xs sm:text-sm">Profesionální design nehtů, luxusní gel a špičková péče.</p>
-            <p id="tesco-notice" class="mt-2 inline-block bg-pink-50 text-pink-700 text-xs font-semibold px-3 py-1 rounded-full border border-pink-200">
-                🛍️ Uvnitř supermarketu Tesco (Nádražní 228/2, Kopřivnice)
-            </p>
+            
+            <div class="mt-3 flex flex-wrap justify-center gap-2 items-center">
+                <p id="tesco-notice" class="inline-block bg-pink-50 text-pink-700 text-xs font-semibold px-3 py-1 rounded-full border border-pink-200">
+                    🛍️ Uvnitř supermarketu Tesco (Nádražní 228/2, Kopřivnice)
+                </p>
+                <a href="https://www.facebook.com/messages/t/YOUR_FACEBOOK_ID" target="_blank" id="btn-fb-hero" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-md transition transform hover:scale-105">
+                    <span>💬</span> <span id="fb-hero-text">Rezervovat přes Facebook</span>
+                </a>
+            </div>
         </div>
     </section>
 
@@ -94,7 +105,8 @@
             <div>
                 <h4 id="footer-contact-title" class="font-bold text-gray-800 mb-2">Kontakty & Adresa</h4>
                 <p class="text-xs text-gray-500 mb-1" id="footer-address">📍 Adresa: Tesco, Nádražní 228/2, Kopřivnice</p>
-                <p class="text-xs text-gray-500" id="footer-phone">📞 Telefon: +420 123 456 789</p>
+                <p class="text-xs text-gray-500 mb-1" id="footer-phone">📞 Telefon: +420 123 456 789</p>
+                <p class="text-xs mt-2"><a href="https://www.facebook.com/messages/t/YOUR_FACEBOOK_ID" target="_blank" class="text-blue-600 font-semibold hover:underline">💬 Nhắn tin Facebook đặt lịch</a></p>
             </div>
             <div class="flex flex-col items-center sm:items-end justify-center">
                 <a href="admin.html" id="admin-link-footer" class="text-pink-600 font-semibold hover:underline text-xs mb-2">Administrace systému</a>
@@ -115,6 +127,8 @@
                 heroHeading: "Objevte svou krásu s námi",
                 shopSubtitle: "Profesionální design nehtů, luxusní gel a špičková péče.",
                 tescoNotice: "🛍️ Uvnitř supermarketu Tesco (Nádražní 228/2, Kopřivnice)",
+                fbHeroText: "Rezervovat přes Facebook",
+                fbItemBtn: "Rezervovat",
                 loading: "Načítání galerie...",
                 adminLink: "Admin",
                 adminLinkFooter: "Administrace systému",
@@ -136,6 +150,8 @@
                 heroHeading: "Tôn vinh vẻ đẹp đôi bàn tay của bạn",
                 shopSubtitle: "Chuyên thiết kế móng nghệ thuật, đính đá, gel cao cấp và chăm sóc tận tâm.",
                 tescoNotice: "🛍️ Bên trong siêu thị Tesco (Nádražní 228/2, Kopřivnice)",
+                fbHeroText: "Đặt lịch qua Facebook",
+                fbItemBtn: "Đặt lịch mẫu này",
                 loading: "Đang tải bộ sưu tập...",
                 adminLink: "Quản trị",
                 adminLinkFooter: "Trang quản trị hệ thống",
@@ -169,6 +185,7 @@
             document.getElementById('hero-heading').innerText = t.heroHeading;
             document.getElementById('shop-subtitle').innerText = t.shopSubtitle;
             document.getElementById('tesco-notice').innerText = t.tescoNotice;
+            document.getElementById('fb-hero-text').innerText = t.fbHeroText;
             document.getElementById('loading-text').innerText = t.loading;
             document.getElementById('admin-link').innerText = t.adminLink;
             document.getElementById('admin-link-footer').innerText = t.adminLinkFooter;
@@ -188,6 +205,9 @@
                 document.getElementById('btn-vi').className = "px-3 py-1 text-xs font-bold bg-pink-600 text-white rounded-full transition shadow";
                 document.getElementById('btn-cs').className = "px-3 py-1 text-xs font-bold text-gray-600 rounded-full transition hover:text-pink-600";
             }
+            
+            // Cập nhật lại nhãn nút đặt lịch dưới sản phẩm nếu đã render
+            if(allNails.length > 0) renderCategories();
         }
 
         async function loadPublicNails() {
@@ -245,6 +265,7 @@
                     }
 
                     const uniqueId = 'slider-' + n.id;
+                    const fbMsgUrl = `https://www.facebook.com/messages/t/YOUR_FACEBOOK_ID`;
 
                     html += `
                         <div class="min-w-[260px] max-w-[260px] bg-white rounded-2xl shadow-sm border border-pink-100/60 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col flex-shrink-0 relative">
@@ -283,6 +304,11 @@
                                         ${hasDiscount ? `<span class="line-through text-gray-400 text-xs mr-1.5">${n.oldPrice} Kč</span>` : ''}
                                         <span class="text-pink-600 font-bold text-base">${n.price} Kč</span>
                                     </div>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="${fbMsgUrl}" target="_blank" class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-3 rounded-xl shadow transition">
+                                        💬 ${t.fbItemBtn}
+                                    </a>
                                 </div>
                             </div>
                         </div>
