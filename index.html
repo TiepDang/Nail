@@ -54,11 +54,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         html {
-            /* Tăng khoảng đệm cuộn cực kỳ rộng để chắc chắn không bị header và menu che */
-            scroll-padding-top: 280px; 
+            scroll-padding-top: 300px; 
         }
         section[id] {
-            scroll-margin-top: 260px;
+            scroll-margin-top: 280px;
         }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #fff5f8 0%, #fff9fb 100%); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -186,9 +185,7 @@
             </div>
             
             <div id="categories-container">
-                <div class="text-center py-16 text-pink-400 font-medium animate-pulse" id="loading-box">
-                    🌸 Načítání nabídky...
-                </div>
+                <!-- Đã xóa bỏ hoàn toàn chữ đang tải bị treo -->
             </div>
         </section>
 
@@ -259,7 +256,6 @@
                 fbBtnText: "Facebook",
                 fbHeroText: "Objednat se přes Messenger",
                 fbItemBtn: "Rezervovat",
-                loading: "Načítání nabídky...",
                 adminLink: "Admin",
                 adminLinkFooter: "Administrace systému",
                 error: "Nelze načíst data.",
@@ -301,7 +297,6 @@
                 fbBtnText: "Facebook",
                 fbHeroText: "Nhắn tin đặt lịch qua Facebook",
                 fbItemBtn: "Đặt lịch mẫu này",
-                loading: "Đang tải danh mục mẫu...",
                 adminLink: "Quản trị",
                 adminLinkFooter: "Trang quản trị hệ thống",
                 error: "Không thể tải dữ liệu từ máy chủ.",
@@ -343,7 +338,6 @@
                 fbBtnText: "Facebook",
                 fbHeroText: "Book via Messenger",
                 fbItemBtn: "Book This Design",
-                loading: "Loading menu...",
                 adminLink: "Admin",
                 adminLinkFooter: "System Administration",
                 error: "Unable to load data.",
