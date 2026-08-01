@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="cs" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,6 +53,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* Cố định khoảng cách cuộn cho từng mục luôn nằm dưới menu (khoảng 140px) */
+        section[id] {
+            scroll-margin-top: 140px;
+        }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #fff5f8 0%, #fff9fb 100%); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -60,11 +64,13 @@
 </head>
 <body class="text-gray-700 min-h-screen flex flex-col justify-between selection:bg-pink-200 selection:text-pink-800">
 
+    <!-- Thanh thông báo đầu trang -->
     <div id="top-announcement" class="bg-gradient-to-r from-pink-500 to-rose-400 text-white text-xs font-semibold py-2 px-4 text-center tracking-wide shadow-sm">
         ✨ <span id="announcement-text">Otevřeno denně 09:00 - 19:00 | Uvnitř supermarketu Tesco Kopřivnice</span>
     </div>
 
-    <header id="main-header" class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 py-3.5 border-b border-pink-100/80 transition-all">
+    <!-- Header chính -->
+    <header id="main-header" class="bg-white/95 backdrop-blur-md shadow-sm py-3.5 border-b border-pink-100/80">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
                 <span class="text-2xl bg-pink-100 p-2.5 rounded-2xl shadow-inner border border-pink-200/50">🌸</span>
@@ -89,23 +95,25 @@
         </div>
     </header>
 
-    <nav id="sticky-nav" class="sticky z-40 bg-white/90 backdrop-blur-md border-y border-pink-100 shadow-sm py-3">
+    <!-- Thanh Menu điều hướng cố định bám sát màn hình khi cuộn -->
+    <nav id="sticky-nav" class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-y border-pink-100 shadow-md py-3">
         <div class="container mx-auto px-4 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar gap-2 sm:gap-4">
-            <a href="#about-section" onclick="scrollToSection(event, 'about-section')" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-pink-600 text-xs font-bold px-4 py-2 rounded-2xl border border-pink-200 transition shadow-sm">
+            <a href="#about-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-pink-600 text-xs font-bold px-4 py-2 rounded-2xl border border-pink-200 transition shadow-sm">
                 <span>👋</span> <span id="menu-about">Về chúng tôi</span>
             </a>
-            <a href="#gallery-section" onclick="scrollToSection(event, 'gallery-section')" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-rose-500 text-xs font-bold px-4 py-2 rounded-2xl border border-rose-200 transition shadow-sm">
+            <a href="#gallery-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-rose-500 text-xs font-bold px-4 py-2 rounded-2xl border border-rose-200 transition shadow-sm">
                 <span>📸</span> <span id="menu-gallery">Bộ sưu tập</span>
             </a>
-            <a href="#products-section" onclick="scrollToSection(event, 'products-section')" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-purple-500 text-xs font-bold px-4 py-2 rounded-2xl border border-purple-200 transition shadow-sm">
+            <a href="#products-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-purple-500 text-xs font-bold px-4 py-2 rounded-2xl border border-purple-200 transition shadow-sm">
                 <span>💎</span> <span id="menu-products">Mẫu móng & Giá</span>
             </a>
-            <a href="#map-section" onclick="scrollToSection(event, 'map-section')" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-sky-500 text-xs font-bold px-4 py-2 rounded-2xl border border-sky-200 transition shadow-sm">
+            <a href="#map-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-sky-500 text-xs font-bold px-4 py-2 rounded-2xl border border-sky-200 transition shadow-sm">
                 <span>📍</span> <span id="menu-map">Bản đồ đường đi</span>
             </a>
         </div>
     </nav>
 
+    <!-- Phần Banner mở đầu -->
     <section class="container mx-auto px-4 pt-12 pb-8 text-center">
         <div class="max-w-3xl mx-auto">
             <span id="badge-top" class="inline-block bg-pink-100/80 text-pink-600 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 shadow-sm border border-pink-200">✨ Premium Nail Art & Care</span>
@@ -123,6 +131,7 @@
         </div>
     </section>
 
+    <!-- Nội dung chính -->
     <main class="container mx-auto px-4 py-10 flex-grow space-y-12 max-w-6xl">
         
         <section id="about-section" class="bg-white/90 backdrop-blur-md rounded-[2.5rem] p-6 sm:p-12 shadow-xl border border-pink-100">
@@ -235,47 +244,6 @@
         const API_URL = 'https://script.google.com/macros/s/AKfycbzxcC8x3PAhtu-C_vR5Qxiv3LSRBZHLKAUvQSELPmhJOxqluAZ572ZcaNcuCO9m9dIP/exec';
         let allNails = [];
         let galleryItems = [];
-
-        // Hàm cuộn trang thông minh: Tự động đo chiều cao header để không bao giờ bị che
-        function scrollToSection(event, sectionId) {
-            event.preventDefault();
-            const target = document.getElementById(sectionId);
-            if (!target) return;
-
-            const headerElem = document.getElementById('main-header');
-            const navElem = document.getElementById('sticky-nav');
-            const announcementElem = document.getElementById('top-announcement');
-            
-            // Tính tổng chiều cao của phần đầu trang (thông báo + header + menu)
-            let totalOffset = 0;
-            if (announcementElem) totalOffset += announcementElem.offsetHeight;
-            if (headerElem) totalOffset += headerElem.offsetHeight;
-            if (navElem) totalOffset += navElem.offsetHeight;
-
-            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - totalOffset - 15;
-
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-        }
-
-        // Tự động gập sticky nav đúng vị trí khi cuộn trang
-        window.addEventListener('DOMContentLoaded', () => {
-            const announcement = document.getElementById('top-announcement');
-            const header = document.getElementById('main-header');
-            const nav = document.getElementById('sticky-nav');
-
-            function updateStickyPosition() {
-                let offsetTop = 0;
-                if (announcement) offsetTop += announcement.offsetHeight;
-                if (header) offsetTop += header.offsetHeight;
-                nav.style.top = offsetTop + 'px';
-            }
-
-            updateStickyPosition();
-            window.addEventListener('resize', updateStickyPosition);
-        });
 
         const translations = {
             cs: {
