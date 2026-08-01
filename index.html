@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Nehtové studio Kopřivnice | Gelové nehty Tesco - Koprivnice CityNail</title>
     
-    <!-- Favicon chuẩn hiển thị đẹp trên mọi trình duyệt và tab điện thoại -->
+    <!-- Favicon chuẩn -->
     <link rel="icon" type="image/x-icon" href="https://fav.farm/🌸">
     <link rel="shortcut icon" type="image/x-icon" href="https://fav.farm/🌸">
     <link rel="apple-touch-icon" href="https://fav.farm/🌸">
@@ -58,23 +58,55 @@
         section[id] {
             scroll-margin-top: 90px;
         }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #fff5f8 0%, #fff9fb 100%); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #fff5f8 0%, #fff9fb 100%); overflow-x: hidden; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Hiệu ứng hoa đào xoay */
+        @keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 3s linear infinite;
+        }
+
+        /* Hiệu ứng hoa đào rơi */
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) translateX(50px) rotate(360deg);
+                opacity: 0.2;
+            }
+        }
+        .petal {
+            position: fixed;
+            top: -10vh;
+            user-select: none;
+            pointer-events: none;
+            z-index: 99;
+            animation: fall linear infinite;
+        }
     </style>
 </head>
-<body class="text-gray-700 min-h-screen flex flex-col justify-between selection:bg-pink-200 selection:text-pink-800">
+<body class="text-gray-700 min-h-screen flex flex-col justify-between selection:bg-pink-200 selection:text-pink-800 relative">
+
+    <!-- Container hiệu ứng hoa đào rơi tự động -->
+    <div id="petals-container"></div>
 
     <!-- Thanh thông báo đầu trang -->
-    <div id="top-announcement" class="bg-gradient-to-r from-pink-500 to-rose-400 text-white text-xs font-semibold py-2 px-4 text-center tracking-wide shadow-sm">
+    <div id="top-announcement" class="bg-gradient-to-r from-pink-500 to-rose-400 text-white text-xs font-semibold py-2 px-4 text-center tracking-wide shadow-sm z-20">
         ✨ <span id="announcement-text">Otevřeno denně 09:00 - 19:00 | Uvnitř supermarketu Tesco Kopřivnice</span>
     </div>
 
     <!-- Header chính -->
-    <header id="main-header" class="bg-white/95 backdrop-blur-md shadow-sm py-3.5 border-b border-pink-100/80">
+    <header id="main-header" class="bg-white/95 backdrop-blur-md shadow-sm py-3.5 border-b border-pink-100/80 z-20">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <span class="text-2xl bg-pink-100 p-2.5 rounded-2xl shadow-inner border border-pink-200/50">🌸</span>
+                <span class="text-2xl bg-pink-100 p-2.5 rounded-2xl shadow-inner border border-pink-200/50 animate-pulse">🌸</span>
                 <div>
                     <h1 id="shop-title" class="text-lg sm:text-xl font-extrabold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent uppercase tracking-wider">Koprivnice CityNail</h1>
                     <p id="header-contact-phone" class="text-xs text-pink-500 font-semibold">📞 Tel: +420 778 550 888</p>
@@ -96,7 +128,7 @@
         </div>
     </header>
 
-    <!-- Thanh Menu điều hướng cố định ngay dưới header -->
+    <!-- Thanh Menu điều hướng cố định -->
     <nav id="sticky-nav" class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-md py-2.5">
         <div class="container mx-auto px-4 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar gap-2 sm:gap-4">
             <a href="#about-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-pink-600 text-xs font-bold px-4 py-2 rounded-2xl border border-pink-200 transition shadow-sm">
@@ -114,8 +146,8 @@
         </div>
     </nav>
 
-    <!-- Phần Banner mở đầu nằm dưới menu -->
-    <section class="container mx-auto px-4 pt-10 pb-6 text-center">
+    <!-- Phần Banner mở đầu -->
+    <section class="container mx-auto px-4 pt-10 pb-6 text-center z-10 relative">
         <div class="max-w-3xl mx-auto">
             <span id="badge-top" class="inline-block bg-pink-100/80 text-pink-600 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-3 shadow-sm border border-pink-200">✨ Premium Nail Art & Care</span>
             <h2 id="hero-heading" class="text-3xl sm:text-5xl font-extrabold text-gray-800 tracking-tight leading-tight">Nehtové studio Kopřivnice</h2>
@@ -133,7 +165,7 @@
     </section>
 
     <!-- Nội dung chính -->
-    <main class="container mx-auto px-4 py-6 flex-grow space-y-10 max-w-6xl">
+    <main class="container mx-auto px-4 py-6 flex-grow space-y-10 max-w-6xl z-10 relative">
         
         <section id="about-section" class="bg-white/90 backdrop-blur-md rounded-[2.5rem] p-6 sm:p-12 shadow-xl border border-pink-100">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
@@ -188,12 +220,16 @@
                 </div>
             </div>
             
-            <div id="categories-container"></div>
+            <!-- Hiệu ứng Loading hoa đào xoay khi đang tải dữ liệu từ Google Sheets -->
+            <div id="categories-container" class="py-16 flex flex-col items-center justify-center">
+                <div class="text-4xl animate-spin-slow mb-3">🌸</div>
+                <p id="loading-text" class="text-pink-500 text-sm font-bold tracking-wider">Načítání údajů...</p>
+            </div>
         </section>
 
     </main>
 
-    <section id="map-section" class="py-12 bg-white/60 border-t border-pink-100 my-6">
+    <section id="map-section" class="py-12 bg-white/60 border-t border-pink-100 my-6 z-10 relative">
         <div class="container mx-auto px-4 max-w-4xl">
             <h3 id="map-title" class="text-2xl font-extrabold text-center mb-2 text-pink-500">📍 Kde nás najdete</h3>
             <div class="text-center mb-6">
@@ -222,7 +258,7 @@
         </div>
     </div>
 
-    <footer class="bg-white border-t border-pink-100 py-10 text-sm text-gray-500">
+    <footer class="bg-white border-t border-pink-100 py-10 text-sm text-gray-500 z-10 relative">
         <div class="container mx-auto px-4 max-w-6xl grid grid-cols-1 sm:grid-cols-3 gap-8 text-center sm:text-left">
             <div>
                 <h4 id="footer-about-title" class="font-bold text-gray-800 text-base mb-2">Nehtové Studio</h4>
@@ -242,6 +278,22 @@
     </footer>
 
     <script>
+        // Tạo hiệu ứng cánh hoa đào rơi tự động
+        function createPetals() {
+            const container = document.getElementById('petals-container');
+            const petalCount = 15; // Số lượng cánh hoa rơi cùng lúc
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.innerHTML = '🌸';
+                petal.className = 'petal';
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.fontSize = (Math.random() * 10 + 12) + 'px';
+                petal.style.animationDuration = (Math.random() * 6 + 6) + 's'; // Tốc độ rơi từ 6 đến 12 giây
+                petal.style.animationDelay = (Math.random() * 5) + 's';
+                container.appendChild(petal);
+            }
+        }
+
         const API_URL = 'https://script.google.com/macros/s/AKfycbzxcC8x3PAhtu-C_vR5Qxiv3LSRBZHLKAUvQSELPmhJOxqluAZ572ZcaNcuCO9m9dIP/exec';
         let allNails = [];
         let galleryItems = [];
@@ -262,6 +314,7 @@
                 adminLinkFooter: "Administrace systému",
                 error: "Nelze načíst data.",
                 empty: "Žádné položky v systému.",
+                loading: "Načítání údajů...",
                 headerPhone: "📞 Tel: +420 778 550 888",
                 footerAboutTitle: "O nás",
                 footerAboutDesc: "Kvalitní péče o nehty s dlouhou životností a moderním designem.",
@@ -303,6 +356,7 @@
                 adminLinkFooter: "Trang quản trị hệ thống",
                 error: "Không thể tải dữ liệu từ máy chủ.",
                 empty: "Chưa có mẫu nào trong hệ thống.",
+                loading: "Đang tải dữ liệu mẫu móng...",
                 headerPhone: "📞 Đặt lịch: +420 778 550 888",
                 footerAboutTitle: "Về chúng tôi",
                 footerAboutDesc: "Chăm sóc móng chuyên nghiệp với độ bền cao và thiết kế thời thượng.",
@@ -344,6 +398,7 @@
                 adminLinkFooter: "System Administration",
                 error: "Unable to load data.",
                 empty: "No items in the system.",
+                loading: "Loading data...",
                 headerPhone: "📞 Phone: +420 778 550 888",
                 footerAboutTitle: "About Us",
                 footerAboutDesc: "Quality nail care with long-lasting durability and modern design.",
@@ -380,7 +435,7 @@
             localStorage.setItem('site_lang', lang);
             
             updateTexts();
-            renderCategories();
+            if (allNails.length > 0) renderCategories();
             renderGallery();
         }
 
@@ -427,6 +482,9 @@
             if (galleryItems.length > 0) {
                 document.getElementById('gallery-count').innerText = `${galleryItems.length} ${t.photosCount}`;
             }
+
+            const loadingTextEl = document.getElementById('loading-text');
+            if (loadingTextEl) loadingTextEl.innerText = t.loading;
 
             const btnCs = document.getElementById('btn-cs');
             const btnVi = document.getElementById('btn-vi');
@@ -578,6 +636,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            createPetals();
             updateTexts();
             loadPublicData();
         });
