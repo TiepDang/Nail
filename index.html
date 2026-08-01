@@ -498,20 +498,23 @@
                 `;
 
                 itemsInCat.forEach(item => {
-                    let descToShow = item.desc || '';
+                    let descToShow = item.desc || item.description || '';
                     if (currentLang === 'vi' && item.descVi) descToShow = item.descVi;
                     if (currentLang === 'en' && item.descEn) descToShow = item.descEn;
+
+                    const imgSrc = item.image || item.img || item.url || '';
+                    const imgTitle = item.title || item.name || '';
 
                     html += `
                         <div class="bg-white rounded-3xl p-4 shadow-sm hover:shadow-xl transition-all duration-300 border border-pink-100 flex flex-col justify-between group">
                             <div>
                                 <div class="overflow-hidden rounded-2xl mb-3.5 relative aspect-square bg-gray-50 border border-pink-50">
-                                    <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 cursor-pointer" onclick="openModal('${item.image}')">
+                                    <img src="${imgSrc}" alt="${imgTitle}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 cursor-pointer" onclick="openModal('${imgSrc}')">
                                     <span class="absolute top-3 right-3 bg-white/90 backdrop-blur text-pink-600 font-extrabold text-xs px-3 py-1 rounded-full shadow-md border border-pink-100">
                                         ${item.price} CZK
                                     </span>
                                 </div>
-                                <h5 class="font-bold text-gray-800 text-base mb-1">${item.title}</h5>
+                                <h5 class="font-bold text-gray-800 text-base mb-1">${imgTitle}</h5>
                                 <p class="text-xs text-gray-400 line-clamp-2 mb-4 leading-relaxed">${descToShow}</p>
                             </div>
                             <div class="flex items-center justify-between pt-3 border-t border-pink-50 mt-auto">
@@ -543,9 +546,10 @@
 
             let html = '';
             galleryItems.forEach(photo => {
+                const photoSrc = photo.image || photo.url || photo.img || '';
                 html += `
                     <div class="flex-shrink-0 w-64 h-64 rounded-3xl overflow-hidden shadow-md border-4 border-white relative group bg-gray-50">
-                        <img src="${photo.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500 cursor-pointer" onclick="openModal('${photo.image}')">
+                        <img src="${photoSrc}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500 cursor-pointer" onclick="openModal('${photoSrc}')">
                     </div>
                 `;
             });
