@@ -53,9 +53,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Cố định khoảng cách cuộn cho từng mục luôn nằm dưới menu (khoảng 140px) */
+        /* Đảm bảo khi bấm nhảy mục, tiêu đề nằm cách mép trên một khoảng vừa vặn không bị che */
         section[id] {
-            scroll-margin-top: 140px;
+            scroll-margin-top: 90px;
         }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #fff5f8 0%, #fff9fb 100%); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -95,8 +95,8 @@
         </div>
     </header>
 
-    <!-- Thanh Menu điều hướng cố định bám sát màn hình khi cuộn -->
-    <nav id="sticky-nav" class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-y border-pink-100 shadow-md py-3">
+    <!-- Thanh Menu điều hướng cố định ngay dưới header -->
+    <nav id="sticky-nav" class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-md py-2.5">
         <div class="container mx-auto px-4 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar gap-2 sm:gap-4">
             <a href="#about-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-pink-600 text-xs font-bold px-4 py-2 rounded-2xl border border-pink-200 transition shadow-sm">
                 <span>👋</span> <span id="menu-about">Về chúng tôi</span>
@@ -113,14 +113,14 @@
         </div>
     </nav>
 
-    <!-- Phần Banner mở đầu -->
-    <section class="container mx-auto px-4 pt-12 pb-8 text-center">
+    <!-- Phần Banner mở đầu (đã dịch chuyển về đúng vị trí dưới menu) -->
+    <section class="container mx-auto px-4 pt-10 pb-6 text-center">
         <div class="max-w-3xl mx-auto">
-            <span id="badge-top" class="inline-block bg-pink-100/80 text-pink-600 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 shadow-sm border border-pink-200">✨ Premium Nail Art & Care</span>
+            <span id="badge-top" class="inline-block bg-pink-100/80 text-pink-600 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-3 shadow-sm border border-pink-200">✨ Premium Nail Art & Care</span>
             <h2 id="hero-heading" class="text-3xl sm:text-5xl font-extrabold text-gray-800 tracking-tight leading-tight">Nehtové studio Kopřivnice</h2>
-            <p id="shop-subtitle" class="text-gray-500 mt-3 text-base sm:text-lg font-medium">Profesionální design nehtů, luxusní gel a špičková péče.</p>
+            <p id="shop-subtitle" class="text-gray-500 mt-2.5 text-base sm:text-lg font-medium">Profesionální design nehtů, luxusní gel a špičková péče.</p>
             
-            <div class="mt-6 flex flex-wrap justify-center gap-3 items-center">
+            <div class="mt-5 flex flex-wrap justify-center gap-3 items-center">
                 <p id="tesco-notice" class="inline-block bg-white/90 backdrop-blur text-pink-600 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-2xl border border-pink-200 shadow-sm">
                     🛍️ Uvnitř supermarketu Tesco (Nádražní 228/2, Kopřivnice)
                 </p>
@@ -132,7 +132,7 @@
     </section>
 
     <!-- Nội dung chính -->
-    <main class="container mx-auto px-4 py-10 flex-grow space-y-12 max-w-6xl">
+    <main class="container mx-auto px-4 py-6 flex-grow space-y-10 max-w-6xl">
         
         <section id="about-section" class="bg-white/90 backdrop-blur-md rounded-[2.5rem] p-6 sm:p-12 shadow-xl border border-pink-100">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
