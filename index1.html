@@ -25,7 +25,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        section[id] { scroll-margin-top: 130px; }
+        section[id] { scroll-margin-top: 140px; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #fff5f8 0%, #fff9fb 100%); overflow-x: hidden; text-rendering: optimizeSpeed; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -54,44 +54,47 @@
 
     <div id="petals-container"></div>
 
-    <div class="bg-gradient-to-r from-pink-500 to-rose-400 text-white text-xs font-semibold py-2 px-4 text-center tracking-wide shadow-sm z-30">
-        ✨ <span id="announcement-text">Otevřeno denně 09:00 - 19:00 | Uvnitř supermarketu Tesco Kopřivnice</span>
+    <!-- Nhóm Header cố định cùng nhau ở trên cùng -->
+    <div class="sticky top-0 z-40 w-full shadow-sm">
+        <div class="bg-gradient-to-r from-pink-500 to-rose-400 text-white text-xs font-semibold py-2 px-4 text-center tracking-wide">
+            ✨ <span id="announcement-text">Otevřeno denně 09:00 - 19:00 | Uvnitř supermarketu Tesco Kopřivnice</span>
+        </div>
+
+        <header class="bg-white/95 backdrop-blur-md py-3.5 border-b border-pink-100/80">
+            <div class="container mx-auto px-4 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <span class="text-2xl bg-pink-100 p-2.5 rounded-2xl shadow-inner border border-pink-200/50">🌸</span>
+                    <div>
+                        <h1 id="shop-title" class="text-lg sm:text-xl font-extrabold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent uppercase tracking-wider">Koprivnice CityNail</h1>
+                        <p id="header-contact-phone" class="text-xs text-pink-500 font-semibold">📞 Tel: +420 778 550 888</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <a href="https://www.facebook.com/koprivice.citynai" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold px-3.5 py-2 rounded-2xl shadow-md transition transform hover:-translate-y-0.5">
+                        <span>f</span> <span id="fb-btn-top-text">Facebook</span>
+                    </a>
+
+                    <div class="flex bg-pink-50/80 p-1 rounded-2xl border border-pink-100 shadow-inner">
+                        <button onclick="changeLanguage('cs')" id="btn-cs" class="px-2.5 py-1.5 text-xs font-bold rounded-xl transition">CZ</button>
+                        <button onclick="changeLanguage('vi')" id="btn-vi" class="px-2.5 py-1.5 text-xs font-bold rounded-xl transition">VN</button>
+                        <button onclick="changeLanguage('en')" id="btn-en" class="px-2.5 py-1.5 text-xs font-bold rounded-xl transition">EN</button>
+                    </div>
+                    <a href="admin.html" id="admin-link" class="hidden sm:inline-flex items-center text-xs font-semibold px-3.5 py-2 border border-pink-200 text-pink-500 rounded-2xl hover:bg-pink-50 transition shadow-sm">Admin</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Thanh menu nằm chung khối sticky, tuyệt đối không bị che khuất -->
+        <nav class="bg-white/95 backdrop-blur-md border-b border-pink-100 py-2.5">
+            <div class="container mx-auto px-4 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar gap-2 sm:gap-4">
+                <a href="#about-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-pink-600 text-xs font-bold px-4 py-2 rounded-2xl border border-pink-200 transition shadow-sm"><span>👋</span> <span id="menu-about">Về chúng tôi</span></a>
+                <a href="#gallery-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-rose-500 text-xs font-bold px-4 py-2 rounded-2xl border border-rose-200 transition shadow-sm"><span>📸</span> <span id="menu-gallery">Bộ sưu tập</span></a>
+                <a href="#products-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-purple-500 text-xs font-bold px-4 py-2 rounded-2xl border border-purple-200 transition shadow-sm"><span>💎</span> <span id="menu-products">Mẫu móng & Giá</span></a>
+                <a href="#map-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-sky-500 text-xs font-bold px-4 py-2 rounded-2xl border border-sky-200 transition shadow-sm"><span>📍</span> <span id="menu-map">Bản đồ đường đi</span></a>
+            </div>
+        </nav>
     </div>
-
-    <header class="bg-white/95 backdrop-blur-md shadow-sm py-3.5 border-b border-pink-100/80 z-30 sticky top-0">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <span class="text-2xl bg-pink-100 p-2.5 rounded-2xl shadow-inner border border-pink-200/50">🌸</span>
-                <div>
-                    <h1 id="shop-title" class="text-lg sm:text-xl font-extrabold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent uppercase tracking-wider">Koprivnice CityNail</h1>
-                    <p id="header-contact-phone" class="text-xs text-pink-500 font-semibold">📞 Tel: +420 778 550 888</p>
-                </div>
-            </div>
-            
-            <div class="flex items-center space-x-2 sm:space-x-3">
-                <a href="https://www.facebook.com/koprivice.citynai" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold px-3.5 py-2 rounded-2xl shadow-md transition transform hover:-translate-y-0.5">
-                    <span>f</span> <span id="fb-btn-top-text">Facebook</span>
-                </a>
-
-                <div class="flex bg-pink-50/80 p-1 rounded-2xl border border-pink-100 shadow-inner">
-                    <button onclick="changeLanguage('cs')" id="btn-cs" class="px-2.5 py-1.5 text-xs font-bold rounded-xl transition">CZ</button>
-                    <button onclick="changeLanguage('vi')" id="btn-vi" class="px-2.5 py-1.5 text-xs font-bold rounded-xl transition">VN</button>
-                    <button onclick="changeLanguage('en')" id="btn-en" class="px-2.5 py-1.5 text-xs font-bold rounded-xl transition">EN</button>
-                </div>
-                <a href="admin.html" id="admin-link" class="hidden sm:inline-flex items-center text-xs font-semibold px-3.5 py-2 border border-pink-200 text-pink-500 rounded-2xl hover:bg-pink-50 transition shadow-sm">Admin</a>
-            </div>
-        </div>
-    </header>
-
-    <!-- Thanh menu được cố định dính ngay dưới header -->
-    <nav class="bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-sm py-2.5 z-20 sticky top-[69px]">
-        <div class="container mx-auto px-4 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar gap-2 sm:gap-4">
-            <a href="#about-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-pink-600 text-xs font-bold px-4 py-2 rounded-2xl border border-pink-200 transition shadow-sm"><span>👋</span> <span id="menu-about">Về chúng tôi</span></a>
-            <a href="#gallery-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-rose-500 text-xs font-bold px-4 py-2 rounded-2xl border border-rose-200 transition shadow-sm"><span>📸</span> <span id="menu-gallery">Bộ sưu tập</span></a>
-            <a href="#products-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-purple-500 text-xs font-bold px-4 py-2 rounded-2xl border border-purple-200 transition shadow-sm"><span>💎</span> <span id="menu-products">Mẫu móng & Giá</span></a>
-            <a href="#map-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-sky-500 text-xs font-bold px-4 py-2 rounded-2xl border border-sky-200 transition shadow-sm"><span>📍</span> <span id="menu-map">Bản đồ đường đi</span></a>
-        </div>
-    </nav>
 
     <section class="container mx-auto px-4 pt-10 pb-6 text-center z-10 relative">
         <div class="max-w-3xl mx-auto">
