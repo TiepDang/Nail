@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Nehtové studio Kopřivnice | Gelové nehty Tesco - Koprivnice CityNail</title>
     
-    <!-- Favicon chuẩn -->
+    <!-- Tăng tốc kết nối mạng (Preconnect) -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://script.google.com" crossorigin>
+
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="https://fav.farm/🌸">
-    <link rel="shortcut icon" type="image/x-icon" href="https://fav.farm/🌸">
-    <link rel="apple-touch-icon" href="https://fav.farm/🌸">
-    
     <link rel="canonical" href="https://citynail.cz/">
 
     <meta property="og:title" content="Nehtové studio Kopřivnice | Gelové nehty Tesco - Koprivnice CityNail">
@@ -17,96 +20,48 @@
     <meta property="og:image" content="https://images.unsplash.com/photo-1632345031435-8777f6b9ae8c?auto=format&fit=crop&w=1200&q=80">
     <meta property="og:url" content="https://citynail.cz/">
     <meta property="og:type" content="website">
-    <meta property="og:locale" content="cs_CZ">
-    <meta property="og:locale:alternate" content="vi_VN">
-    <meta property="og:locale:alternate" content="en_US">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BeautySalon",
-      "name": "Koprivnice CityNail",
-      "image": "https://images.unsplash.com/photo-1632345031435-8777f6b9ae8c",
-      "url": "https://citynail.cz/",
-      "telephone": "+420778550888",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Nádražní 228/2",
-        "addressLocality": "Kopřivnice",
-        "postalCode": "742 21",
-        "addressCountry": "CZ"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 49.6049138,
-        "longitude": 18.1460643
-      },
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-        ],
-        "opens": "09:00",
-        "closes": "19:00"
-      }
-    }
-    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        section[id] {
-            scroll-margin-top: 90px;
-        }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #fff5f8 0%, #fff9fb 100%); overflow-x: hidden; }
+        section[id] { scroll-margin-top: 80px; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #fff5f8 0%, #fff9fb 100%); overflow-x: hidden; text-rendering: optimizeSpeed; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Hiệu ứng hoa đào xoay */
         @keyframes spin-slow {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        .animate-spin-slow {
-            animation: spin-slow 3s linear infinite;
-        }
+        .animate-spin-slow { animation: spin-slow 3s linear infinite; }
 
-        /* Hiệu ứng hoa đào rơi */
         @keyframes fall {
-            0% {
-                transform: translateY(-10vh) translateX(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(105vh) translateX(50px) rotate(360deg);
-                opacity: 0.2;
-            }
+            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(105vh) translateX(20px) rotate(360deg); opacity: 0.1; }
         }
         .petal {
             position: fixed;
             top: -10vh;
             user-select: none;
             pointer-events: none;
-            z-index: 99;
+            z-index: 50;
             animation: fall linear infinite;
         }
     </style>
 </head>
 <body class="text-gray-700 min-h-screen flex flex-col justify-between selection:bg-pink-200 selection:text-pink-800 relative">
 
-    <!-- Container hiệu ứng hoa đào rơi tự động -->
     <div id="petals-container"></div>
 
-    <!-- Thanh thông báo đầu trang -->
-    <div id="top-announcement" class="bg-gradient-to-r from-pink-500 to-rose-400 text-white text-xs font-semibold py-2 px-4 text-center tracking-wide shadow-sm z-20">
+    <div class="bg-gradient-to-r from-pink-500 to-rose-400 text-white text-xs font-semibold py-2 px-4 text-center tracking-wide shadow-sm z-20">
         ✨ <span id="announcement-text">Otevřeno denně 09:00 - 19:00 | Uvnitř supermarketu Tesco Kopřivnice</span>
     </div>
 
-    <!-- Header chính -->
-    <header id="main-header" class="bg-white/95 backdrop-blur-md shadow-sm py-3.5 border-b border-pink-100/80 z-20">
+    <header class="bg-white/95 backdrop-blur-md shadow-sm py-3.5 border-b border-pink-100/80 z-30 sticky top-0">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <span class="text-2xl bg-pink-100 p-2.5 rounded-2xl shadow-inner border border-pink-200/50 animate-pulse">🌸</span>
+                <span class="text-2xl bg-pink-100 p-2.5 rounded-2xl shadow-inner border border-pink-200/50">🌸</span>
                 <div>
                     <h1 id="shop-title" class="text-lg sm:text-xl font-extrabold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent uppercase tracking-wider">Koprivnice CityNail</h1>
                     <p id="header-contact-phone" class="text-xs text-pink-500 font-semibold">📞 Tel: +420 778 550 888</p>
@@ -114,39 +69,29 @@
             </div>
             
             <div class="flex items-center space-x-2 sm:space-x-3">
-                <a href="https://www.facebook.com/koprivice.citynai" target="_blank" id="btn-fb-header" class="inline-flex items-center gap-1.5 bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold px-3.5 py-2 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5">
+                <a href="https://www.facebook.com/koprivice.citynai" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold px-3.5 py-2 rounded-2xl shadow-md transition transform hover:-translate-y-0.5">
                     <span>f</span> <span id="fb-btn-top-text">Facebook</span>
                 </a>
 
                 <div class="flex bg-pink-50/80 p-1 rounded-2xl border border-pink-100 shadow-inner">
-                    <button onclick="changeLanguage('cs')" id="btn-cs" class="px-2.5 py-1.5 text-xs font-bold bg-pink-500 text-white rounded-xl transition shadow-sm">CZ</button>
-                    <button onclick="changeLanguage('vi')" id="btn-vi" class="px-2.5 py-1.5 text-xs font-bold text-pink-400 rounded-xl transition hover:text-pink-600">VN</button>
-                    <button onclick="changeLanguage('en')" id="btn-en" class="px-2.5 py-1.5 text-xs font-bold text-pink-400 rounded-xl transition hover:text-pink-600">EN</button>
+                    <button onclick="changeLanguage('cs')" id="btn-cs" class="px-2.5 py-1.5 text-xs font-bold rounded-xl transition">CZ</button>
+                    <button onclick="changeLanguage('vi')" id="btn-vi" class="px-2.5 py-1.5 text-xs font-bold rounded-xl transition">VN</button>
+                    <button onclick="changeLanguage('en')" id="btn-en" class="px-2.5 py-1.5 text-xs font-bold rounded-xl transition">EN</button>
                 </div>
                 <a href="admin.html" id="admin-link" class="hidden sm:inline-flex items-center text-xs font-semibold px-3.5 py-2 border border-pink-200 text-pink-500 rounded-2xl hover:bg-pink-50 transition shadow-sm">Admin</a>
             </div>
         </div>
     </header>
 
-    <!-- Thanh Menu điều hướng cố định -->
-    <nav id="sticky-nav" class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-md py-2.5">
+    <nav class="bg-white/90 backdrop-blur-md border-b border-pink-100 shadow-sm py-2.5 z-20">
         <div class="container mx-auto px-4 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar gap-2 sm:gap-4">
-            <a href="#about-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-pink-600 text-xs font-bold px-4 py-2 rounded-2xl border border-pink-200 transition shadow-sm">
-                <span>👋</span> <span id="menu-about">Về chúng tôi</span>
-            </a>
-            <a href="#gallery-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-rose-500 text-xs font-bold px-4 py-2 rounded-2xl border border-rose-200 transition shadow-sm">
-                <span>📸</span> <span id="menu-gallery">Bộ sưu tập</span>
-            </a>
-            <a href="#products-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-purple-500 text-xs font-bold px-4 py-2 rounded-2xl border border-purple-200 transition shadow-sm">
-                <span>💎</span> <span id="menu-products">Mẫu móng & Giá</span>
-            </a>
-            <a href="#map-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-sky-500 text-xs font-bold px-4 py-2 rounded-2xl border border-sky-200 transition shadow-sm">
-                <span>📍</span> <span id="menu-map">Bản đồ đường đi</span>
-            </a>
+            <a href="#about-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-pink-600 text-xs font-bold px-4 py-2 rounded-2xl border border-pink-200 transition shadow-sm"><span>👋</span> <span id="menu-about">Về chúng tôi</span></a>
+            <a href="#gallery-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-rose-500 text-xs font-bold px-4 py-2 rounded-2xl border border-rose-200 transition shadow-sm"><span>📸</span> <span id="menu-gallery">Bộ sưu tập</span></a>
+            <a href="#products-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-purple-500 text-xs font-bold px-4 py-2 rounded-2xl border border-purple-200 transition shadow-sm"><span>💎</span> <span id="menu-products">Mẫu móng & Giá</span></a>
+            <a href="#map-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-sky-500 text-xs font-bold px-4 py-2 rounded-2xl border border-sky-200 transition shadow-sm"><span>📍</span> <span id="menu-map">Bản đồ đường đi</span></a>
         </div>
     </nav>
 
-    <!-- Phần Banner mở đầu -->
     <section class="container mx-auto px-4 pt-10 pb-6 text-center z-10 relative">
         <div class="max-w-3xl mx-auto">
             <span id="badge-top" class="inline-block bg-pink-100/80 text-pink-600 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-3 shadow-sm border border-pink-200">✨ Premium Nail Art & Care</span>
@@ -157,14 +102,13 @@
                 <p id="tesco-notice" class="inline-block bg-white/90 backdrop-blur text-pink-600 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-2xl border border-pink-200 shadow-sm">
                     🛍️ Uvnitř supermarketu Tesco (Nádražní 228/2, Kopřivnice)
                 </p>
-                <a href="https://m.me/koprivice.citynai" target="_blank" id="btn-fb-hero" class="inline-flex items-center gap-2 bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white text-xs sm:text-sm font-bold px-6 py-3 rounded-2xl shadow-lg hover:shadow-xl transition transform hover:scale-105">
+                <a href="https://m.me/koprivice.citynai" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white text-xs sm:text-sm font-bold px-6 py-3 rounded-2xl shadow-lg transition transform hover:scale-105">
                     <span>💬</span> <span id="fb-hero-text">Nhắn tin đặt lịch qua Facebook</span>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Nội dung chính -->
     <main class="container mx-auto px-4 py-6 flex-grow space-y-10 max-w-6xl z-10 relative">
         
         <section id="about-section" class="bg-white/90 backdrop-blur-md rounded-[2.5rem] p-6 sm:p-12 shadow-xl border border-pink-100">
@@ -172,12 +116,8 @@
                 <div>
                     <span class="inline-block bg-pink-100 text-pink-600 text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-widest mb-3 border border-pink-200" id="badge-about">👋 O našem studiu</span>
                     <h3 id="about-main-title" class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-4 leading-snug">Luxusní péče a moderní styl pro vaše nehty</h3>
-                    <p id="about-text-1" class="text-gray-500 text-sm sm:text-base leading-relaxed mb-4">
-                        Vítáme vás v Koprivnice CityNail. Nacházíme se přímo uvnitř supermarketu Tesco v Kopřivnici. Specializujeme se na moderní manikúru, gelové nehty, modeláž, zpevnění přírodních nehtů a precizní nail art s dlouhou životností.
-                    </p>
-                    <p id="about-text-2" class="text-gray-500 text-sm sm:text-base leading-relaxed mb-6">
-                        Těšíme se na vaši návštěvu a věříme, že od nás budete odcházet maximálně spokojeni.
-                    </p>
+                    <p id="about-text-1" class="text-gray-500 text-sm sm:text-base leading-relaxed mb-4">Vítáme vás v Koprivnice CityNail. Nacházíme se přímo uvnitř supermarketu Tesco v Kopřivnici. Specializujeme se na moderní manikúru, gelové nehty, modeláž a precizní nail art.</p>
+                    <p id="about-text-2" class="text-gray-500 text-sm sm:text-base leading-relaxed mb-6">Těšíme se na vaši návštěvu a věříme, že od nás budete odcházet maximálně spokojeni.</p>
                     <div class="grid grid-cols-2 gap-4 pt-4 border-t border-pink-100">
                         <div class="bg-pink-50/70 p-4 rounded-2xl border border-pink-100 shadow-sm">
                             <h4 class="font-extrabold text-pink-500 text-xl">100+</h4>
@@ -190,8 +130,8 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <img src="https://images.unsplash.com/photo-1632345031435-8777f6b9ae8c?auto=format&fit=crop&w=500&q=80" alt="Gelové nehty Kopřivnice" class="rounded-3xl object-cover h-60 w-full shadow-lg border-4 border-white hover:scale-105 transition duration-500">
-                    <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=500&q=80" alt="Manikúra Tesco Kopřivnice" class="rounded-3xl object-cover h-60 w-full shadow-lg border-4 border-white hover:scale-105 transition duration-500 mt-8">
+                    <img src="https://images.unsplash.com/photo-1632345031435-8777f6b9ae8c?auto=format&fit=crop&w=400&q=75" alt="Gelové nehty" loading="lazy" class="rounded-3xl object-cover h-60 w-full shadow-lg border-4 border-white" onerror="this.src='https://fav.farm/🌸'">
+                    <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=400&q=75" alt="Manikúra" loading="lazy" class="rounded-3xl object-cover h-60 w-full shadow-lg border-4 border-white mt-8" onerror="this.src='https://fav.farm/🌸'">
                 </div>
             </div>
         </section>
@@ -220,7 +160,6 @@
                 </div>
             </div>
             
-            <!-- Hiệu ứng Loading hoa đào xoay khi đang tải dữ liệu từ Google Sheets -->
             <div id="categories-container" class="py-16 flex flex-col items-center justify-center">
                 <div class="text-4xl animate-spin-slow mb-3">🌸</div>
                 <p id="loading-text" class="text-pink-500 text-sm font-bold tracking-wider">Načítání údajů...</p>
@@ -238,15 +177,7 @@
                 </span>
             </div>
             <div class="rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-white p-2">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2586.8!2d18.1460643!3d49.6049138!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4713e51247!2zTmjDrGJhxbvFiW7DrSwgNzQyIDIxIEtvcMWmWlZuaWNl!5e0!3m2!1scs!2scz!4v1700000000000" 
-                    width="100%" 
-                    height="420" 
-                    style="border:0;" 
-                    allowfullscreen="" 
-                    loading="lazy"
-                    class="rounded-2xl">
-                </iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2586.8!2d18.1460643!3d49.6049138!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4713e51247!2zTmjDrGJhxbvFiW7DrSwgNzQyIDIxIEtvcMWmWlZuaWNl!5e0!3m2!1scs!2scz!4v1700000000000" width="100%" height="420" style="border:0;" allowfullscreen="" loading="lazy" class="rounded-2xl"></iframe>
             </div>
         </div>
     </section>
@@ -268,7 +199,7 @@
                 <h4 id="footer-contact-title" class="font-bold text-gray-800 text-base mb-2">Kontakty & Adresa</h4>
                 <p class="text-xs text-gray-400 mb-1.5" id="footer-address">📍 Adresa: Tesco, Nádražní 228/2, Kopřivnice</p>
                 <p class="text-xs text-gray-400 mb-1.5" id="footer-phone">📞 Telefon: +420 778 550 888</p>
-                <p class="text-xs mt-2"><a href="https://www.facebook.com/koprivice.citynai" target="_blank" id="footer-fb-link" class="text-sky-500 font-bold hover:underline">f Facebook</a></p>
+                <p class="text-xs mt-2"><a href="https://www.facebook.com/koprivice.citynai" target="_blank" rel="noopener" class="text-sky-500 font-bold hover:underline">f Facebook</a></p>
             </div>
             <div class="flex flex-col items-center sm:items-end justify-center">
                 <a href="admin.html" id="admin-link-footer" class="text-pink-500 font-semibold hover:underline text-xs mb-2">Administrace systému</a>
@@ -278,30 +209,28 @@
     </footer>
 
     <script>
-        // Tạo hiệu ứng cánh hoa đào rơi tự động
         function createPetals() {
             const container = document.getElementById('petals-container');
-            const petalCount = 15; // Số lượng cánh hoa rơi cùng lúc
-            for (let i = 0; i < petalCount; i++) {
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < 8; i++) {
                 const petal = document.createElement('div');
                 petal.innerHTML = '🌸';
                 petal.className = 'petal';
                 petal.style.left = Math.random() * 100 + 'vw';
-                petal.style.fontSize = (Math.random() * 10 + 12) + 'px';
-                petal.style.animationDuration = (Math.random() * 6 + 6) + 's'; // Tốc độ rơi từ 6 đến 12 giây
+                petal.style.fontSize = (Math.random() * 6 + 10) + 'px';
+                petal.style.animationDuration = (Math.random() * 5 + 7) + 's';
                 petal.style.animationDelay = (Math.random() * 5) + 's';
-                container.appendChild(petal);
+                fragment.appendChild(petal);
             }
+            container.appendChild(fragment);
         }
 
         const API_URL = 'https://script.google.com/macros/s/AKfycbzxcC8x3PAhtu-C_vR5Qxiv3LSRBZHLKAUvQSELPmhJOxqluAZ572ZcaNcuCO9m9dIP/exec';
-        let allNails = [];
-        let galleryItems = [];
+        let allNails = [], galleryItems = [];
 
         const translations = {
             cs: {
                 metaTitle: "Nehtové studio Kopřivnice | Gelové nehty Tesco - Koprivnice CityNail",
-                metaDesc: "Profesionální nehtové studio Koprivnice uvnitř supermarketu Tesco. Nabízíme gelové nehty, manikúru a nail art. Objednejte se online!",
                 shopTitle: "Koprivnice CityNail",
                 badgeTop: "✨ Premium Nail Art & Care",
                 heroHeading: "Nehtové studio Kopřivnice",
@@ -317,17 +246,16 @@
                 loading: "Načítání údajů...",
                 headerPhone: "📞 Tel: +420 778 550 888",
                 footerAboutTitle: "O nás",
-                footerAboutDesc: "Kvalitní péče o nehty s dlouhou životností a moderním designem.",
+                footerAboutDesc: "Kvalitní péče o nehty s dlouhou životností.",
                 footerContactTitle: "Kontakty & Adresa",
                 footerAddress: "📍 Adresa: Tesco, Nádražní 228/2, Kopřivnice",
                 footerPhoneText: "📞 Telefon: +420 778 550 888",
-                footerFbText: "f Facebook",
                 mapTitle: "📍 Kde nás najdete",
                 mapSubtitle: "🛍️ Uvnitř supermarketu Tesco, Nádražní 228/2, Kopřivnice",
                 badgeAbout: "👋 O našem studiu",
                 aboutMainTitle: "Luxusní péče a moderní styl pro vaše nehty",
-                aboutText1: "Vítáme vás v Koprivnice CityNail. Nacházíme se přímo uvnitř supermarketu Tesco v Kopřivnici. Specializujeme se na moderní manikúru, gelové nehty, modeláž, zpevnění přírodních nehtů a precizní nail art s dlouhou životností.",
-                aboutText2: "Těšíme se na vaši návštěvu a věříme, že od nás budete odcházet maximálně spokojeni.",
+                aboutText1: "Vítáme vás v Koprivnice CityNail. Nacházíme se přímo uvnitř supermarketu Tesco v Kopřivnici.",
+                aboutText2: "Těšíme se na vaši návštěvu.",
                 aboutStat1: "Designů skladem",
                 aboutStat2: "Spokojenost klientů",
                 badgeGallery: "📸 Galerie",
@@ -343,11 +271,10 @@
             },
             vi: {
                 metaTitle: "Tiệm Móng Kopřivnice | Làm móng gel đẹp ở Tesco - Koprivnice CityNail",
-                metaDesc: "Tiệm móng Koprivnice uy tín bên trong siêu thị Tesco. Chuyên móng gel, đắp bột, nail art và chăm sóc móng chuyên nghiệp. Đặt lịch ngay!",
                 shopTitle: "Koprivnice CityNail",
                 badgeTop: "✨ Thiết Kế Móng Nghệ Thuật Cao Cấp",
                 heroHeading: "Tiệm Móng & Nail Kopřivnice",
-                shopSubtitle: "Chuyên thiết kế móng nghệ thuật, đính đá, gel cao cấp và chăm sóc tận tâm.",
+                shopSubtitle: "Chuyên thiết kế móng nghệ thuật, đính đá, gel cao cấp.",
                 tescoNotice: "🛍️ Bên trong siêu thị Tesco (Nádražní 228/2, Kopřivnice)",
                 fbBtnText: "Facebook",
                 fbHeroText: "Nhắn tin đặt lịch qua Facebook",
@@ -359,17 +286,16 @@
                 loading: "Đang tải dữ liệu mẫu móng...",
                 headerPhone: "📞 Đặt lịch: +420 778 550 888",
                 footerAboutTitle: "Về chúng tôi",
-                footerAboutDesc: "Chăm sóc móng chuyên nghiệp với độ bền cao và thiết kế thời thượng.",
+                footerAboutDesc: "Chăm sóc móng chuyên nghiệp với độ bền cao.",
                 footerContactTitle: "Liên hệ & Địa chỉ",
                 footerAddress: "📍 Địa chỉ: Siêu thị Tesco, Nádražní 228/2, Kopřivnice",
                 footerPhoneText: "📞 Điện thoại: +420 778 550 888",
-                footerFbText: "f Facebook",
                 mapTitle: "📍 Địa chỉ bản đồ của chúng tôi",
                 mapSubtitle: "🛍️ Bên trong siêu thị Tesco, Nádražní 228/2, Kopřivnice",
                 badgeAbout: "👋 Về chúng tôi",
                 aboutMainTitle: "Dịch Vụ Chăm Sóc Móng Chuyên Nghiệp & Sang Trọng",
-                aboutText1: "Chào mừng quý khách đến với Koprivnice CityNail, tọa lạc ngay bên trong siêu thị Tesco Kopřivnice. Chúng tôi chuyên cung cấp các dịch vụ làm móng nghệ thuật, đính đá, đắp gel và chăm sóc móng chuyên nghiệp với độ bền cao và phong cách thời thượng.",
-                aboutText2: "Chúng tôi tự hào mang đến không gian chăm sóc móng sang trọng, trang thiết bị hiện đại cùng đội ngũ thợ lành nghề, cam kết mang lại sự hài lòng tuyệt đối cho quý khách.",
+                aboutText1: "Chào mừng quý khách đến với Koprivnice CityNail, tọa lạc ngay bên trong siêu thị Tesco Kopřivnice.",
+                aboutText2: "Chúng tôi rất hân hạnh được phục vụ quý khách.",
                 aboutStat1: "Mẫu thiết kế thịnh hành",
                 aboutStat2: "Hài lòng & Tận tâm",
                 badgeGallery: "📸 Bộ sưu tập",
@@ -385,7 +311,6 @@
             },
             en: {
                 metaTitle: "Nail Salon Koprivnice | Gel Nails Tesco - Koprivnice CityNail",
-                metaDesc: "Professional nail salon in Koprivnice inside Tesco supermarket. We offer gel nails, manicure, and stunning nail art. Book your appointment online!",
                 shopTitle: "Koprivnice CityNail",
                 badgeTop: "✨ Premium Nail Art & Care",
                 heroHeading: "Nail Salon Kopřivnice",
@@ -401,17 +326,16 @@
                 loading: "Loading data...",
                 headerPhone: "📞 Phone: +420 778 550 888",
                 footerAboutTitle: "About Us",
-                footerAboutDesc: "Quality nail care with long-lasting durability and modern design.",
+                footerAboutDesc: "Quality nail care with modern design.",
                 footerContactTitle: "Contacts & Address",
                 footerAddress: "📍 Address: Tesco, Nádražní 228/2, Kopřivnice",
                 footerPhoneText: "📞 Phone: +420 778 550 888",
-                footerFbText: "f Facebook",
                 mapTitle: "📍 Find Us Here",
                 mapSubtitle: "🛍️ Inside Tesco Supermarket, Nádražní 228/2, Kopřivnice",
                 badgeAbout: "👋 About Our Salon",
                 aboutMainTitle: "Luxury Care & Modern Style For Your Nails",
-                aboutText1: "Welcome to Koprivnice CityNail, located directly inside the Tesco supermarket in Kopřivnice. We specialize in modern manicure, gel nails, modeling, natural nail enhancement, and precise, long-lasting nail art.",
-                aboutText2: "We look forward to your visit and strive to make sure you leave completely satisfied.",
+                aboutText1: "Welcome to Koprivnice CityNail, located inside the Tesco supermarket in Kopřivnice.",
+                aboutText2: "We look forward to your visit.",
                 aboutStat1: "Designs in Store",
                 aboutStat2: "Client Satisfaction",
                 badgeGallery: "📸 Gallery",
@@ -433,7 +357,6 @@
             if (currentLang === lang) return;
             currentLang = lang;
             localStorage.setItem('site_lang', lang);
-            
             updateTexts();
             if (allNails.length > 0) renderCategories();
             renderGallery();
@@ -457,7 +380,6 @@
             document.getElementById('footer-contact-title').innerText = t.footerContactTitle;
             document.getElementById('footer-address').innerText = t.footerAddress;
             document.getElementById('footer-phone').innerText = t.footerPhoneText;
-            document.getElementById('footer-fb-link').innerText = t.footerFbText;
             document.getElementById('map-title').innerText = t.mapTitle;
             document.getElementById('map-subtitle').innerText = t.mapSubtitle;
             
@@ -470,7 +392,6 @@
             
             document.getElementById('badge-gallery').innerText = t.badgeGallery;
             document.getElementById('gallery-section-title').innerText = t.galleryTitle;
-
             document.getElementById('badge-products').innerText = t.badgeProducts;
             document.getElementById('products-section-title').innerText = t.productsTitle;
 
@@ -486,13 +407,12 @@
             const loadingTextEl = document.getElementById('loading-text');
             if (loadingTextEl) loadingTextEl.innerText = t.loading;
 
-            const btnCs = document.getElementById('btn-cs');
-            const btnVi = document.getElementById('btn-vi');
-            const btnEn = document.getElementById('btn-en');
-            
-            btnCs.className = "px-2.5 py-1.5 text-xs font-bold rounded-xl transition " + (currentLang === 'cs' ? "bg-pink-500 text-white shadow-sm" : "text-pink-400 hover:text-pink-600");
-            btnVi.className = "px-2.5 py-1.5 text-xs font-bold rounded-xl transition " + (currentLang === 'vi' ? "bg-pink-500 text-white shadow-sm" : "text-pink-400 hover:text-pink-600");
-            btnEn.className = "px-2.5 py-1.5 text-xs font-bold rounded-xl transition " + (currentLang === 'en' ? "bg-pink-500 text-white shadow-sm" : "text-pink-400 hover:text-pink-600");
+            ['cs', 'vi', 'en'].forEach(lang => {
+                const btn = document.getElementById(`btn-${lang}`);
+                if (btn) {
+                    btn.className = `px-2.5 py-1.5 text-xs font-bold rounded-xl transition ${currentLang === lang ? 'bg-pink-500 text-white shadow-sm' : 'text-pink-400 hover:text-pink-600'}`;
+                }
+            });
         }
 
         async function loadPublicData() {
@@ -517,7 +437,7 @@
                 galleryItems = await resGal.json();
                 renderGallery();
             } catch (error) {
-                console.error("Không thể tải Gallery", error);
+                console.error("Gallery load error", error);
             }
         }
 
@@ -542,11 +462,7 @@
 
             rawCategories.forEach(cat => {
                 const itemsInCat = allNails.filter(n => (n.category || 'Manikúra') === cat);
-                
-                let displayCatName = cat;
-                if (categoryTranslations[cat] && categoryTranslations[cat][currentLang]) {
-                    displayCatName = categoryTranslations[cat][currentLang];
-                }
+                let displayCatName = categoryTranslations[cat]?.[currentLang] || cat;
 
                 html += `
                     <div class="mb-12 last:mb-0">
@@ -561,18 +477,15 @@
                 `;
 
                 itemsInCat.forEach(item => {
-                    let descToShow = item.desc || item.description || '';
-                    if (currentLang === 'vi' && item.descVi) descToShow = item.descVi;
-                    if (currentLang === 'en' && item.descEn) descToShow = item.descEn;
-
-                    const imgSrc = item.image || item.img || item.url || '';
+                    let descToShow = (currentLang === 'vi' && item.descVi) ? item.descVi : ((currentLang === 'en' && item.descEn) ? item.descEn : (item.desc || item.description || ''));
+                    const imgSrc = item.image || item.img || item.url || 'https://fav.farm/🌸';
                     const imgTitle = item.title || item.name || '';
 
                     html += `
                         <div class="bg-white rounded-3xl p-4 shadow-sm hover:shadow-xl transition-all duration-300 border border-pink-100 flex flex-col justify-between group">
                             <div>
                                 <div class="overflow-hidden rounded-2xl mb-3.5 relative aspect-square bg-gray-50 border border-pink-50">
-                                    <img src="${imgSrc}" alt="${imgTitle}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 cursor-pointer" onclick="openModal('${imgSrc}')">
+                                    <img src="${imgSrc}" alt="${imgTitle}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 cursor-pointer" onclick="openModal('${imgSrc}')" onerror="this.src='https://fav.farm/🌸'">
                                     <span class="absolute top-3 right-3 bg-white/90 backdrop-blur text-pink-600 font-extrabold text-xs px-3 py-1 rounded-full shadow-md border border-pink-100">
                                         ${item.price} CZK
                                     </span>
@@ -582,17 +495,15 @@
                             </div>
                             <div class="flex items-center justify-between pt-3 border-t border-pink-50 mt-auto">
                                 <span class="font-extrabold text-pink-500 text-sm">${item.price} CZK</span>
-                                <a href="https://m.me/koprivice.citynai" target="_blank" class="bg-pink-50 hover:bg-pink-500 hover:text-white text-pink-600 text-xs font-bold px-4 py-2 rounded-xl transition border border-pink-100 shadow-sm">
+                                <a href="https://m.me/koprivice.citynai" target="_blank" rel="noopener" class="bg-pink-50 hover:bg-pink-500 hover:text-white text-pink-600 text-xs font-bold px-4 py-2 rounded-xl transition border border-pink-100 shadow-sm">
                                     ${t.fbItemBtn}
                                 </a>
                             </div>
                         </div>
                     `;
                 });
-
                 html += `</div></div>`;
             });
-
             container.innerHTML = html;
         }
 
@@ -612,7 +523,7 @@
                 const photoSrc = photo.image || photo.url || photo.img || '';
                 html += `
                     <div class="flex-shrink-0 w-64 h-64 rounded-3xl overflow-hidden shadow-md border-4 border-white relative group bg-gray-50">
-                        <img src="${photoSrc}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500 cursor-pointer" onclick="openModal('${photoSrc}')">
+                        <img src="${photoSrc}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500 cursor-pointer" onclick="openModal('${photoSrc}')" onerror="this.src='https://fav.farm/🌸'">
                     </div>
                 `;
             });
@@ -620,8 +531,7 @@
         }
 
         function scrollGallery(direction) {
-            const slider = document.getElementById('gallery-slider');
-            slider.scrollBy({ left: direction * 300, behavior: 'smooth' });
+            document.getElementById('gallery-slider').scrollBy({ left: direction * 300, behavior: 'smooth' });
         }
 
         function openModal(imgUrl) {
