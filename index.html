@@ -54,12 +54,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         html {
-            /* Tăng khoảng đệm cuộn để bù cho cả header và menu dính */
-            scroll-padding-top: 220px; 
+            /* Tăng khoảng đệm cuộn cực kỳ rộng để chắc chắn không bị header và menu che */
+            scroll-padding-top: 280px; 
         }
-        /* Đảm bảo các section khi trỏ tới luôn cách đỉnh một khoảng an toàn tuyệt đối */
         section[id] {
-            scroll-margin-top: 200px;
+            scroll-margin-top: 260px;
         }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #fff5f8 0%, #fff9fb 100%); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -114,7 +113,7 @@
         </div>
     </section>
 
-    <nav class="sticky top-[73px] z-40 bg-white/80 backdrop-blur-md border-y border-pink-100 shadow-sm py-3">
+    <nav class="sticky top-[73px] z-40 bg-white/90 backdrop-blur-md border-y border-pink-100 shadow-sm py-3">
         <div class="container mx-auto px-4 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar gap-2 sm:gap-4">
             <a href="#about-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-pink-600 text-xs font-bold px-4 py-2 rounded-2xl border border-pink-200 transition shadow-sm">
                 <span>👋</span> <span id="menu-about">Về chúng tôi</span>
@@ -187,7 +186,9 @@
             </div>
             
             <div id="categories-container">
-                <p id="loading-text" class="text-gray-400 text-center py-20 font-medium">Načítání galerie...</p>
+                <div class="text-center py-16 text-pink-400 font-medium animate-pulse" id="loading-box">
+                    🌸 Načítání nabídky...
+                </div>
             </div>
         </section>
 
@@ -258,7 +259,7 @@
                 fbBtnText: "Facebook",
                 fbHeroText: "Objednat se přes Messenger",
                 fbItemBtn: "Rezervovat",
-                loading: "Načítání galerie...",
+                loading: "Načítání nabídky...",
                 adminLink: "Admin",
                 adminLinkFooter: "Administrace systému",
                 error: "Nelze načíst data.",
@@ -300,7 +301,7 @@
                 fbBtnText: "Facebook",
                 fbHeroText: "Nhắn tin đặt lịch qua Facebook",
                 fbItemBtn: "Đặt lịch mẫu này",
-                loading: "Đang tải bộ sưu tập...",
+                loading: "Đang tải danh mục mẫu...",
                 adminLink: "Quản trị",
                 adminLinkFooter: "Trang quản trị hệ thống",
                 error: "Không thể tải dữ liệu từ máy chủ.",
@@ -342,7 +343,7 @@
                 fbBtnText: "Facebook",
                 fbHeroText: "Book via Messenger",
                 fbItemBtn: "Book This Design",
-                loading: "Loading gallery...",
+                loading: "Loading menu...",
                 adminLink: "Admin",
                 adminLinkFooter: "System Administration",
                 error: "Unable to load data.",
@@ -390,7 +391,6 @@
         function updateTexts() {
             const t = translations[currentLang];
             document.getElementById('page-title').innerText = t.metaTitle;
-            document.getElementById('meta-desc').setAttribute('content', t.metaDesc);
             document.getElementById('shop-title').innerText = t.shopTitle;
             document.getElementById('badge-top').innerText = t.badgeTop;
             document.getElementById('hero-heading').innerText = t.heroHeading;
