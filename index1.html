@@ -25,7 +25,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        section[id] { scroll-margin-top: 80px; }
+        section[id] { scroll-margin-top: 130px; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #fff5f8 0%, #fff9fb 100%); overflow-x: hidden; text-rendering: optimizeSpeed; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -54,7 +54,7 @@
 
     <div id="petals-container"></div>
 
-    <div class="bg-gradient-to-r from-pink-500 to-rose-400 text-white text-xs font-semibold py-2 px-4 text-center tracking-wide shadow-sm z-20">
+    <div class="bg-gradient-to-r from-pink-500 to-rose-400 text-white text-xs font-semibold py-2 px-4 text-center tracking-wide shadow-sm z-30">
         ✨ <span id="announcement-text">Otevřeno denně 09:00 - 19:00 | Uvnitř supermarketu Tesco Kopřivnice</span>
     </div>
 
@@ -83,7 +83,8 @@
         </div>
     </header>
 
-    <nav class="bg-white/90 backdrop-blur-md border-b border-pink-100 shadow-sm py-2.5 z-20">
+    <!-- Thanh menu được cố định dính ngay dưới header -->
+    <nav class="bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-sm py-2.5 z-20 sticky top-[69px]">
         <div class="container mx-auto px-4 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar gap-2 sm:gap-4">
             <a href="#about-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-pink-600 text-xs font-bold px-4 py-2 rounded-2xl border border-pink-200 transition shadow-sm"><span>👋</span> <span id="menu-about">Về chúng tôi</span></a>
             <a href="#gallery-section" class="flex-shrink-0 inline-flex items-center gap-1.5 bg-white hover:bg-pink-50 text-rose-500 text-xs font-bold px-4 py-2 rounded-2xl border border-rose-200 transition shadow-sm"><span>📸</span> <span id="menu-gallery">Bộ sưu tập</span></a>
